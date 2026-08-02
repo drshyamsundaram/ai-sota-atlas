@@ -437,7 +437,7 @@ function Dashboard() {
 
             <div className="panel overflow-hidden">
               <div className="flex items-center gap-2 border-b border-border px-5 py-3">
-                <h3 className="text-sm font-semibold">Normalized records</h3>
+                <h3 className="text-sm font-semibold">Details</h3>
                 <Badge variant="secondary" className="font-mono text-xs">
                   {filtered.length}
                 </Badge>
