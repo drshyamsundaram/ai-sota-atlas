@@ -355,40 +355,6 @@ function Dashboard() {
                     top {spec.max_items_per_category} by {chartMetric || "metric"}
                   </p>
                 </div>
-                <div className="ml-auto flex flex-wrap gap-2">
-                  <Select value={metric} onValueChange={setMetric}>
-                    <SelectTrigger className="h-9 w-[190px]">
-                      <SelectValue placeholder="Metric" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All metrics</SelectItem>
-                      {metricOptions.map((m) => (
-                        <SelectItem key={m} value={m}>
-                          {m}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Select value={region} onValueChange={setRegion}>
-                    <SelectTrigger className="h-9 w-[140px]">
-                      <SelectValue placeholder="Region" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All regions</SelectItem>
-                      {["global", "india", "china", "europe", "us", "unknown"].map((r) => (
-                        <SelectItem key={r} value={r}>
-                          {r}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Input
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Filter model / benchmark"
-                    className="h-9 w-[210px]"
-                  />
-                </div>
               </div>
 
               <div className="mt-5 h-[260px]">
