@@ -484,6 +484,53 @@ function Dashboard() {
 
           <aside className="space-y-6">
             <div className="panel p-5">
+              <h3 className="text-sm font-semibold">Leaderboard filters</h3>
+              <div className="mt-3 space-y-3">
+                <div>
+                  <label className="mono-label mb-1 block">metric</label>
+                  <Select value={metric} onValueChange={setMetric}>
+                    <SelectTrigger className="h-9 w-full">
+                      <SelectValue placeholder="Metric" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All metrics</SelectItem>
+                      {metricOptions.map((m) => (
+                        <SelectItem key={m} value={m}>
+                          {m}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="mono-label mb-1 block">region</label>
+                  <Select value={region} onValueChange={setRegion}>
+                    <SelectTrigger className="h-9 w-full">
+                      <SelectValue placeholder="Region" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All regions</SelectItem>
+                      {["global", "india", "china", "europe", "us", "unknown"].map((r) => (
+                        <SelectItem key={r} value={r}>
+                          {r}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="mono-label mb-1 block">search</label>
+                  <Input
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Filter model / benchmark"
+                    className="h-9 w-full"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="panel p-5">
               <h3 className="text-sm font-semibold">Configured sources</h3>
               <p className="mono-label mt-1">{activeCategory.id}</p>
               <ul className="mt-3 space-y-2">
