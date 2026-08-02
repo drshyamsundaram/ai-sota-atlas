@@ -313,7 +313,11 @@ function Dashboard() {
 
         <p className="mono-label mt-3 flex items-center gap-2">
           <Timer className="size-3.5" /> dataset generated {generatedAt || "—"} · cap{" "}
-          {spec.max_items_per_category} items / category
+          {spec.max_items_per_category} items / category ·{" "}
+          {intervalMs
+            ? `auto-refresh every ${REFRESH_OPTIONS.find((o) => o.ms === intervalMs)?.label}`
+            : "auto-refresh off"}
+          {dataUpdatedAt ? ` · last checked ${new Date(dataUpdatedAt).toLocaleTimeString()}` : ""}
         </p>
 
         <nav className="mt-6 flex flex-wrap gap-2">
