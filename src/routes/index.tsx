@@ -8,6 +8,7 @@ import {
   Download,
   ExternalLink,
   Gauge,
+  Github,
   RefreshCw,
   ShieldAlert,
   Timer,
