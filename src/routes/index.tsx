@@ -355,40 +355,6 @@ function Dashboard() {
                     top {spec.max_items_per_category} by {chartMetric || "metric"}
                   </p>
                 </div>
-                <div className="ml-auto flex flex-wrap gap-2">
-                  <Select value={metric} onValueChange={setMetric}>
-                    <SelectTrigger className="h-9 w-[190px]">
-                      <SelectValue placeholder="Metric" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All metrics</SelectItem>
-                      {metricOptions.map((m) => (
-                        <SelectItem key={m} value={m}>
-                          {m}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Select value={region} onValueChange={setRegion}>
-                    <SelectTrigger className="h-9 w-[140px]">
-                      <SelectValue placeholder="Region" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All regions</SelectItem>
-                      {["global", "india", "china", "europe", "us", "unknown"].map((r) => (
-                        <SelectItem key={r} value={r}>
-                          {r}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Input
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Filter model / benchmark"
-                    className="h-9 w-[210px]"
-                  />
-                </div>
               </div>
 
               <div className="mt-5 h-[260px]">
@@ -437,7 +403,7 @@ function Dashboard() {
 
             <div className="panel overflow-hidden">
               <div className="flex items-center gap-2 border-b border-border px-5 py-3">
-                <h3 className="text-sm font-semibold">Normalized records</h3>
+                <h3 className="text-sm font-semibold">Details</h3>
                 <Badge variant="secondary" className="font-mono text-xs">
                   {filtered.length}
                 </Badge>
@@ -517,6 +483,53 @@ function Dashboard() {
           </div>
 
           <aside className="space-y-6">
+            <div className="panel p-5">
+              <h3 className="text-sm font-semibold">Leaderboard filters</h3>
+              <div className="mt-3 space-y-3">
+                <div>
+                  <label className="mono-label mb-1 block">metric</label>
+                  <Select value={metric} onValueChange={setMetric}>
+                    <SelectTrigger className="h-9 w-full">
+                      <SelectValue placeholder="Metric" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All metrics</SelectItem>
+                      {metricOptions.map((m) => (
+                        <SelectItem key={m} value={m}>
+                          {m}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="mono-label mb-1 block">region</label>
+                  <Select value={region} onValueChange={setRegion}>
+                    <SelectTrigger className="h-9 w-full">
+                      <SelectValue placeholder="Region" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All regions</SelectItem>
+                      {["global", "india", "china", "europe", "us", "unknown"].map((r) => (
+                        <SelectItem key={r} value={r}>
+                          {r}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="mono-label mb-1 block">search</label>
+                  <Input
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Filter model / benchmark"
+                    className="h-9 w-full"
+                  />
+                </div>
+              </div>
+            </div>
+
             <div className="panel p-5">
               <h3 className="text-sm font-semibold">Configured sources</h3>
               <p className="mono-label mt-1">{activeCategory.id}</p>
