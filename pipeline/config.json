@@ -74,20 +74,6 @@
         ]
       },
       {
-        "id": "india_commercial",
-        "title": "India commercial fit",
-        "evaluation_dimensions": [
-          "capability",
-          "usability",
-          "adoption_cost",
-          "token_cost",
-          "local_language_quality",
-          "code_mix_handling",
-          "data_residency_fit"
-        ],
-        "distinct_families": ["Sarvam", "BharatGen", "Krutrim", "AI4Bharat", "Gnani"]
-      },
-      {
         "id": "china",
         "title": "China",
         "sources": [
