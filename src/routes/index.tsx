@@ -252,6 +252,32 @@ function Dashboard() {
                 e.target.value = "";
               }}
             />
+            <Select
+              value={String(intervalMs)}
+              onValueChange={(v) => {
+                setIntervalMs(Number(v));
+                toast.info(
+                  Number(v) === 0
+                    ? "Auto-refresh paused"
+                    : `Auto-refresh every ${REFRESH_OPTIONS.find((o) => o.ms === Number(v))?.label}`,
+                );
+              }}
+            >
+              <SelectTrigger className="h-9 w-[190px]">
+                <RefreshCw className={`size-4 ${isFetching ? "animate-spin text-primary" : ""}`} />
+                <SelectValue placeholder="Auto-refresh" />
+              </SelectTrigger>
+              <SelectContent>
+                {REFRESH_OPTIONS.map((o) => (
+                  <SelectItem key={o.ms} value={String(o.ms)}>
+                    {o.ms === 0 ? "Auto-refresh: off" : `Every ${o.label}`}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
+              <RefreshCw className={`size-4 ${isFetching ? "animate-spin" : ""}`} /> Refresh now
+            </Button>
             <Button variant="outline" size="sm" onClick={() => fileRef.current?.click()}>
               <Upload className="size-4" /> Import JSON
             </Button>
