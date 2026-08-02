@@ -1,4 +1,5 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowUpRight,
@@ -97,7 +98,44 @@ function Dashboard() {
   const [region, setRegion] = useState<string>("all");
   const [metric, setMetric] = useState<string>("all");
   const [query, setQuery] = useState("");
+  const [intervalMs, setIntervalMs] = useState<number>(0);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const {
+    data: liveDataset,
+    dataUpdatedAt,
+    isFetching,
+    refetch,
+  } = useQuery({
+    queryKey: ["live-dataset"],
+    queryFn: async () => {
+      const res = await fetch("/api/public/dataset", { cache: "no-store" });
+      if (!res.ok) throw new Error(`dataset fetch failed (${res.status})`);
+      return (await res.json()) as {
+        generated_at: string | null;
+        ingested_at: string | null;
+        record_count: number;
+        records: unknown[];
+      };
+    },
+    refetchInterval: intervalMs || false,
+    refetchOnWindowFocus: false,
+    enabled: intervalMs > 0,
+  });
+
+  useEffect(() => {
+    if (!liveDataset || liveDataset.record_count === 0) return;
+    if (liveDataset.generated_at && liveDataset.generated_at === generatedAt) return;
+    try {
+      const parsed = parseDataset(liveDataset);
+      setRecords(parsed.records);
+      setGeneratedAt(parsed.generated_at ?? new Date().toISOString());
+      toast.success(`Scheduled refresh: ${parsed.records.length} records`);
+    } catch {
+      toast.error("Scheduled refresh returned an invalid dataset");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [liveDataset]);
 
   const catRecords = useMemo(
     () => records.filter((r) => r.category === category),
