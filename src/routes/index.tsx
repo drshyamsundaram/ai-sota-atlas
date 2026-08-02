@@ -52,13 +52,13 @@ import { parseDataset, type LeaderboardRecord } from "@/lib/schema";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "SOTA Shift Tracker — LLM Leaderboard Signals" },
+      { title: "AI SOTA Shift Tracker — LLM Leaderboard Signals" },
       {
         name: "description",
         content:
           "Track state-of-the-art LLM shifts across global, hallucination, India, China and Europe leaderboards from one normalized, source-backed dataset.",
       },
-      { property: "og:title", content: "SOTA Shift Tracker — LLM Leaderboard Signals" },
+      { property: "og:title", content: "AI SOTA Shift Tracker — LLM Leaderboard Signals" },
       {
         property: "og:description",
         content:
@@ -245,7 +245,7 @@ function Dashboard() {
             </span>
             <div>
               <h1 className="text-lg font-semibold tracking-tight">
-                SOTA <span className="text-gradient-accent">Shift Tracker</span>
+                AI SOTA <span className="text-gradient-accent">Shift Tracker</span>
               </h1>
               <p className="mono-label">normalized llm leaderboard signals</p>
             </div>
