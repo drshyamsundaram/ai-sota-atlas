@@ -1,4 +1,5 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowUpRight,
@@ -7,6 +8,7 @@ import {
   Download,
   ExternalLink,
   Gauge,
+  RefreshCw,
   ShieldAlert,
   Timer,
   Upload,
@@ -73,6 +75,15 @@ const seedDataset = parseDataset(seed);
 
 const LOWER_IS_BETTER = new Set(["hallucination_rate", "latency", "token_cost", "price"]);
 
+const REFRESH_OPTIONS: { ms: number; label: string }[] = [
+  { ms: 0, label: "off" },
+  { ms: 60_000, label: "1 min" },
+  { ms: 5 * 60_000, label: "5 min" },
+  { ms: 15 * 60_000, label: "15 min" },
+  { ms: 60 * 60_000, label: "1 hour" },
+  { ms: 6 * 60 * 60_000, label: "6 hours" },
+];
+
 function formatValue(record: LeaderboardRecord) {
   if (record.metric_value === null || record.metric_value === undefined) return "—";
   const v = record.metric_value;
@@ -97,7 +108,44 @@ function Dashboard() {
   const [region, setRegion] = useState<string>("all");
   const [metric, setMetric] = useState<string>("all");
   const [query, setQuery] = useState("");
+  const [intervalMs, setIntervalMs] = useState<number>(0);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const {
+    data: liveDataset,
+    dataUpdatedAt,
+    isFetching,
+    refetch,
+  } = useQuery({
+    queryKey: ["live-dataset"],
+    queryFn: async () => {
+      const res = await fetch("/api/public/dataset", { cache: "no-store" });
+      if (!res.ok) throw new Error(`dataset fetch failed (${res.status})`);
+      return (await res.json()) as {
+        generated_at: string | null;
+        ingested_at: string | null;
+        record_count: number;
+        records: unknown[];
+      };
+    },
+    refetchInterval: intervalMs || false,
+    refetchOnWindowFocus: false,
+    enabled: intervalMs > 0,
+  });
+
+  useEffect(() => {
+    if (!liveDataset || liveDataset.record_count === 0) return;
+    if (liveDataset.generated_at && liveDataset.generated_at === generatedAt) return;
+    try {
+      const parsed = parseDataset(liveDataset);
+      setRecords(parsed.records);
+      setGeneratedAt(parsed.generated_at ?? new Date().toISOString());
+      toast.success(`Scheduled refresh: ${parsed.records.length} records`);
+    } catch {
+      toast.error("Scheduled refresh returned an invalid dataset");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [liveDataset]);
 
   const catRecords = useMemo(
     () => records.filter((r) => r.category === category),
@@ -214,6 +262,32 @@ function Dashboard() {
                 e.target.value = "";
               }}
             />
+            <Select
+              value={String(intervalMs)}
+              onValueChange={(v) => {
+                setIntervalMs(Number(v));
+                toast.info(
+                  Number(v) === 0
+                    ? "Auto-refresh paused"
+                    : `Auto-refresh every ${REFRESH_OPTIONS.find((o) => o.ms === Number(v))?.label}`,
+                );
+              }}
+            >
+              <SelectTrigger className="h-9 w-[190px]">
+                <RefreshCw className={`size-4 ${isFetching ? "animate-spin text-primary" : ""}`} />
+                <SelectValue placeholder="Auto-refresh" />
+              </SelectTrigger>
+              <SelectContent>
+                {REFRESH_OPTIONS.map((o) => (
+                  <SelectItem key={o.ms} value={String(o.ms)}>
+                    {o.ms === 0 ? "Auto-refresh: off" : `Every ${o.label}`}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
+              <RefreshCw className={`size-4 ${isFetching ? "animate-spin" : ""}`} /> Refresh now
+            </Button>
             <Button variant="outline" size="sm" onClick={() => fileRef.current?.click()}>
               <Upload className="size-4" /> Import JSON
             </Button>
@@ -239,7 +313,11 @@ function Dashboard() {
 
         <p className="mono-label mt-3 flex items-center gap-2">
           <Timer className="size-3.5" /> dataset generated {generatedAt || "—"} · cap{" "}
-          {spec.max_items_per_category} items / category
+          {spec.max_items_per_category} items / category ·{" "}
+          {intervalMs
+            ? `auto-refresh every ${REFRESH_OPTIONS.find((o) => o.ms === intervalMs)?.label}`
+            : "auto-refresh off"}
+          {dataUpdatedAt ? ` · last checked ${new Date(dataUpdatedAt).toLocaleTimeString()}` : ""}
         </p>
 
         <nav className="mt-6 flex flex-wrap gap-2">

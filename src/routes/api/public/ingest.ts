@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { setLatestDataset } from "@/lib/dataset-store";
 import { parseDataset } from "@/lib/schema";
 
 export const Route = createFileRoute("/api/public/ingest")({
@@ -47,12 +48,13 @@ export const Route = createFileRoute("/api/public/ingest")({
         try {
           const dataset = parseDataset(body);
           const categoriesSeen = [...new Set(dataset.records.map((r) => r.category))];
+          const stored = setLatestDataset(dataset);
           return new Response(
             JSON.stringify({
               ok: true,
               accepted: dataset.records.length,
               categories: categoriesSeen,
-              received_at: new Date().toISOString(),
+              received_at: stored.ingested_at,
             }),
             { status: 200, headers: cors },
           );
