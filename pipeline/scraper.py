@@ -149,7 +149,7 @@ def source_name_from_url(url: str) -> str:
 def region_for_category(category: str) -> str:
     return {
         "india": "india",
-        "india_commercial": "india",
+        
         "china": "china",
         "europe": "europe",
     }.get(category, "global")
