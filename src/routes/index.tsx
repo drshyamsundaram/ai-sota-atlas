@@ -53,17 +53,17 @@ import { parseDataset, type LeaderboardRecord } from "@/lib/schema";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "AI SOTA Shift Tracker — LLM Leaderboard Signals" },
+      { title: "AI SOTA Shift Tracker | LLM Leaderboard Signals | Dr Shyam S" },
       {
         name: "description",
         content:
           "Track state-of-the-art LLM shifts across global, hallucination, India, China and Europe leaderboards from one normalized, source-backed dataset.",
       },
-      { property: "og:title", content: "AI SOTA Shift Tracker — LLM Leaderboard Signals" },
+      { property: "og:title", content: "AI SOTA Shift Tracker | LLM Leaderboard Signals | Dr Shyam S" },
       {
         property: "og:description",
         content:
-          "Normalized leaderboard records from global frontier, safety, India, China and Europe benchmark sources.",
+          "Track state-of-the-art LLM shifts across global, hallucination, India, China and Europe leaderboards from one normalized, source-backed dataset.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
