@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { setLatestDataset } from "@/lib/dataset-store";
 import { parseDataset } from "@/lib/schema";
 
 export const Route = createFileRoute("/api/public/ingest")({
