@@ -294,6 +294,14 @@ function Dashboard() {
             <Button size="sm" onClick={handleExport}>
               <Download className="size-4" /> Export dataset
             </Button>
+            <a
+              href="https://www.linkedin.com/in/bioenable/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              created by Dr Shyam Sundaram
+            </a>
           </div>
         </div>
       </header>
