@@ -335,9 +335,16 @@ function Dashboard() {
                 ))}
               </SelectContent>
             </Select>
-            <Button variant="outline" size="sm" onClick={handleManualRefresh} disabled={isFetching}>
-              <RefreshCw className={`size-4 ${isFetching ? "animate-spin" : ""}`} /> Refresh now
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleManualRefresh}
+              disabled={isFetching || isScraping}
+            >
+              <RefreshCw className={`size-4 ${isFetching || isScraping ? "animate-spin" : ""}`} />
+              {isScraping ? "Scraping…" : "Refresh now"}
             </Button>
+
             <Button variant="outline" size="sm" onClick={() => fileRef.current?.click()}>
               <Upload className="size-4" /> Import JSON
             </Button>
@@ -361,14 +368,24 @@ function Dashboard() {
           />
         </section>
 
-        <p className="mono-label mt-3 flex items-center gap-2">
-          <Timer className="size-3.5" /> dataset generated {generatedAt || "—"} · cap{" "}
+        <p className="mono-label mt-3 flex flex-wrap items-center gap-2">
+          <Timer className="size-3.5" /> latest batch{" "}
+          {(liveDataset?.generated_at ?? generatedAt) || "—"}
+          {liveDataset?.ingested_at || batchInfo?.ingested_at
+            ? ` · stored ${new Date(batchInfo?.ingested_at ?? liveDataset!.ingested_at!).toLocaleString()}`
+            : ""}
+          {" · "}
+          {batchInfo
+            ? `${batchInfo.record_count} rows from ${batchInfo.sources_ok}/${batchInfo.sources_attempted} sources`
+            : `${records.length} rows`}
+          {" · cap "}
           {spec.max_items_per_category} items / category ·{" "}
           {intervalMs
             ? `auto-refresh every ${REFRESH_OPTIONS.find((o) => o.ms === intervalMs)?.label}`
             : "auto-refresh off"}
           {dataUpdatedAt ? ` · last checked ${new Date(dataUpdatedAt).toLocaleTimeString()}` : ""}
         </p>
+
 
         <nav className="mt-6 flex flex-wrap gap-2">
           {categories.map((c) => {
