@@ -236,7 +236,6 @@ function TokensPage() {
               <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All categories</SelectItem>
               {tokenSlices.map((s) => (
                 <SelectItem key={s.id} value={s.id}>
                   {s.label}
