@@ -150,24 +150,51 @@ function Dashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [liveDataset]);
 
+  const [isScraping, setIsScraping] = useState(false);
+  const [batchInfo, setBatchInfo] = useState<{
+    ingested_at: string;
+    record_count: number;
+    sources_ok: number;
+    sources_attempted: number;
+  } | null>(null);
+
   const handleManualRefresh = async () => {
-    const previous = generatedAt;
-    const result = await refetch();
-    const data = result.data;
-    if (result.isError || !data) {
-      toast.error("Could not reach the data service");
-      return;
+    setIsScraping(true);
+    const pending = toast.loading("Running the collector across the configured sources…");
+    try {
+      const res = await fetch("/api/public/scrape", { method: "POST" });
+      const body = (await res.json()) as {
+        ok: boolean;
+        error?: string;
+        generated_at?: string;
+        ingested_at?: string;
+        record_count?: number;
+        sources_ok?: number;
+        sources_attempted?: number;
+        fresh_records?: number;
+      };
+      if (!res.ok || !body.ok) {
+        toast.error(body.error ?? "The collector run failed", { id: pending });
+      } else {
+        setBatchInfo({
+          ingested_at: body.ingested_at ?? new Date().toISOString(),
+          record_count: body.record_count ?? 0,
+          sources_ok: body.sources_ok ?? 0,
+          sources_attempted: body.sources_attempted ?? 0,
+        });
+        toast.success(
+          `New batch stored — ${body.record_count} rows (${body.fresh_records} freshly scraped from ${body.sources_ok}/${body.sources_attempted} sources)`,
+          { id: pending },
+        );
+      }
+    } catch {
+      toast.error("Could not reach the data service", { id: pending });
+    } finally {
+      setIsScraping(false);
     }
-    if (data.record_count === 0) {
-      toast.info("No live dataset has been published yet — showing the bundled snapshot");
-      return;
-    }
-    if (data.generated_at && data.generated_at === previous) {
-      toast.info(
-        `Up to date — showing the latest published results (${data.record_count} entries from ${new Date(data.generated_at).toLocaleString()})`,
-      );
-    }
+    await refetch();
   };
+
 
 
   const catRecords = useMemo(
@@ -308,9 +335,16 @@ function Dashboard() {
                 ))}
               </SelectContent>
             </Select>
-            <Button variant="outline" size="sm" onClick={handleManualRefresh} disabled={isFetching}>
-              <RefreshCw className={`size-4 ${isFetching ? "animate-spin" : ""}`} /> Refresh now
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleManualRefresh}
+              disabled={isFetching || isScraping}
+            >
+              <RefreshCw className={`size-4 ${isFetching || isScraping ? "animate-spin" : ""}`} />
+              {isScraping ? "Scraping…" : "Refresh now"}
             </Button>
+
             <Button variant="outline" size="sm" onClick={() => fileRef.current?.click()}>
               <Upload className="size-4" /> Import JSON
             </Button>
@@ -334,14 +368,24 @@ function Dashboard() {
           />
         </section>
 
-        <p className="mono-label mt-3 flex items-center gap-2">
-          <Timer className="size-3.5" /> dataset generated {generatedAt || "—"} · cap{" "}
+        <p className="mono-label mt-3 flex flex-wrap items-center gap-2">
+          <Timer className="size-3.5" /> latest batch{" "}
+          {(liveDataset?.generated_at ?? generatedAt) || "—"}
+          {liveDataset?.ingested_at || batchInfo?.ingested_at
+            ? ` · stored ${new Date(batchInfo?.ingested_at ?? liveDataset!.ingested_at!).toLocaleString()}`
+            : ""}
+          {" · "}
+          {batchInfo
+            ? `${batchInfo.record_count} rows from ${batchInfo.sources_ok}/${batchInfo.sources_attempted} sources`
+            : `${records.length} rows`}
+          {" · cap "}
           {spec.max_items_per_category} items / category ·{" "}
           {intervalMs
             ? `auto-refresh every ${REFRESH_OPTIONS.find((o) => o.ms === intervalMs)?.label}`
             : "auto-refresh off"}
           {dataUpdatedAt ? ` · last checked ${new Date(dataUpdatedAt).toLocaleTimeString()}` : ""}
         </p>
+
 
         <nav className="mt-6 flex flex-wrap gap-2">
           {categories.map((c) => {

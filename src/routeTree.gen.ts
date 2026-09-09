@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiPublicDatasetRouteImport } from './routes/api/public/dataset'
 import { Route as ApiPublicIngestRouteImport } from './routes/api/public/ingest'
+import { Route as ApiPublicScrapeRouteImport } from './routes/api/public/scrape'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,50 @@ const ApiPublicIngestRoute = ApiPublicIngestRouteImport.update({
   path: '/api/public/ingest',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicScrapeRoute = ApiPublicScrapeRouteImport.update({
+  id: '/api/public/scrape',
+  path: '/api/public/scrape',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
+  '/api/public/scrape': typeof ApiPublicScrapeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
+  '/api/public/scrape': typeof ApiPublicScrapeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
+  '/api/public/scrape': typeof ApiPublicScrapeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/public/dataset' | '/api/public/ingest'
+  fullPaths:
+    '/' | '/api/public/dataset' | '/api/public/ingest' | '/api/public/scrape'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/public/dataset' | '/api/public/ingest'
-  id: '__root__' | '/' | '/api/public/dataset' | '/api/public/ingest'
+  to: '/' | '/api/public/dataset' | '/api/public/ingest' | '/api/public/scrape'
+  id:
+    | '__root__'
+    | '/'
+    | '/api/public/dataset'
+    | '/api/public/ingest'
+    | '/api/public/scrape'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiPublicDatasetRoute: typeof ApiPublicDatasetRoute
   ApiPublicIngestRoute: typeof ApiPublicIngestRoute
+  ApiPublicScrapeRoute: typeof ApiPublicScrapeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +98,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicIngestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/scrape': {
+      id: '/api/public/scrape'
+      path: '/api/public/scrape'
+      fullPath: '/api/public/scrape'
+      preLoaderRoute: typeof ApiPublicScrapeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +112,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiPublicDatasetRoute: ApiPublicDatasetRoute,
   ApiPublicIngestRoute: ApiPublicIngestRoute,
+  ApiPublicScrapeRoute: ApiPublicScrapeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
