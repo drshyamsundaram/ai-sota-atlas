@@ -109,7 +109,7 @@ function Dashboard() {
   const [region, setRegion] = useState<string>("all");
   const [metric, setMetric] = useState<string>("all");
   const [query, setQuery] = useState("");
-  const [intervalMs, setIntervalMs] = useState<number>(0);
+  const [intervalMs, setIntervalMs] = useState<number>(60_000);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const {
@@ -131,7 +131,7 @@ function Dashboard() {
     },
     refetchInterval: intervalMs || false,
     refetchOnWindowFocus: false,
-    refetchOnMount: false,
+    refetchOnMount: "always",
     staleTime: 0,
     gcTime: 0,
   });
@@ -159,11 +159,11 @@ function Dashboard() {
       return;
     }
     if (data.record_count === 0) {
-      toast.info("No refreshed dataset published yet — showing the current one");
+      toast.info("No live dataset has been published yet — showing the bundled snapshot");
       return;
     }
     if (data.generated_at && data.generated_at === previous) {
-      toast.info("Already up to date");
+      toast.info("Checked the live dataset — no newer scraper run is available");
     }
   };
 
