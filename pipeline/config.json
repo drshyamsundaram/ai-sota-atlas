@@ -27,7 +27,8 @@
           "https://epoch.ai/benchmarks",
           "https://livebench.ai/",
           "https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard",
-          "https://huggingface.co/models"
+          "https://huggingface.co/models",
+          "https://benchlm.ai/"
         ]
       },
       {
@@ -42,6 +43,7 @@
         ],
         "sources": [
           "https://huggingface.co/spaces/vectara/leaderboard",
+          "https://suprmind.ai/hub/ai-hallucination-rates-and-benchmarks/",
           "https://hai.stanford.edu/ai-index/2026-ai-index-report",
           "https://www.artificialanalysis.ai/blog/ai-hallucination-rates-statistics-benchmarks-2026",
           "https://arxiv.org/abs/2501.05441",
