@@ -38,6 +38,30 @@ export type Database = {
         }
         Relationships: []
       }
+      token_datasets: {
+        Row: {
+          generated_at: string
+          id: string
+          ingested_at: string
+          record_count: number
+          records: Json
+        }
+        Insert: {
+          generated_at?: string
+          id: string
+          ingested_at?: string
+          record_count?: number
+          records?: Json
+        }
+        Update: {
+          generated_at?: string
+          id?: string
+          ingested_at?: string
+          record_count?: number
+          records?: Json
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

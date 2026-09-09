@@ -1,0 +1,107 @@
+{
+  "token_utilization_spec": {
+    "description": "Open, live token-utilisation signals at model level, drilled down to KPI and country level. Live leaderboard endpoints only - no periodic PDF/report sources.",
+    "refresh_with_primary": true,
+    "max_models_per_slice": 10,
+    "kpis": [
+      {
+        "id": "tokens_processed",
+        "label": "Tokens processed",
+        "unit": "tokens",
+        "higher_is_better": true,
+        "description": "Total tokens routed through the source in the trailing window."
+      },
+      {
+        "id": "token_share_pct",
+        "label": "Token share",
+        "unit": "percent",
+        "higher_is_better": true,
+        "description": "Model's share of all tokens captured in the same slice."
+      },
+      {
+        "id": "token_growth_pct",
+        "label": "Weekly growth",
+        "unit": "percent",
+        "higher_is_better": true,
+        "description": "Change in tokens processed versus the previous window."
+      },
+      {
+        "id": "country_token_share_pct",
+        "label": "Country token share",
+        "unit": "percent",
+        "higher_is_better": true,
+        "description": "Share of tokens attributed to the model developer's home country."
+      },
+      {
+        "id": "models_in_country",
+        "label": "Models per country",
+        "unit": "count",
+        "higher_is_better": true,
+        "description": "Distinct models from that country present in the captured slices."
+      }
+    ],
+    "slices": [
+      { "id": "overall", "label": "All categories", "url": "https://openrouter.ai/rankings" },
+      { "id": "programming", "label": "Programming", "url": "https://openrouter.ai/rankings?category=programming" },
+      { "id": "roleplay", "label": "Roleplay", "url": "https://openrouter.ai/rankings?category=roleplay" },
+      { "id": "marketing", "label": "Marketing", "url": "https://openrouter.ai/rankings?category=marketing" },
+      { "id": "technology", "label": "Technology", "url": "https://openrouter.ai/rankings?category=technology" },
+      { "id": "science", "label": "Science", "url": "https://openrouter.ai/rankings?category=science" },
+      { "id": "translation", "label": "Translation", "url": "https://openrouter.ai/rankings?category=translation" },
+      { "id": "finance", "label": "Finance", "url": "https://openrouter.ai/rankings?category=finance" },
+      { "id": "legal", "label": "Legal", "url": "https://openrouter.ai/rankings?category=legal" },
+      { "id": "health", "label": "Health", "url": "https://openrouter.ai/rankings?category=health" }
+    ],
+    "developer_country": {
+      "openai": "United States",
+      "anthropic": "United States",
+      "google": "United States",
+      "meta-llama": "United States",
+      "microsoft": "United States",
+      "x-ai": "United States",
+      "nvidia": "United States",
+      "amazon": "United States",
+      "cohere": "Canada",
+      "ai21": "Israel",
+      "mistralai": "France",
+      "deepseek": "China",
+      "qwen": "China",
+      "alibaba": "China",
+      "moonshotai": "China",
+      "z-ai": "China",
+      "tencent": "China",
+      "baidu": "China",
+      "minimax": "China",
+      "01-ai": "China",
+      "bytedance": "China",
+      "stepfun-ai": "China",
+      "inclusionai": "China",
+      "sarvamai": "India",
+      "krutrim": "India",
+      "ai4bharat": "India",
+      "bharatgen": "India",
+      "sea-lion": "Singapore",
+      "upstage": "South Korea",
+      "lgai": "South Korea",
+      "rakuten": "Japan",
+      "sakanaai": "Japan",
+      "nousresearch": "United States",
+      "perplexity": "United States",
+      "inception": "United States",
+      "liquid": "United States",
+      "arcee-ai": "United States",
+      "allenai": "United States",
+      "thudm": "China",
+      "aleph-alpha": "Germany",
+      "lighton": "France",
+      "openrouter": "United States"
+    },
+    "default_country": "Unspecified"
+  },
+  "rules": [
+    "Only live, openly reachable endpoints - no periodic report or PDF sources.",
+    "Refresh token utilisation in the same run as the primary leaderboard refresh.",
+    "Attribute country by model developer origin; unknown developers fall back to Unspecified.",
+    "Always keep raw token counts alongside derived share and growth KPIs."
+  ]
+}

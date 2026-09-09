@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowUpRight,
   Bot,
@@ -300,6 +300,22 @@ function Dashboard() {
               <p className="mono-label">normalized llm leaderboard signals</p>
             </div>
           </div>
+          <nav className="mono-label ml-6 flex items-center gap-4">
+            <Link to="/tokens" className="hover:text-primary">
+              Token utilisation
+            </Link>
+            <Link to="/api-docs" className="hover:text-primary">
+              API docs
+            </Link>
+            <a
+              href="https://www.linkedin.com/in/bioenable/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary"
+            >
+              About author
+            </a>
+          </nav>
           <div className="ml-auto flex items-center gap-2">
             <input
               ref={fileRef}
@@ -711,6 +727,22 @@ python pipeline/process.py --in pipeline/out/raw.json \\
             <p className="text-sm font-semibold tracking-tight">AI SOTA Shift Tracker</p>
             <p className="mono-label">normalized llm leaderboard signals</p>
           </div>
+          <nav className="mono-label flex items-center gap-4">
+            <Link to="/tokens" className="hover:text-primary">
+              Token utilisation
+            </Link>
+            <Link to="/api-docs" className="hover:text-primary">
+              API docs
+            </Link>
+            <a
+              href="https://www.linkedin.com/in/bioenable/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary"
+            >
+              About author
+            </a>
+          </nav>
           <div className="flex items-center gap-4">
             <a
               href="https://www.linkedin.com/in/bioenable/"
