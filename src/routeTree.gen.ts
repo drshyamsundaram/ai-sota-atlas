@@ -14,6 +14,7 @@ import { Route as ApiPublicDatasetRouteImport } from './routes/api/public/datase
 import { Route as ApiPublicIngestRouteImport } from './routes/api/public/ingest'
 import { Route as ApiPublicScrapeRouteImport } from './routes/api/public/scrape'
 import { Route as ApiPublicTokensRouteImport } from './routes/api/public/tokens'
+import { Route as ApiPublicTokensRefreshRouteImport } from './routes/api/public/tokens.refresh'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,20 +41,27 @@ const ApiPublicTokensRoute = ApiPublicTokensRouteImport.update({
   path: '/api/public/tokens',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicTokensRefreshRoute = ApiPublicTokensRefreshRouteImport.update({
+  id: '/refresh',
+  path: '/refresh',
+  getParentRoute: () => ApiPublicTokensRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
   '/api/public/scrape': typeof ApiPublicScrapeRoute
-  '/api/public/tokens': typeof ApiPublicTokensRoute
+  '/api/public/tokens': typeof ApiPublicTokensRouteWithChildren
+  '/api/public/tokens/refresh': typeof ApiPublicTokensRefreshRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
   '/api/public/scrape': typeof ApiPublicScrapeRoute
-  '/api/public/tokens': typeof ApiPublicTokensRoute
+  '/api/public/tokens': typeof ApiPublicTokensRouteWithChildren
+  '/api/public/tokens/refresh': typeof ApiPublicTokensRefreshRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -61,7 +69,8 @@ export interface FileRoutesById {
   '/api/public/dataset': typeof ApiPublicDatasetRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
   '/api/public/scrape': typeof ApiPublicScrapeRoute
-  '/api/public/tokens': typeof ApiPublicTokensRoute
+  '/api/public/tokens': typeof ApiPublicTokensRouteWithChildren
+  '/api/public/tokens/refresh': typeof ApiPublicTokensRefreshRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -71,6 +80,7 @@ export interface FileRouteTypes {
     | '/api/public/ingest'
     | '/api/public/scrape'
     | '/api/public/tokens'
+    | '/api/public/tokens/refresh'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -78,6 +88,7 @@ export interface FileRouteTypes {
     | '/api/public/ingest'
     | '/api/public/scrape'
     | '/api/public/tokens'
+    | '/api/public/tokens/refresh'
   id:
     | '__root__'
     | '/'
@@ -85,6 +96,7 @@ export interface FileRouteTypes {
     | '/api/public/ingest'
     | '/api/public/scrape'
     | '/api/public/tokens'
+    | '/api/public/tokens/refresh'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -92,7 +104,7 @@ export interface RootRouteChildren {
   ApiPublicDatasetRoute: typeof ApiPublicDatasetRoute
   ApiPublicIngestRoute: typeof ApiPublicIngestRoute
   ApiPublicScrapeRoute: typeof ApiPublicScrapeRoute
-  ApiPublicTokensRoute: typeof ApiPublicTokensRoute
+  ApiPublicTokensRoute: typeof ApiPublicTokensRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -132,15 +144,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicTokensRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/tokens/refresh': {
+      id: '/api/public/tokens/refresh'
+      path: '/refresh'
+      fullPath: '/api/public/tokens/refresh'
+      preLoaderRoute: typeof ApiPublicTokensRefreshRouteImport
+      parentRoute: typeof ApiPublicTokensRoute
+    }
   }
 }
+
+interface ApiPublicTokensRouteChildren {
+  ApiPublicTokensRefreshRoute: typeof ApiPublicTokensRefreshRoute
+}
+
+const ApiPublicTokensRouteChildren: ApiPublicTokensRouteChildren = {
+  ApiPublicTokensRefreshRoute: ApiPublicTokensRefreshRoute,
+}
+
+const ApiPublicTokensRouteWithChildren = ApiPublicTokensRoute._addFileChildren(
+  ApiPublicTokensRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiPublicDatasetRoute: ApiPublicDatasetRoute,
   ApiPublicIngestRoute: ApiPublicIngestRoute,
   ApiPublicScrapeRoute: ApiPublicScrapeRoute,
-  ApiPublicTokensRoute: ApiPublicTokensRoute,
+  ApiPublicTokensRoute: ApiPublicTokensRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
