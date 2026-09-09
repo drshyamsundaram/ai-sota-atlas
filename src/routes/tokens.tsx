@@ -268,10 +268,27 @@ function TokensPage() {
           <ChartCard title="Tokens processed by model">
             <ResponsiveContainer width="100%" height={340}>
               <BarChart data={byModel} layout="vertical" margin={{ left: 24, right: 16 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                <XAxis type="number" tickFormatter={(v) => formatTokens(Number(v))} fontSize={11} />
-                <YAxis type="category" dataKey="name" width={150} fontSize={11} />
-                <ReTooltip formatter={(v) => formatTokens(Number(v))} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" horizontal={false} />
+                <XAxis
+                  type="number"
+                  tickFormatter={(v) => formatTokens(Number(v))}
+                  fontSize={11}
+                  stroke={AXIS}
+                  tick={{ fill: AXIS }}
+                />
+                <YAxis
+                  type="category"
+                  dataKey="name"
+                  width={150}
+                  fontSize={11}
+                  stroke={AXIS}
+                  tick={{ fill: AXIS }}
+                />
+                <ReTooltip
+                  cursor={{ fill: "var(--muted)", opacity: 0.35 }}
+                  contentStyle={TOOLTIP_STYLE}
+                  formatter={(v) => formatTokens(Number(v))}
+                />
                 <Bar dataKey="tokens" radius={[0, 4, 4, 0]}>
                   {byModel.map((_, i) => (
                     <Cell key={i} fill={BAR_COLORS[i % BAR_COLORS.length]} />
@@ -284,10 +301,28 @@ function TokensPage() {
           <ChartCard title="Tokens by developer country">
             <ResponsiveContainer width="100%" height={340}>
               <BarChart data={byCountry.slice(0, 12)} margin={{ left: 8, right: 16 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                <XAxis dataKey="name" fontSize={11} interval={0} angle={-25} textAnchor="end" height={70} />
-                <YAxis tickFormatter={(v) => formatTokens(Number(v))} fontSize={11} />
-                <ReTooltip formatter={(v) => formatTokens(Number(v))} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+                <XAxis
+                  dataKey="name"
+                  fontSize={11}
+                  interval={0}
+                  angle={-25}
+                  textAnchor="end"
+                  height={70}
+                  stroke={AXIS}
+                  tick={{ fill: AXIS }}
+                />
+                <YAxis
+                  tickFormatter={(v) => formatTokens(Number(v))}
+                  fontSize={11}
+                  stroke={AXIS}
+                  tick={{ fill: AXIS }}
+                />
+                <ReTooltip
+                  cursor={{ fill: "var(--muted)", opacity: 0.35 }}
+                  contentStyle={TOOLTIP_STYLE}
+                  formatter={(v) => formatTokens(Number(v))}
+                />
                 <Bar dataKey="tokens" radius={[4, 4, 0, 0]}>
                   {byCountry.slice(0, 12).map((_, i) => (
                     <Cell key={i} fill={BAR_COLORS[i % BAR_COLORS.length]} />
