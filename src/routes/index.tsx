@@ -150,24 +150,51 @@ function Dashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [liveDataset]);
 
+  const [isScraping, setIsScraping] = useState(false);
+  const [batchInfo, setBatchInfo] = useState<{
+    ingested_at: string;
+    record_count: number;
+    sources_ok: number;
+    sources_attempted: number;
+  } | null>(null);
+
   const handleManualRefresh = async () => {
-    const previous = generatedAt;
-    const result = await refetch();
-    const data = result.data;
-    if (result.isError || !data) {
-      toast.error("Could not reach the data service");
-      return;
+    setIsScraping(true);
+    const pending = toast.loading("Running the collector across the configured sources…");
+    try {
+      const res = await fetch("/api/public/scrape", { method: "POST" });
+      const body = (await res.json()) as {
+        ok: boolean;
+        error?: string;
+        generated_at?: string;
+        ingested_at?: string;
+        record_count?: number;
+        sources_ok?: number;
+        sources_attempted?: number;
+        fresh_records?: number;
+      };
+      if (!res.ok || !body.ok) {
+        toast.error(body.error ?? "The collector run failed", { id: pending });
+      } else {
+        setBatchInfo({
+          ingested_at: body.ingested_at ?? new Date().toISOString(),
+          record_count: body.record_count ?? 0,
+          sources_ok: body.sources_ok ?? 0,
+          sources_attempted: body.sources_attempted ?? 0,
+        });
+        toast.success(
+          `New batch stored — ${body.record_count} rows (${body.fresh_records} freshly scraped from ${body.sources_ok}/${body.sources_attempted} sources)`,
+          { id: pending },
+        );
+      }
+    } catch {
+      toast.error("Could not reach the data service", { id: pending });
+    } finally {
+      setIsScraping(false);
     }
-    if (data.record_count === 0) {
-      toast.info("No live dataset has been published yet — showing the bundled snapshot");
-      return;
-    }
-    if (data.generated_at && data.generated_at === previous) {
-      toast.info(
-        `Up to date — showing the latest published results (${data.record_count} entries from ${new Date(data.generated_at).toLocaleString()})`,
-      );
-    }
+    await refetch();
   };
+
 
 
   const catRecords = useMemo(
