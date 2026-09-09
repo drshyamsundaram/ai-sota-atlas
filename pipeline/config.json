@@ -41,11 +41,10 @@
           "citation_accuracy"
         ],
         "sources": [
-          "https://www.vectara.com/blog/hallucination-leaderboard",
+          "https://huggingface.co/spaces/vectara/leaderboard",
           "https://hai.stanford.edu/ai-index/2026-ai-index-report",
           "https://www.artificialanalysis.ai/blog/ai-hallucination-rates-statistics-benchmarks-2026",
           "https://arxiv.org/abs/2501.05441",
-          "https://arxiv.org/abs/2507.04016",
           "https://arxiv.org/abs/2509.14437",
           "https://arxiv.org/abs/2505.03102",
           "https://arxiv.org/abs/2409.12700",
