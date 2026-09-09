@@ -42,6 +42,30 @@ export const Route = createFileRoute("/api/public/scrape")({
             records: merged,
           });
 
+          // Token utilisation refreshes alongside the primary run.
+          let tokens: { record_count: number; slices_ok: number; error?: string } = {
+            record_count: 0,
+            slices_ok: 0,
+          };
+          try {
+            const { runTokenCollection } = await import("@/lib/token-collector.server");
+            const { setLatestTokenDataset } = await import("@/lib/token-store");
+            const tokenRun = await runTokenCollection();
+            if (tokenRun.records.length) {
+              const storedTokens = await setLatestTokenDataset({
+                generated_at: tokenRun.generated_at,
+                records: tokenRun.records,
+              });
+              tokens = {
+                record_count: storedTokens.record_count,
+                slices_ok: tokenRun.outcomes.filter((o) => o.status === "ok").length,
+              };
+            }
+          } catch (tokenError) {
+            tokens.error =
+              tokenError instanceof Error ? tokenError.message.slice(0, 200) : "token run failed";
+          }
+
           const ok = run.outcomes.filter((o) => o.status === "ok").length;
           return new Response(
             JSON.stringify({

@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiDocsRouteImport } from './routes/api-docs'
+import { Route as TokensRouteImport } from './routes/tokens'
 import { Route as ApiPublicDatasetRouteImport } from './routes/api/public/dataset'
 import { Route as ApiPublicDocsRouteImport } from './routes/api/public/docs'
 import { Route as ApiPublicIngestRouteImport } from './routes/api/public/ingest'
@@ -26,6 +27,11 @@ const IndexRoute = IndexRouteImport.update({
 const ApiDocsRoute = ApiDocsRouteImport.update({
   id: '/api-docs',
   path: '/api-docs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TokensRoute = TokensRouteImport.update({
+  id: '/tokens',
+  path: '/tokens',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicDatasetRoute = ApiPublicDatasetRouteImport.update({
@@ -62,6 +68,7 @@ const ApiPublicTokensRefreshRoute = ApiPublicTokensRefreshRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api-docs': typeof ApiDocsRoute
+  '/tokens': typeof TokensRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
   '/api/public/docs': typeof ApiPublicDocsRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api-docs': typeof ApiDocsRoute
+  '/tokens': typeof TokensRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
   '/api/public/docs': typeof ApiPublicDocsRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api-docs': typeof ApiDocsRoute
+  '/tokens': typeof TokensRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
   '/api/public/docs': typeof ApiPublicDocsRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
@@ -95,6 +104,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/api-docs'
+    | '/tokens'
     | '/api/public/dataset'
     | '/api/public/docs'
     | '/api/public/ingest'
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/api-docs'
+    | '/tokens'
     | '/api/public/dataset'
     | '/api/public/docs'
     | '/api/public/ingest'
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/api-docs'
+    | '/tokens'
     | '/api/public/dataset'
     | '/api/public/docs'
     | '/api/public/ingest'
@@ -126,6 +138,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiDocsRoute: typeof ApiDocsRoute
+  TokensRoute: typeof TokensRoute
   ApiPublicDatasetRoute: typeof ApiPublicDatasetRoute
   ApiPublicDocsRoute: typeof ApiPublicDocsRoute
   ApiPublicIngestRoute: typeof ApiPublicIngestRoute
@@ -147,6 +160,13 @@ declare module '@tanstack/react-router' {
       path: '/api-docs'
       fullPath: '/api-docs'
       preLoaderRoute: typeof ApiDocsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tokens': {
+      id: '/tokens'
+      path: '/tokens'
+      fullPath: '/tokens'
+      preLoaderRoute: typeof TokensRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/dataset': {
@@ -209,6 +229,7 @@ const ApiPublicTokensRouteWithChildren = ApiPublicTokensRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiDocsRoute: ApiDocsRoute,
+  TokensRoute: TokensRoute,
   ApiPublicDatasetRoute: ApiPublicDatasetRoute,
   ApiPublicDocsRoute: ApiPublicDocsRoute,
   ApiPublicIngestRoute: ApiPublicIngestRoute,
