@@ -41,16 +41,16 @@
       }
     ],
     "slices": [
-      { "id": "overall", "label": "All categories", "url": "https://openrouter.ai/rankings" },
-      { "id": "programming", "label": "Programming", "url": "https://openrouter.ai/rankings?category=programming" },
-      { "id": "roleplay", "label": "Roleplay", "url": "https://openrouter.ai/rankings?category=roleplay" },
-      { "id": "marketing", "label": "Marketing", "url": "https://openrouter.ai/rankings?category=marketing" },
-      { "id": "technology", "label": "Technology", "url": "https://openrouter.ai/rankings?category=technology" },
-      { "id": "science", "label": "Science", "url": "https://openrouter.ai/rankings?category=science" },
-      { "id": "translation", "label": "Translation", "url": "https://openrouter.ai/rankings?category=translation" },
-      { "id": "finance", "label": "Finance", "url": "https://openrouter.ai/rankings?category=finance" },
-      { "id": "legal", "label": "Legal", "url": "https://openrouter.ai/rankings?category=legal" },
-      { "id": "health", "label": "Health", "url": "https://openrouter.ai/rankings?category=health" }
+      { "id": "overall", "label": "All usage", "url": "https://openrouter.ai/api/frontend/v1/rankings/model-rankings-chart" },
+      { "id": "prog-python", "label": "Programming · Python", "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=Python" },
+      { "id": "prog-javascript", "label": "Programming · JavaScript", "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=JavaScript" },
+      { "id": "prog-typescript", "label": "Programming · TypeScript", "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=TypeScript" },
+      { "id": "prog-go", "label": "Programming · Go", "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=Go" },
+      { "id": "prog-rust", "label": "Programming · Rust", "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=Rust" },
+      { "id": "nl-english", "label": "Language · English", "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=English" },
+      { "id": "nl-spanish", "label": "Language · Spanish", "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=Spanish" },
+      { "id": "nl-german", "label": "Language · German", "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=German" },
+      { "id": "nl-hindi", "label": "Language · Hindi", "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=Hindi" }
     ],
     "developer_country": {
       "openai": "United States",
