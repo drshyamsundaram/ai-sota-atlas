@@ -131,7 +131,9 @@ function Dashboard() {
     },
     refetchInterval: intervalMs || false,
     refetchOnWindowFocus: false,
-    enabled: intervalMs > 0,
+    refetchOnMount: false,
+    staleTime: 0,
+    gcTime: 0,
   });
 
   useEffect(() => {
@@ -147,6 +149,24 @@ function Dashboard() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [liveDataset]);
+
+  const handleManualRefresh = async () => {
+    const previous = generatedAt;
+    const result = await refetch();
+    const data = result.data;
+    if (result.isError || !data) {
+      toast.error("Could not reach the data service");
+      return;
+    }
+    if (data.record_count === 0) {
+      toast.info("No refreshed dataset published yet — showing the current one");
+      return;
+    }
+    if (data.generated_at && data.generated_at === previous) {
+      toast.info("Already up to date");
+    }
+  };
+
 
   const catRecords = useMemo(
     () => records.filter((r) => r.category === category),
