@@ -163,7 +163,9 @@ function Dashboard() {
       return;
     }
     if (data.generated_at && data.generated_at === previous) {
-      toast.info("Checked the live dataset — no newer scraper run is available");
+      toast.info(
+        `Up to date — showing the latest published results (${data.record_count} entries from ${new Date(data.generated_at).toLocaleString()})`,
+      );
     }
   };
 
