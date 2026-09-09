@@ -14,7 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      leaderboard_datasets: {
+        Row: {
+          generated_at: string
+          id: string
+          ingested_at: string
+          record_count: number
+          records: Json
+        }
+        Insert: {
+          generated_at: string
+          id: string
+          ingested_at?: string
+          record_count?: number
+          records?: Json
+        }
+        Update: {
+          generated_at?: string
+          id?: string
+          ingested_at?: string
+          record_count?: number
+          records?: Json
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
