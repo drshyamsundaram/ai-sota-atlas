@@ -65,15 +65,24 @@ type Payload = {
 };
 
 const BAR_COLORS = [
-  "hsl(var(--primary))",
-  "hsl(var(--accent))",
-  "hsl(var(--primary) / 0.75)",
-  "hsl(var(--accent) / 0.75)",
-  "hsl(var(--primary) / 0.5)",
+  "var(--chart-1)",
+  "var(--chart-2)",
+  "var(--chart-3)",
+  "var(--chart-4)",
+  "var(--chart-5)",
 ];
 
+const AXIS = "var(--muted-foreground)";
+const TOOLTIP_STYLE = {
+  background: "var(--popover)",
+  border: "1px solid var(--border)",
+  borderRadius: "0.5rem",
+  color: "var(--popover-foreground)",
+  fontSize: 12,
+} as const;
+
 function TokensPage() {
-  const [slice, setSlice] = useState("all");
+  const [slice, setSlice] = useState("overall");
   const [country, setCountry] = useState("all");
   const [search, setSearch] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
