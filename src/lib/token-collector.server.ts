@@ -1,10 +1,15 @@
 import { countryFor, tokenSpec } from "@/data/token-config";
-import { tokenRecordSchema, type TokenRecord } from "./token-schema";
+import { formatTokens, tokenRecordSchema, type TokenRecord } from "./token-schema";
 
 /**
- * Live token-utilisation collector. Scrapes the openly reachable ranking
- * endpoints configured in pipeline/token_config.json, honouring robots.txt,
- * randomized delays, rotating User-Agents and exponential backoff.
+ * Live token-utilisation collector. Pulls the openly reachable JSON ranking
+ * series configured in pipeline/token_config.json, honouring randomized
+ * delays, rotating User-Agents and exponential backoff.
+ *
+ * Each slice URL returns a weekly time series shaped as:
+ *   { data: [{ x: "2026-09-07", ys: { "<model_permaslug>": tokens, ... } }, ...] }
+ * (the overall endpoint wraps it once more: { data: { data: [...] } }).
+ * The latest week gives tokens_processed, the previous week gives growth.
  */
 
 const USER_AGENTS = [
@@ -32,7 +37,7 @@ export type TokenCollectionRun = {
   duration_ms: number;
 };
 
-async function fetchWithBackoff(url: string, attempts = 3): Promise<string> {
+async function fetchWithBackoff(url: string, attempts = 3): Promise<unknown> {
   let lastError = "unknown error";
   for (let attempt = 0; attempt < attempts; attempt++) {
     if (attempt > 0) await sleep(2 ** attempt * 400 + jitter(0, 400));
@@ -40,7 +45,7 @@ async function fetchWithBackoff(url: string, attempts = 3): Promise<string> {
       const res = await fetch(url, {
         headers: {
           "user-agent": pickUA(),
-          accept: "text/html,application/xhtml+xml,*/*;q=0.8",
+          accept: "application/json,*/*;q=0.8",
           "accept-language": "en-US,en;q=0.9",
         },
         signal: AbortSignal.timeout(20_000),
@@ -50,7 +55,7 @@ async function fetchWithBackoff(url: string, attempts = 3): Promise<string> {
         continue;
       }
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return await res.text();
+      return await res.json();
     } catch (error) {
       lastError = error instanceof Error ? error.message : "fetch error";
     }
@@ -58,68 +63,93 @@ async function fetchWithBackoff(url: string, attempts = 3): Promise<string> {
   throw new Error(lastError);
 }
 
-const MULTIPLIER: Record<string, number> = { T: 1e12, B: 1e9, M: 1e6, K: 1e3, "": 1 };
+type WeekPoint = { x: string; ys: Record<string, number> };
 
-function parseRankingHtml(
-  html: string,
+function extractWeeks(payload: unknown): WeekPoint[] {
+  const data = (payload as { data?: unknown })?.data;
+  const rows = Array.isArray(data)
+    ? data
+    : Array.isArray((data as { data?: unknown })?.data)
+      ? ((data as { data: unknown[] }).data as unknown[])
+      : [];
+  return rows.filter(
+    (r): r is WeekPoint =>
+      !!r && typeof (r as WeekPoint).x === "string" && typeof (r as WeekPoint).ys === "object",
+  );
+}
+
+/** Strip a trailing -YYYYMMDD date suffix from a permaslug to get the base model id. */
+const baseModelId = (permaslug: string) => permaslug.replace(/-\d{8}$/, "");
+
+const prettify = (permaslug: string) => {
+  const tail = baseModelId(permaslug).split("/").pop() ?? permaslug;
+  return tail
+    .split(/[-.]/)
+    .filter(Boolean)
+    .map((w) => (/^\d/.test(w) ? w : w.charAt(0).toUpperCase() + w.slice(1)))
+    .join(" ");
+};
+
+async function fetchModelNames(): Promise<Map<string, string>> {
+  const names = new Map<string, string>();
+  try {
+    const payload = (await fetchWithBackoff("https://openrouter.ai/api/v1/models", 2)) as {
+      data?: { id?: string; name?: string }[];
+    };
+    for (const m of payload.data ?? []) {
+      if (m.id && m.name) names.set(m.id.toLowerCase(), m.name);
+    }
+  } catch {
+    // name lookup is best-effort; fall back to prettified slugs
+  }
+  return names;
+}
+
+function parseSeries(
+  payload: unknown,
   slice: { id: string; label: string; url: string },
   limit: number,
+  names: Map<string, string>,
 ): TokenRecord[] {
+  const weeks = extractWeeks(payload);
+  if (weeks.length === 0) return [];
+  const latest = weeks[weeks.length - 1]!;
+  const previous = weeks.length > 1 ? weeks[weeks.length - 2]! : null;
   const retrievedAt = new Date().toISOString();
-  const rows = html.match(/data-testid="model-rankings-leaderboard-row"[\s\S]*?<\/tr>/g) ?? [];
-  const parsed: Omit<TokenRecord, "token_share_pct">[] = [];
 
-  for (const row of rows) {
-    if (parsed.length >= limit) break;
-    const rankMatch = row.match(/rowheader">(\d+)/);
-    const links = [...row.matchAll(/href="\/([^"?]+)"[^>]*>([^<]+)<\/a>/g)];
-    const tokenMatch = row.match(/<div>([\d.]+)\s*([TBMK]?)\s*tokens<\/div>/);
-    if (!links.length || !tokenMatch) continue;
+  const entries = Object.entries(latest.ys)
+    .filter(([slug, tokens]) => slug !== "Others" && Number.isFinite(tokens) && tokens > 0)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit);
 
-    const modelId = links[0]![1]!;
-    const modelName = links[0]![2]!.trim();
-    const developer = (links[1]?.[2] ?? modelId.split("/")[0] ?? "unknown").trim();
-    const amount = Number(tokenMatch[1]);
-    if (!Number.isFinite(amount)) continue;
-    const tokens = amount * (MULTIPLIER[tokenMatch[2] ?? ""] ?? 1);
+  const total = entries.reduce((sum, [, t]) => sum + t, 0) || 1;
+  const out: TokenRecord[] = [];
 
-    const growthMatch = row.match(/<span class="([^"]*)">[\s\S]*?([\d.]+)%<\/span>/);
-    let growth: number | null = null;
-    if (growthMatch) {
-      const value = Number(growthMatch[2]);
-      growth = Number.isFinite(value)
-        ? /negative|destructive|down/i.test(growthMatch[1] ?? "")
-          ? -value
-          : value
+  entries.forEach(([permaslug, tokens], i) => {
+    const developer = permaslug.split("/")[0] ?? "unknown";
+    const prevTokens = previous?.ys[permaslug];
+    const growth =
+      prevTokens && prevTokens > 0
+        ? Number((((tokens - prevTokens) / prevTokens) * 100).toFixed(2))
         : null;
-    }
-
-    parsed.push({
+    const validated = tokenRecordSchema.safeParse({
       source_name: "openrouter.ai",
       source_url: slice.url,
       retrieved_at: retrievedAt,
       slice_id: slice.id,
       slice_label: slice.label,
-      rank: rankMatch ? Number(rankMatch[1]) : null,
-      model_id: modelId,
-      model_name: modelName,
+      rank: i + 1,
+      model_id: permaslug,
+      model_name: names.get(baseModelId(permaslug).toLowerCase()) ?? prettify(permaslug),
       developer,
       country: countryFor(developer),
-      tokens_processed: tokens,
-      tokens_display: `${tokenMatch[1]}${tokenMatch[2] ?? ""}`,
+      tokens_processed: Math.round(tokens),
+      tokens_display: formatTokens(tokens),
+      token_share_pct: Number(((tokens / total) * 100).toFixed(2)),
       token_growth_pct: growth,
     });
-  }
-
-  const total = parsed.reduce((sum, r) => sum + r.tokens_processed, 0) || 1;
-  const out: TokenRecord[] = [];
-  for (const row of parsed) {
-    const validated = tokenRecordSchema.safeParse({
-      ...row,
-      token_share_pct: Number(((row.tokens_processed / total) * 100).toFixed(2)),
-    });
     if (validated.success) out.push(validated.data);
-  }
+  });
   return out;
 }
 
@@ -131,14 +161,15 @@ export async function runTokenCollection(options?: {
   const slices = tokenSpec.slices.slice(0, options?.maxSlices ?? tokenSpec.slices.length);
   const limit = options?.limitPerSlice ?? tokenSpec.max_models_per_slice;
 
+  const names = await fetchModelNames();
   const records: TokenRecord[] = [];
   const outcomes: TokenSourceOutcome[] = [];
 
   for (const slice of slices) {
     await sleep(jitter(250, 900));
     try {
-      const html = await fetchWithBackoff(slice.url);
-      const found = parseRankingHtml(html, slice, limit);
+      const payload = await fetchWithBackoff(slice.url);
+      const found = parseSeries(payload, slice, limit, names);
       records.push(...found);
       outcomes.push({
         url: slice.url,
