@@ -48,7 +48,7 @@ export const Route = createFileRoute("/api/public/ingest")({
         try {
           const dataset = parseDataset(body);
           const categoriesSeen = [...new Set(dataset.records.map((r) => r.category))];
-          const stored = setLatestDataset(dataset);
+          const stored = await setLatestDataset(dataset);
           return new Response(
             JSON.stringify({
               ok: true,

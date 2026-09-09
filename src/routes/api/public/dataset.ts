@@ -5,7 +5,7 @@ export const Route = createFileRoute("/api/public/dataset")({
   server: {
     handlers: {
       GET: async () => {
-        const latest = getLatestDataset();
+        const latest = await getLatestDataset();
         return new Response(
           JSON.stringify(
             latest ?? { generated_at: null, ingested_at: null, record_count: 0, records: [] },
