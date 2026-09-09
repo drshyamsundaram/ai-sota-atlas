@@ -306,7 +306,7 @@ function Dashboard() {
                 ))}
               </SelectContent>
             </Select>
-            <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
+            <Button variant="outline" size="sm" onClick={handleManualRefresh} disabled={isFetching}>
               <RefreshCw className={`size-4 ${isFetching ? "animate-spin" : ""}`} /> Refresh now
             </Button>
             <Button variant="outline" size="sm" onClick={() => fileRef.current?.click()}>
