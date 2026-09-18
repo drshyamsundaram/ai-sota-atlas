@@ -1,7 +1,17 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Download, ExternalLink, Globe, Layers, RefreshCw, Timer } from "lucide-react";
+import {
+  Cpu,
+  Download,
+  ExternalLink,
+  Globe,
+  Layers,
+  RefreshCw,
+  ShieldCheck,
+  Timer,
+  TrendingUp,
+} from "lucide-react";
 import { toast } from "sonner";
 import {
   Bar,
