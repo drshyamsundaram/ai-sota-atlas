@@ -149,6 +149,68 @@ function TokensPage() {
 
   const totalTokens = filtered.reduce((s, r) => s + r.tokens_processed, 0);
 
+  // ---- KPI dashboard (current view) ----
+  const kpiView = useMemo(() => {
+    const top = [...filtered].sort((a, b) => b.tokens_processed - a.tokens_processed)[0];
+    const growths = filtered
+      .map((r) => r.token_growth_pct)
+      .filter((g): g is number => typeof g === "number");
+    const avgGrowth = growths.length
+      ? growths.reduce((s, g) => s + g, 0) / growths.length
+      : null;
+    const topCountry = byCountry[0];
+    return {
+      topModel: top ? `${top.model_name}` : "—",
+      topModelShare: top ? `${top.token_share_pct}%` : "—",
+      avgGrowth,
+      topCountry: topCountry ? topCountry.name : "—",
+      topCountryShare: topCountry ? `${topCountry.share}%` : "—",
+      topCountryModels: topCountry ? topCountry.models : 0,
+      developers: new Set(filtered.map((r) => r.developer)).size,
+    };
+  }, [filtered, byCountry]);
+
+  // ---- Data quality ----
+  const quality = useMemo(() => {
+    const slicesSeen = new Set(records.map((r) => r.slice_id));
+    const dates = records
+      .map((r) => new Date(r.retrieved_at).getTime())
+      .filter((t) => Number.isFinite(t))
+      .sort((a, b) => a - b);
+    const shareChecks = [...slicesSeen].map((id) => {
+      const rows = records.filter((r) => r.slice_id === id);
+      const sum = rows.reduce((s, r) => s + (r.token_share_pct ?? 0), 0);
+      return { id, label: rows[0]?.slice_label ?? id, sum: Number(sum.toFixed(1)), rows: rows.length };
+    });
+    const seen = new Set<string>();
+    let duplicates = 0;
+    for (const r of records) {
+      const key = `${r.slice_id}|${r.model_id}`;
+      if (seen.has(key)) duplicates += 1;
+      seen.add(key);
+    }
+    const unknownCountry = records.filter(
+      (r) => !r.country || r.country.toLowerCase() === "unspecified",
+    ).length;
+    const missingGrowth = records.filter((r) => r.token_growth_pct === null).length;
+    return {
+      slicesCovered: slicesSeen.size,
+      slicesExpected: tokenSlices.length,
+      models: new Set(records.map((r) => r.model_id)).size,
+      developers: new Set(records.map((r) => r.developer)).size,
+      countries: new Set(records.map((r) => r.country)).size,
+      windowStart: dates.length ? new Date(dates[0]) : null,
+      windowEnd: dates.length ? new Date(dates[dates.length - 1]) : null,
+      shareChecks,
+      shareOk: shareChecks.every((c) => c.sum >= 95 && c.sum <= 105),
+      duplicates,
+      unknownCountry,
+      missingGrowth,
+      rows: records.length,
+    };
+  }, [records]);
+
+
   const handleRefresh = async () => {
     setIsRefreshing(true);
     const pending = toast.loading("Collecting live token-utilisation data…");
