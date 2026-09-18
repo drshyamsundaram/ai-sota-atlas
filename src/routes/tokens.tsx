@@ -647,17 +647,22 @@ function Stat({
   icon: Icon,
   label,
   value,
+  sub,
 }: {
   icon: typeof Globe;
   label: string;
   value: string;
+  sub?: string;
 }) {
   return (
     <div className="rounded-lg border border-border p-4">
       <div className="mono-label flex items-center gap-2">
         <Icon className="size-3.5" /> {label}
       </div>
-      <div className="mt-2 text-2xl font-semibold">{value}</div>
+      <div className="mt-2 truncate text-2xl font-semibold" title={value}>
+        {value}
+      </div>
+      {sub ? <div className="mt-1 text-xs text-muted-foreground">{sub}</div> : null}
     </div>
   );
 }
