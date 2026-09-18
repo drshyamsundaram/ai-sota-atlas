@@ -292,6 +292,132 @@ function TokensPage() {
           <Stat icon={ExternalLink} label="Category slices" value={String(tokenSlices.length)} />
         </section>
 
+        <section className="mt-6">
+          <h2 className="text-lg font-semibold">KPI dashboard</h2>
+          <p className="mono-label mt-1">for the selected category and filters</p>
+          <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <Stat icon={Cpu} label="Top model" value={kpiView.topModel} sub={`${kpiView.topModelShare} of slice tokens`} />
+            <Stat
+              icon={TrendingUp}
+              label="Avg weekly growth"
+              value={kpiView.avgGrowth === null ? "—" : `${kpiView.avgGrowth.toFixed(1)}%`}
+              sub="mean across models in view"
+            />
+            <Stat
+              icon={Globe}
+              label="Leading country"
+              value={kpiView.topCountry}
+              sub={`${kpiView.topCountryShare} share · ${kpiView.topCountryModels} models`}
+            />
+            <Stat icon={Layers} label="Developers" value={String(kpiView.developers)} sub="distinct model makers" />
+          </div>
+        </section>
+
+        <section className="mt-6 rounded-lg border border-border p-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="flex items-center gap-2 text-lg font-semibold">
+              <ShieldCheck className="size-4" /> Data quality
+            </h2>
+            <Badge variant={quality.shareOk && quality.duplicates === 0 ? "outline" : "destructive"}>
+              {quality.shareOk && quality.duplicates === 0 ? "Checks passed" : "Needs review"}
+            </Badge>
+          </div>
+
+          <div className="mt-4 grid gap-4 md:grid-cols-3">
+            <div>
+              <h3 className="mono-label">Coverage</h3>
+              <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
+                <li>
+                  <span className="text-foreground">
+                    {quality.slicesCovered}/{quality.slicesExpected}
+                  </span>{" "}
+                  categories collected
+                </li>
+                <li>
+                  <span className="text-foreground">{quality.rows}</span> rows ·{" "}
+                  <span className="text-foreground">{quality.models}</span> models
+                </li>
+                <li>
+                  <span className="text-foreground">{quality.developers}</span> developers ·{" "}
+                  <span className="text-foreground">{quality.countries}</span> countries
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="mono-label">Week covered</h3>
+              <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
+                <li>
+                  {quality.windowStart && quality.windowEnd
+                    ? `${quality.windowStart.toLocaleDateString()} → ${quality.windowEnd.toLocaleDateString()}`
+                    : "no batch stored yet"}
+                </li>
+                <li>
+                  collected{" "}
+                  {data?.generated_at ? new Date(data.generated_at).toLocaleString() : "—"}
+                </li>
+                <li>trailing-week totals per source feed</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="mono-label">Consistency checks</h3>
+              <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
+                <li className={quality.shareOk ? "text-primary" : "text-destructive"}>
+                  {quality.shareOk
+                    ? "Token shares sum to ~100% in every category"
+                    : "Some categories do not sum to ~100%"}
+                </li>
+                <li className={quality.duplicates === 0 ? "text-primary" : "text-destructive"}>
+                  {quality.duplicates === 0
+                    ? "No duplicate model rows per category"
+                    : `${quality.duplicates} duplicate model rows`}
+                </li>
+                <li>
+                  {quality.missingGrowth} rows without a prior week ·{" "}
+                  {quality.unknownCountry} rows with unmapped country
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-4 overflow-x-auto rounded-md border border-border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Rows</TableHead>
+                  <TableHead>Share sum</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {quality.shareChecks.map((c) => {
+                  const ok = c.sum >= 95 && c.sum <= 105;
+                  return (
+                    <TableRow key={c.id}>
+                      <TableCell className="font-medium">{c.label}</TableCell>
+                      <TableCell>{c.rows}</TableCell>
+                      <TableCell>{c.sum}%</TableCell>
+                      <TableCell className={ok ? "text-primary" : "text-destructive"}>
+                        {ok ? "ok" : "check"}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+                {quality.shareChecks.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={4} className="text-center text-muted-foreground">
+                      No data collected yet — run “Refresh tokens”.
+                    </TableCell>
+                  </TableRow>
+                ) : null}
+              </TableBody>
+            </Table>
+          </div>
+        </section>
+
+
         <section className="mt-6 flex flex-wrap gap-3">
           <Select value={slice} onValueChange={setSlice}>
             <SelectTrigger className="h-9 w-[200px]">
