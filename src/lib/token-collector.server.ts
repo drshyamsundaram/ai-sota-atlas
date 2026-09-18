@@ -241,7 +241,9 @@ export async function runTokenCollection(options?: {
     await sleep(jitter(250, 900));
     try {
       const payload = await fetchWithBackoff(slice.url);
-      const found = parseSeries(payload, slice, limit, names);
+      const found = slice.url.includes("/rankings/models")
+        ? parseModelRanking(payload, slice, Math.max(limit, 25), names)
+        : parseSeries(payload, slice, limit, names);
       records.push(...found);
       outcomes.push({
         url: slice.url,
