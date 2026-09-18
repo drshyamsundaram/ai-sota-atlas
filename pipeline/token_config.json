@@ -41,7 +41,7 @@
       }
     ],
     "slices": [
-      { "id": "overall", "label": "All usage", "url": "https://openrouter.ai/api/frontend/v1/rankings/model-rankings-chart" },
+      { "id": "overall", "label": "All usage", "url": "https://openrouter.ai/api/frontend/v1/rankings/models?view=week" },
       { "id": "prog-python", "label": "Programming · Python", "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=Python" },
       { "id": "prog-javascript", "label": "Programming · JavaScript", "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=JavaScript" },
       { "id": "prog-typescript", "label": "Programming · TypeScript", "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=TypeScript" },
