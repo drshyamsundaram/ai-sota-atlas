@@ -198,10 +198,12 @@ function parseModelRanking(
 
   entries.forEach(([modelId, tokens], i) => {
     const developer = modelId.split("/")[0] ?? "unknown";
+    // Day-over-day growth only when both days report this model with a full
+    // day of traffic; the feed is sparse, so partial days would produce noise.
     const last = latestDay.get(modelId);
     const before = prevDay.get(modelId);
     const growth =
-      last && before && before > 0
+      last && before && before > 0 && last / before < 20 && before / last < 20
         ? Number((((last - before) / before) * 100).toFixed(2))
         : null;
     const validated = tokenRecordSchema.safeParse({
