@@ -1,7 +1,17 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Download, ExternalLink, Globe, Layers, RefreshCw, Timer } from "lucide-react";
+import {
+  Cpu,
+  Download,
+  ExternalLink,
+  Globe,
+  Layers,
+  RefreshCw,
+  ShieldCheck,
+  Timer,
+  TrendingUp,
+} from "lucide-react";
 import { toast } from "sonner";
 import {
   Bar,
@@ -149,6 +159,68 @@ function TokensPage() {
 
   const totalTokens = filtered.reduce((s, r) => s + r.tokens_processed, 0);
 
+  // ---- KPI dashboard (current view) ----
+  const kpiView = useMemo(() => {
+    const top = [...filtered].sort((a, b) => b.tokens_processed - a.tokens_processed)[0];
+    const growths = filtered
+      .map((r) => r.token_growth_pct)
+      .filter((g): g is number => typeof g === "number");
+    const avgGrowth = growths.length
+      ? growths.reduce((s, g) => s + g, 0) / growths.length
+      : null;
+    const topCountry = byCountry[0];
+    return {
+      topModel: top ? `${top.model_name}` : "—",
+      topModelShare: top ? `${top.token_share_pct}%` : "—",
+      avgGrowth,
+      topCountry: topCountry ? topCountry.name : "—",
+      topCountryShare: topCountry ? `${topCountry.share}%` : "—",
+      topCountryModels: topCountry ? topCountry.models : 0,
+      developers: new Set(filtered.map((r) => r.developer)).size,
+    };
+  }, [filtered, byCountry]);
+
+  // ---- Data quality ----
+  const quality = useMemo(() => {
+    const slicesSeen = new Set(records.map((r) => r.slice_id));
+    const dates = records
+      .map((r) => new Date(r.retrieved_at).getTime())
+      .filter((t) => Number.isFinite(t))
+      .sort((a, b) => a - b);
+    const shareChecks = [...slicesSeen].map((id) => {
+      const rows = records.filter((r) => r.slice_id === id);
+      const sum = rows.reduce((s, r) => s + (r.token_share_pct ?? 0), 0);
+      return { id, label: rows[0]?.slice_label ?? id, sum: Number(sum.toFixed(1)), rows: rows.length };
+    });
+    const seen = new Set<string>();
+    let duplicates = 0;
+    for (const r of records) {
+      const key = `${r.slice_id}|${r.model_id}`;
+      if (seen.has(key)) duplicates += 1;
+      seen.add(key);
+    }
+    const unknownCountry = records.filter(
+      (r) => !r.country || r.country.toLowerCase() === "unspecified",
+    ).length;
+    const missingGrowth = records.filter((r) => r.token_growth_pct === null).length;
+    return {
+      slicesCovered: slicesSeen.size,
+      slicesExpected: tokenSlices.length,
+      models: new Set(records.map((r) => r.model_id)).size,
+      developers: new Set(records.map((r) => r.developer)).size,
+      countries: new Set(records.map((r) => r.country)).size,
+      windowStart: dates.length ? new Date(dates[0]!) : null,
+      windowEnd: dates.length ? new Date(dates[dates.length - 1]!) : null,
+      shareChecks,
+      shareOk: shareChecks.every((c) => c.sum >= 95 && c.sum <= 105),
+      duplicates,
+      unknownCountry,
+      missingGrowth,
+      rows: records.length,
+    };
+  }, [records]);
+
+
   const handleRefresh = async () => {
     setIsRefreshing(true);
     const pending = toast.loading("Collecting live token-utilisation data…");
@@ -229,6 +301,132 @@ function TokensPage() {
           <Stat icon={Globe} label="Countries" value={String(byCountry.length)} />
           <Stat icon={ExternalLink} label="Category slices" value={String(tokenSlices.length)} />
         </section>
+
+        <section className="mt-6">
+          <h2 className="text-lg font-semibold">KPI dashboard</h2>
+          <p className="mono-label mt-1">for the selected category and filters</p>
+          <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <Stat icon={Cpu} label="Top model" value={kpiView.topModel} sub={`${kpiView.topModelShare} of slice tokens`} />
+            <Stat
+              icon={TrendingUp}
+              label="Avg weekly growth"
+              value={kpiView.avgGrowth === null ? "—" : `${kpiView.avgGrowth.toFixed(1)}%`}
+              sub="mean across models in view"
+            />
+            <Stat
+              icon={Globe}
+              label="Leading country"
+              value={kpiView.topCountry}
+              sub={`${kpiView.topCountryShare} share · ${kpiView.topCountryModels} models`}
+            />
+            <Stat icon={Layers} label="Developers" value={String(kpiView.developers)} sub="distinct model makers" />
+          </div>
+        </section>
+
+        <section className="mt-6 rounded-lg border border-border p-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="flex items-center gap-2 text-lg font-semibold">
+              <ShieldCheck className="size-4" /> Data quality
+            </h2>
+            <Badge variant={quality.shareOk && quality.duplicates === 0 ? "outline" : "destructive"}>
+              {quality.shareOk && quality.duplicates === 0 ? "Checks passed" : "Needs review"}
+            </Badge>
+          </div>
+
+          <div className="mt-4 grid gap-4 md:grid-cols-3">
+            <div>
+              <h3 className="mono-label">Coverage</h3>
+              <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
+                <li>
+                  <span className="text-foreground">
+                    {quality.slicesCovered}/{quality.slicesExpected}
+                  </span>{" "}
+                  categories collected
+                </li>
+                <li>
+                  <span className="text-foreground">{quality.rows}</span> rows ·{" "}
+                  <span className="text-foreground">{quality.models}</span> models
+                </li>
+                <li>
+                  <span className="text-foreground">{quality.developers}</span> developers ·{" "}
+                  <span className="text-foreground">{quality.countries}</span> countries
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="mono-label">Week covered</h3>
+              <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
+                <li>
+                  {quality.windowStart && quality.windowEnd
+                    ? `${quality.windowStart.toLocaleDateString()} → ${quality.windowEnd.toLocaleDateString()}`
+                    : "no batch stored yet"}
+                </li>
+                <li>
+                  collected{" "}
+                  {data?.generated_at ? new Date(data.generated_at).toLocaleString() : "—"}
+                </li>
+                <li>trailing-week totals per source feed</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="mono-label">Consistency checks</h3>
+              <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
+                <li className={quality.shareOk ? "text-primary" : "text-destructive"}>
+                  {quality.shareOk
+                    ? "Token shares sum to ~100% in every category"
+                    : "Some categories do not sum to ~100%"}
+                </li>
+                <li className={quality.duplicates === 0 ? "text-primary" : "text-destructive"}>
+                  {quality.duplicates === 0
+                    ? "No duplicate model rows per category"
+                    : `${quality.duplicates} duplicate model rows`}
+                </li>
+                <li>
+                  {quality.missingGrowth} rows without a prior week ·{" "}
+                  {quality.unknownCountry} rows with unmapped country
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-4 overflow-x-auto rounded-md border border-border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Rows</TableHead>
+                  <TableHead>Share sum</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {quality.shareChecks.map((c) => {
+                  const ok = c.sum >= 95 && c.sum <= 105;
+                  return (
+                    <TableRow key={c.id}>
+                      <TableCell className="font-medium">{c.label}</TableCell>
+                      <TableCell>{c.rows}</TableCell>
+                      <TableCell>{c.sum}%</TableCell>
+                      <TableCell className={ok ? "text-primary" : "text-destructive"}>
+                        {ok ? "ok" : "check"}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+                {quality.shareChecks.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={4} className="text-center text-muted-foreground">
+                      No data collected yet — run “Refresh tokens”.
+                    </TableCell>
+                  </TableRow>
+                ) : null}
+              </TableBody>
+            </Table>
+          </div>
+        </section>
+
 
         <section className="mt-6 flex flex-wrap gap-3">
           <Select value={slice} onValueChange={setSlice}>
@@ -449,17 +647,22 @@ function Stat({
   icon: Icon,
   label,
   value,
+  sub,
 }: {
   icon: typeof Globe;
   label: string;
   value: string;
+  sub?: string;
 }) {
   return (
     <div className="rounded-lg border border-border p-4">
       <div className="mono-label flex items-center gap-2">
         <Icon className="size-3.5" /> {label}
       </div>
-      <div className="mt-2 text-2xl font-semibold">{value}</div>
+      <div className="mt-2 truncate text-2xl font-semibold" title={value}>
+        {value}
+      </div>
+      {sub ? <div className="mt-1 text-xs text-muted-foreground">{sub}</div> : null}
     </div>
   );
 }
