@@ -153,6 +153,80 @@ function parseSeries(
   return out;
 }
 
+type ModelRankingRow = {
+  date: string;
+  model_permaslug: string;
+  total_prompt_tokens?: number;
+  total_completion_tokens?: number;
+};
+
+/**
+ * Full per-model ranking feed (~500 models, all providers incl. Anthropic).
+ * Shape: { data: [{ date, model_permaslug, total_prompt_tokens, total_completion_tokens }] }
+ * Tokens are summed per base model across the returned days; growth compares
+ * the latest day against the previous day.
+ */
+function parseModelRanking(
+  payload: unknown,
+  slice: { id: string; label: string; url: string },
+  limit: number,
+  names: Map<string, string>,
+): TokenRecord[] {
+  const rows = ((payload as { data?: unknown })?.data ?? []) as ModelRankingRow[];
+  if (!Array.isArray(rows) || rows.length === 0) return [];
+  const dates = [...new Set(rows.map((r) => r.date))].sort();
+  const latestDate = dates[dates.length - 1];
+  const prevDate = dates.length > 1 ? dates[dates.length - 2] : null;
+
+  const totals = new Map<string, number>();
+  const latestDay = new Map<string, number>();
+  const prevDay = new Map<string, number>();
+  for (const r of rows) {
+    if (!r?.model_permaslug) continue;
+    const key = baseModelId(r.model_permaslug).replace(/:free$/, "");
+    const tokens = (r.total_prompt_tokens ?? 0) + (r.total_completion_tokens ?? 0);
+    if (!Number.isFinite(tokens) || tokens <= 0) continue;
+    totals.set(key, (totals.get(key) ?? 0) + tokens);
+    if (r.date === latestDate) latestDay.set(key, (latestDay.get(key) ?? 0) + tokens);
+    if (prevDate && r.date === prevDate) prevDay.set(key, (prevDay.get(key) ?? 0) + tokens);
+  }
+
+  const entries = [...totals.entries()].sort((a, b) => b[1] - a[1]).slice(0, limit);
+  const total = entries.reduce((sum, [, t]) => sum + t, 0) || 1;
+  const retrievedAt = new Date().toISOString();
+  const out: TokenRecord[] = [];
+
+  entries.forEach(([modelId, tokens], i) => {
+    const developer = modelId.split("/")[0] ?? "unknown";
+    // Day-over-day growth only when both days report this model with a full
+    // day of traffic; the feed is sparse, so partial days would produce noise.
+    const last = latestDay.get(modelId);
+    const before = prevDay.get(modelId);
+    const growth =
+      last && before && before > 0 && last / before < 20 && before / last < 20
+        ? Number((((last - before) / before) * 100).toFixed(2))
+        : null;
+    const validated = tokenRecordSchema.safeParse({
+      source_name: "openrouter.ai",
+      source_url: slice.url,
+      retrieved_at: retrievedAt,
+      slice_id: slice.id,
+      slice_label: slice.label,
+      rank: i + 1,
+      model_id: modelId,
+      model_name: names.get(modelId.toLowerCase()) ?? prettify(modelId),
+      developer,
+      country: countryFor(developer),
+      tokens_processed: Math.round(tokens),
+      tokens_display: formatTokens(tokens),
+      token_share_pct: Number(((tokens / total) * 100).toFixed(2)),
+      token_growth_pct: growth,
+    });
+    if (validated.success) out.push(validated.data);
+  });
+  return out;
+}
+
 export async function runTokenCollection(options?: {
   maxSlices?: number;
   limitPerSlice?: number;
@@ -169,7 +243,9 @@ export async function runTokenCollection(options?: {
     await sleep(jitter(250, 900));
     try {
       const payload = await fetchWithBackoff(slice.url);
-      const found = parseSeries(payload, slice, limit, names);
+      const found = slice.url.includes("/rankings/models")
+        ? parseModelRanking(payload, slice, Math.max(limit, 25), names)
+        : parseSeries(payload, slice, limit, names);
       records.push(...found);
       outcomes.push({
         url: slice.url,

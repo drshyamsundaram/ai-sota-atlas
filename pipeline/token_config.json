@@ -41,16 +41,56 @@
       }
     ],
     "slices": [
-      { "id": "overall", "label": "All usage", "url": "https://openrouter.ai/api/frontend/v1/rankings/model-rankings-chart" },
-      { "id": "prog-python", "label": "Programming · Python", "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=Python" },
-      { "id": "prog-javascript", "label": "Programming · JavaScript", "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=JavaScript" },
-      { "id": "prog-typescript", "label": "Programming · TypeScript", "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=TypeScript" },
-      { "id": "prog-go", "label": "Programming · Go", "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=Go" },
-      { "id": "prog-rust", "label": "Programming · Rust", "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=Rust" },
-      { "id": "nl-english", "label": "Language · English", "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=English" },
-      { "id": "nl-spanish", "label": "Language · Spanish", "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=Spanish" },
-      { "id": "nl-german", "label": "Language · German", "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=German" },
-      { "id": "nl-hindi", "label": "Language · Hindi", "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=Hindi" }
+      {
+        "id": "overall",
+        "label": "All usage",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/models?view=week"
+      },
+      {
+        "id": "prog-python",
+        "label": "Programming \u00b7 Python",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=Python"
+      },
+      {
+        "id": "prog-javascript",
+        "label": "Programming \u00b7 JavaScript",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=JavaScript"
+      },
+      {
+        "id": "prog-typescript",
+        "label": "Programming \u00b7 TypeScript",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=TypeScript"
+      },
+      {
+        "id": "prog-go",
+        "label": "Programming \u00b7 Go",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=Go"
+      },
+      {
+        "id": "prog-rust",
+        "label": "Programming \u00b7 Rust",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=Rust"
+      },
+      {
+        "id": "nl-english",
+        "label": "Language \u00b7 English",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=English"
+      },
+      {
+        "id": "nl-spanish",
+        "label": "Language \u00b7 Spanish",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=Spanish"
+      },
+      {
+        "id": "nl-german",
+        "label": "Language \u00b7 German",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=German"
+      },
+      {
+        "id": "nl-hindi",
+        "label": "Language \u00b7 Hindi",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=Hindi"
+      }
     ],
     "developer_country": {
       "openai": "United States",
@@ -97,7 +137,10 @@
       "thudm": "China",
       "aleph-alpha": "Germany",
       "lighton": "France",
-      "openrouter": "United States"
+      "openrouter": "United States",
+      "meta": "United States",
+      "poolside": "United States",
+      "stealth": "Unspecified"
     },
     "default_country": "Unspecified"
   },
