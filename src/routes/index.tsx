@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { KgMiniCard } from "@/components/kg/KgMiniCard";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowUpRight,
@@ -304,6 +305,9 @@ function Dashboard() {
             <Link to="/tokens" className="hover:text-primary">
               Token utilisation
             </Link>
+            <Link to="/knowledge-graph" className="hover:text-primary">
+              LLM &amp; Tokenomics KG
+            </Link>
             <Link to="/api-docs" className="hover:text-primary">
               API docs
             </Link>
@@ -372,6 +376,7 @@ function Dashboard() {
       </header>
 
       <main className="mx-auto max-w-7xl px-6 py-8">
+        <KgMiniCard />
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard icon={Database} label="Normalized records" value={String(records.length)} />
           <StatCard icon={Bot} label="Distinct models" value={String(modelCount)} />
@@ -730,6 +735,9 @@ python pipeline/process.py --in pipeline/out/raw.json \\
           <nav className="mono-label flex items-center gap-4">
             <Link to="/tokens" className="hover:text-primary">
               Token utilisation
+            </Link>
+            <Link to="/knowledge-graph" className="hover:text-primary">
+              LLM &amp; Tokenomics KG
             </Link>
             <Link to="/api-docs" className="hover:text-primary">
               API docs
