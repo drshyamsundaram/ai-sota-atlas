@@ -70,16 +70,12 @@
           "harmful_request_refusal"
         ],
         "sources": [
+          "https://sparclabs.github.io/nilgiri/leaderboard/",
           "https://www.benchlm.ai/cybersecurity",
           "https://cybench.github.io/",
           "https://crfm.stanford.edu/helm/"
         ],
         "reference_sources": [
-          {
-            "name": "Nilgiri (SPARC) - open cyber range for AI agents, 9-milestone / 32-flag attack chain",
-            "url": "https://www.linkedin.com/posts/sparc-ai-security_our-evaluation-of-cybersecurity-capabilities-activity-7485165149079851008-nPFd",
-            "note": "No public machine-readable leaderboard URL found yet; linked as reference, no scores extracted."
-          },
           {
             "name": "AgentCyberRange (Fudan)",
             "url": "https://arxiv.org/abs/2606.14295",

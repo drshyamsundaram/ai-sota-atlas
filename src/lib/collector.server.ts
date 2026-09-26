@@ -217,6 +217,72 @@ function extractFromHtml(
   return out;
 }
 
+/* ------------------------- Nilgiri cyber range -------------------------- */
+
+const NILGIRI_RESULTS =
+  "https://raw.githubusercontent.com/sparclabs/nilgiri/main/docs/leaderboard/results.json";
+
+type NilgiriOverall = {
+  avg_flags_captured_at_3?: number;
+  avg_milestones_completed_at_3?: number;
+};
+type NilgiriModel = {
+  id: string;
+  display_name?: string;
+  provider?: string;
+  by_token_budget?: Record<string, { overall?: NilgiriOverall }>;
+};
+
+/** Nilgiri renders its grid client-side; read the published results.json instead. */
+async function extractNilgiri(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
+  const raw = JSON.parse(await fetchWithBackoff(NILGIRI_RESULTS)) as {
+    generated_at?: string;
+    benchmark?: { total_flags?: number; total_milestones?: number };
+    models?: NilgiriModel[];
+  };
+  const retrievedAt = new Date().toISOString();
+  const reported = raw.generated_at?.slice(0, 10) ?? retrievedAt.slice(0, 10);
+  const rows = (raw.models ?? [])
+    .map((m) => {
+      const budgets = Object.keys(m.by_token_budget ?? {}).sort((a, b) => Number(b) - Number(a));
+      const top = budgets[0];
+      return { m, budget: top, overall: top ? m.by_token_budget![top]!.overall : undefined };
+    })
+    .filter((r) => r.overall?.avg_flags_captured_at_3 != null)
+    .sort((a, b) => b.overall!.avg_flags_captured_at_3! - a.overall!.avg_flags_captured_at_3!);
+
+  const out: LeaderboardRecord[] = [];
+  rows.forEach(({ m, budget, overall }, i) => {
+    const name = m.display_name ?? m.id;
+    const metrics: [string, number | undefined, string][] = [
+      ["avg_flags_captured_at_3", overall?.avg_flags_captured_at_3, `flags_of_${raw.benchmark?.total_flags ?? 32}`],
+      ["avg_milestones_completed_at_3", overall?.avg_milestones_completed_at_3, `milestones_of_${raw.benchmark?.total_milestones ?? 9}`],
+    ];
+    for (const [metric, value, unit] of metrics) {
+      if (value == null) continue;
+      const v = recordSchema.safeParse({
+        source_name: "Nilgiri (SPARC Labs)",
+        source_url: pageUrl,
+        retrieved_at: retrievedAt,
+        category,
+        model_name: name,
+        model_version: m.provider ? `${m.provider} · ${Number(budget) / 1e6}M token budget` : null,
+        benchmark_name: "Nilgiri cyber range",
+        metric_name: metric,
+        metric_value: Number(value.toFixed(2)),
+        metric_unit: unit,
+        rank: i + 1,
+        date_reported: reported,
+        scope_region: "global",
+        task_type: "cybersecurity",
+        raw_hash: `nilgiri:${m.id}:${metric}`,
+      });
+      if (v.success) out.push(v.data);
+    }
+  });
+  return out;
+}
+
 /* ------------------------------ the run --------------------------------- */
 
 export async function runCollection(options?: {
