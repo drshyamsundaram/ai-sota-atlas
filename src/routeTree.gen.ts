@@ -14,6 +14,7 @@ import { Route as ApiDocsRouteImport } from './routes/api-docs'
 import { Route as TokensRouteImport } from './routes/tokens'
 import { Route as ApiPublicDatasetRouteImport } from './routes/api/public/dataset'
 import { Route as ApiPublicDocsRouteImport } from './routes/api/public/docs'
+import { Route as ApiPublicGraphRouteImport } from './routes/api/public/graph'
 import { Route as ApiPublicIngestRouteImport } from './routes/api/public/ingest'
 import { Route as ApiPublicScrapeRouteImport } from './routes/api/public/scrape'
 import { Route as ApiPublicTokensRouteImport } from './routes/api/public/tokens'
@@ -44,6 +45,11 @@ const ApiPublicDocsRoute = ApiPublicDocsRouteImport.update({
   path: '/api/public/docs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicGraphRoute = ApiPublicGraphRouteImport.update({
+  id: '/api/public/graph',
+  path: '/api/public/graph',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicIngestRoute = ApiPublicIngestRouteImport.update({
   id: '/api/public/ingest',
   path: '/api/public/ingest',
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/tokens': typeof TokensRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
   '/api/public/docs': typeof ApiPublicDocsRoute
+  '/api/public/graph': typeof ApiPublicGraphRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
   '/api/public/scrape': typeof ApiPublicScrapeRoute
   '/api/public/tokens': typeof ApiPublicTokensRouteWithChildren
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/tokens': typeof TokensRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
   '/api/public/docs': typeof ApiPublicDocsRoute
+  '/api/public/graph': typeof ApiPublicGraphRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
   '/api/public/scrape': typeof ApiPublicScrapeRoute
   '/api/public/tokens': typeof ApiPublicTokensRouteWithChildren
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/tokens': typeof TokensRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
   '/api/public/docs': typeof ApiPublicDocsRoute
+  '/api/public/graph': typeof ApiPublicGraphRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
   '/api/public/scrape': typeof ApiPublicScrapeRoute
   '/api/public/tokens': typeof ApiPublicTokensRouteWithChildren
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/tokens'
     | '/api/public/dataset'
     | '/api/public/docs'
+    | '/api/public/graph'
     | '/api/public/ingest'
     | '/api/public/scrape'
     | '/api/public/tokens'
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/tokens'
     | '/api/public/dataset'
     | '/api/public/docs'
+    | '/api/public/graph'
     | '/api/public/ingest'
     | '/api/public/scrape'
     | '/api/public/tokens'
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/tokens'
     | '/api/public/dataset'
     | '/api/public/docs'
+    | '/api/public/graph'
     | '/api/public/ingest'
     | '/api/public/scrape'
     | '/api/public/tokens'
@@ -141,6 +153,7 @@ export interface RootRouteChildren {
   TokensRoute: typeof TokensRoute
   ApiPublicDatasetRoute: typeof ApiPublicDatasetRoute
   ApiPublicDocsRoute: typeof ApiPublicDocsRoute
+  ApiPublicGraphRoute: typeof ApiPublicGraphRoute
   ApiPublicIngestRoute: typeof ApiPublicIngestRoute
   ApiPublicScrapeRoute: typeof ApiPublicScrapeRoute
   ApiPublicTokensRoute: typeof ApiPublicTokensRouteWithChildren
@@ -181,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/docs'
       fullPath: '/api/public/docs'
       preLoaderRoute: typeof ApiPublicDocsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/graph': {
+      id: '/api/public/graph'
+      path: '/api/public/graph'
+      fullPath: '/api/public/graph'
+      preLoaderRoute: typeof ApiPublicGraphRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/ingest': {
@@ -232,6 +252,7 @@ const rootRouteChildren: RootRouteChildren = {
   TokensRoute: TokensRoute,
   ApiPublicDatasetRoute: ApiPublicDatasetRoute,
   ApiPublicDocsRoute: ApiPublicDocsRoute,
+  ApiPublicGraphRoute: ApiPublicGraphRoute,
   ApiPublicIngestRoute: ApiPublicIngestRoute,
   ApiPublicScrapeRoute: ApiPublicScrapeRoute,
   ApiPublicTokensRoute: ApiPublicTokensRouteWithChildren,

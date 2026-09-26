@@ -6,7 +6,7 @@ import type { TokenRecord } from "@/lib/token-schema";
 
 export function useKgData() {
   const bench = useQuery({
-    queryKey: ["live-dataset"],
+    queryKey: ["kg-dataset"],
     queryFn: async () => {
       const res = await fetch("/api/public/dataset", { cache: "no-store" });
       if (!res.ok) throw new Error("dataset failed");
@@ -15,7 +15,7 @@ export function useKgData() {
     staleTime: 60_000,
   });
   const tokens = useQuery({
-    queryKey: ["token-dataset"],
+    queryKey: ["kg-tokens"],
     queryFn: async () => {
       const res = await fetch("/api/public/tokens?limit=2000", { cache: "no-store" });
       if (!res.ok) throw new Error("tokens failed");
