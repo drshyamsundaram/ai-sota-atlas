@@ -81,9 +81,9 @@ const ForceGraphCanvas = forwardRef<ForceGraphHandle, Props>(function ForceGraph
   // Gentle drift for the mini card
   useEffect(() => {
     if (!mini) return;
-    const t = setInterval(() => fg.current?.d3ReheatSimulation(), 6000);
-    return () => clearInterval(t);
-  }, [mini]);
+    const t = setTimeout(() => fg.current?.zoomToFit(400, 16), 1500);
+    return () => clearTimeout(t);
+  }, [mini, graphData, width]);
 
   useImperativeHandle(ref, () => ({
     zoomTo: (id) => {
@@ -113,7 +113,7 @@ const ForceGraphCanvas = forwardRef<ForceGraphHandle, Props>(function ForceGraph
         graphData={graphData}
         backgroundColor="rgba(0,0,0,0)"
         cooldownTicks={mini ? 200 : 300}
-        d3VelocityDecay={mini ? 0.15 : 0.3}
+        d3VelocityDecay={0.3}
         enableZoomInteraction={!mini}
         enablePanInteraction={!mini}
         enableNodeDrag={!mini}
@@ -129,7 +129,7 @@ const ForceGraphCanvas = forwardRef<ForceGraphHandle, Props>(function ForceGraph
         linkWidth={(l: any) =>
           l.relation === "used_in" && l.weight ? Math.min(4, 0.5 + Math.log10(l.weight + 1) / 4) : 0.6
         }
-        linkDirectionalParticles={mini ? 1 : 0}
+        linkDirectionalParticles={mini ? 2 : 0}
         linkDirectionalParticleWidth={1.5}
         linkDirectionalParticleSpeed={0.004}
         nodeCanvasObject={(n: any, ctx: CanvasRenderingContext2D, scale: number) => {
