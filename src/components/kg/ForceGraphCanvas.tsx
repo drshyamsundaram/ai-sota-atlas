@@ -19,8 +19,8 @@ type Props = {
 type SimNode = GraphNode & { x?: number; y?: number };
 type SimLink = Omit<GraphLink, "source" | "target"> & { source: string | SimNode; target: string | SimNode };
 
-function resolveColors(): Record<string, string> {
-  const out: Record<string, string> = {};
+function resolveColors(): any {
+  const out: any = {};
   const el = document.createElement("span");
   document.body.appendChild(el);
   const read = (v: string) => {
@@ -46,7 +46,7 @@ const ForceGraphCanvas = forwardRef<ForceGraphHandle, Props>(function ForceGraph
   const fg = useRef<any>(null);
   const [width, setWidth] = useState(600);
   const [hover, setHover] = useState<string | null>(null);
-  const colors = useMemo(() => (typeof document === "undefined" ? {} : resolveColors()), []);
+  const colors = useMemo<any>(() => (typeof document === "undefined" ? {} : resolveColors()), []);
   const graphData = useMemo(
     () => ({ nodes: data.nodes.map((n) => ({ ...n })), links: data.links.map((l) => ({ ...l })) }),
     [data],
@@ -66,7 +66,7 @@ const ForceGraphCanvas = forwardRef<ForceGraphHandle, Props>(function ForceGraph
 
   useEffect(() => {
     if (!wrap.current) return;
-    const ro = new ResizeObserver(([e]) => setWidth(e.contentRect.width));
+    const ro = new ResizeObserver((entries) => setWidth(entries[0]?.contentRect.width ?? 600));
     ro.observe(wrap.current);
     return () => ro.disconnect();
   }, []);
