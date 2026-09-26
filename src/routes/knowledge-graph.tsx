@@ -240,7 +240,7 @@ function KnowledgeGraphPage() {
               ref={fgRef}
               data={filtered}
               height={640}
-              selectedId={selected?.id}
+              selectedId={selected?.id ?? null}
               onSelect={setSelected}
             />
           )}

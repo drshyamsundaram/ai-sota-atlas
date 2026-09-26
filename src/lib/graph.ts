@@ -16,8 +16,8 @@ export type GraphLink = {
   source: string;
   target: string;
   relation: "builds" | "based_in" | "scored_on" | "belongs_to" | "used_in";
-  label?: string;
-  weight?: number;
+  label?: string | undefined;
+  weight?: number | undefined;
 };
 
 export type KnowledgeGraph = { nodes: GraphNode[]; links: GraphLink[] };
@@ -143,7 +143,7 @@ export function buildGraph(
       label: r.rank ? `#${r.rank}` : r.metric_value != null ? `${r.metric_value} ${r.metric_unit}` : undefined,
     });
     link({ source: bId, target: catId, relation: "belongs_to" });
-    if (hint && !nodes.get(mid)!.meta?.developer) {
+    if (hint && !nodes.get(mid)!.meta?.['developer']) {
       const [, dev, country] = hint;
       const devId = `developer:${dev}`;
       const cId = `country:${country}`;
