@@ -63,6 +63,7 @@ export const normModel = (s: string) =>
   s
     .toLowerCase()
     .replace(/^[a-z0-9-]+\//, "")
+    .replace(/^[^:]{2,20}:\s*/, "")
     .replace(/\(.*?\)/g, "")
     .replace(/[^a-z0-9.]+/g, " ")
     .replace(/\b(preview|instruct|chat|latest|thinking|free)\b/g, "")
