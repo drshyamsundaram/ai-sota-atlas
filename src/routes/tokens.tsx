@@ -272,6 +272,9 @@ function TokensPage() {
               <Link to="/api-docs" className="hover:text-primary">
                 API docs
               </Link>
+            <Link to="/docs" className="hover:text-primary">
+              Docs
+            </Link>
             </nav>
             <h1 className="text-2xl font-semibold tracking-tight">Token utilisation report</h1>
             <p className="mono-label mt-2 flex items-center gap-2">
