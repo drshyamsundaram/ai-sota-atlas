@@ -252,6 +252,7 @@ export async function extractNilgiri(pageUrl: string, category: string): Promise
     .sort((a, b) => b.overall!.avg_flags_captured_at_3! - a.overall!.avg_flags_captured_at_3!);
 
   const out: LeaderboardRecord[] = [];
+  let lastIssue = "";
   rows.forEach(({ m, budget, overall }, i) => {
     const name = m.display_name ?? m.id;
     const metrics: [string, number | undefined, string][] = [
@@ -278,8 +279,10 @@ export async function extractNilgiri(pageUrl: string, category: string): Promise
         raw_hash: `nilgiri:${m.id}:${metric}`,
       });
       if (v.success) out.push(v.data);
+      else lastIssue = v.error.issues[0]?.message ?? "invalid";
     }
   });
+  if (!out.length) throw new Error(`nilgiri: ${raw.models?.length ?? 0} models, ${rows.length} rows, ${lastIssue}`);
   return out;
 }
 
