@@ -64,6 +64,8 @@ export const normModel = (s: string) =>
     .toLowerCase()
     .replace(/^[a-z0-9-]+\//, "")
     .replace(/^[^:]{2,20}:\s*/, "")
+    .replace(/\s+by\s+[a-z0-9.-]+$/, "")
+    .replace(/^(anthropic|openai|google|meta|nvidia|microsoft|xai|x-ai)\s+/, "")
     .replace(/\(.*?\)/g, "")
     .replace(/[^a-z0-9.]+/g, " ")
     .replace(/\b(preview|instruct|chat|latest|thinking|free)\b/g, "")
