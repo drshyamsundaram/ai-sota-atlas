@@ -42,6 +42,21 @@ const spec = {
         responses: { "200": { description: "Token records or aggregated groups" } },
       },
     },
+    "/api/public/graph": {
+      get: {
+        summary: "LLM & Tokenomics knowledge graph (nodes + links)",
+        parameters: [
+          { name: "mini", in: "query", schema: { type: "boolean" }, description: "Return the ~40-node summary graph" },
+          {
+            name: "types",
+            in: "query",
+            schema: { type: "string" },
+            description: "Comma list of node types: model,developer,country,benchmark,category,slice",
+          },
+        ],
+        responses: { "200": { description: "Graph with nodes, links and match stats" } },
+      },
+    },
     "/api/public/tokens/refresh": {
       post: {
         summary: "Re-collect token-utilisation data only",
