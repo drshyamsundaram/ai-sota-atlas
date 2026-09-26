@@ -161,3 +161,16 @@
   text-transform: uppercase;
   color: var(--color-muted-foreground);
 }
+
+.docs-md h1 { font-size: 1.75rem; font-weight: 700; margin: 1.5rem 0 0.75rem; }
+.docs-md h2 { font-size: 1.3rem; font-weight: 600; margin: 1.75rem 0 0.6rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; }
+.docs-md h3 { font-weight: 600; margin: 1.2rem 0 0.4rem; }
+.docs-md p, .docs-md ul { margin: 0.6rem 0; line-height: 1.65; color: var(--muted-foreground); }
+.docs-md ul { list-style: disc; padding-left: 1.4rem; }
+.docs-md a { color: var(--primary); text-decoration: underline; }
+.docs-md code { font-family: ui-monospace, monospace; font-size: 0.85em; background: var(--muted); padding: 0.1rem 0.3rem; border-radius: 4px; }
+.docs-md pre { background: var(--muted); padding: 1rem; border-radius: 6px; overflow-x: auto; margin: 0.8rem 0; }
+.docs-md pre code { background: transparent; padding: 0; }
+.docs-md table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.875rem; }
+.docs-md th, .docs-md td { border: 1px solid var(--border); padding: 0.4rem 0.6rem; text-align: left; }
+.docs-md th { background: var(--muted); }

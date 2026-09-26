@@ -314,6 +314,9 @@ function Dashboard() {
             <Link to="/api-docs" className="hover:text-primary">
               API docs
             </Link>
+            <Link to="/docs" className="hover:text-primary">
+              Docs
+            </Link>
             <a
               href="https://www.linkedin.com/in/bioenable/"
               target="_blank"
@@ -744,6 +747,9 @@ python pipeline/process.py --in pipeline/out/raw.json \\
             </Link>
             <Link to="/api-docs" className="hover:text-primary">
               API docs
+            </Link>
+            <Link to="/docs" className="hover:text-primary">
+              Docs
             </Link>
             <a
               href="https://www.linkedin.com/in/bioenable/"

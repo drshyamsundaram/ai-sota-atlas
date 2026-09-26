@@ -137,6 +137,9 @@ function KnowledgeGraphPage() {
               <Link to="/" className="hover:text-primary">← Dashboard</Link>
               <Link to="/tokens" className="hover:text-primary">Token utilisation</Link>
               <Link to="/api-docs" className="hover:text-primary">API docs</Link>
+            <Link to="/docs" className="hover:text-primary">
+              Docs
+            </Link>
             </nav>
             <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
               <Network className="size-6 text-primary" /> LLM &amp; Tokenomics KG
