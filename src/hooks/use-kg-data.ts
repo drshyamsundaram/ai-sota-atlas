@@ -12,7 +12,9 @@ export function useKgData() {
       if (!res.ok) throw new Error("dataset failed");
       return (await res.json()) as { records: LeaderboardRecord[]; generated_at?: string };
     },
-    staleTime: 60_000,
+    staleTime: 0,
+    refetchInterval: 60_000,
+    refetchOnWindowFocus: true,
   });
   const tokens = useQuery({
     queryKey: ["kg-tokens"],
@@ -21,7 +23,9 @@ export function useKgData() {
       if (!res.ok) throw new Error("tokens failed");
       return (await res.json()) as { records: TokenRecord[]; generated_at?: string };
     },
-    staleTime: 60_000,
+    staleTime: 0,
+    refetchInterval: 60_000,
+    refetchOnWindowFocus: true,
   });
   const graph = useMemo(
     () => buildGraph(bench.data?.records ?? [], tokens.data?.records ?? []),

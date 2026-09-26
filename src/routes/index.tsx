@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { KgMiniCard } from "@/components/kg/KgMiniCard";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
@@ -104,6 +104,7 @@ function formatValue(record: LeaderboardRecord) {
 }
 
 function Dashboard() {
+  const queryClient = useQueryClient();
   const [records, setRecords] = useState<LeaderboardRecord[]>(seedDataset.records);
   const [generatedAt, setGeneratedAt] = useState(seedDataset.generated_at ?? "");
   const [category, setCategory] = useState<string>(categories[0]!.id);
@@ -194,6 +195,8 @@ function Dashboard() {
       setIsScraping(false);
     }
     await refetch();
+    void queryClient.invalidateQueries({ queryKey: ["kg-dataset"] });
+    void queryClient.invalidateQueries({ queryKey: ["kg-tokens"] });
   };
 
 
