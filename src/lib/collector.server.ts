@@ -234,7 +234,7 @@ type NilgiriModel = {
 };
 
 /** Nilgiri renders its grid client-side; read the published results.json instead. */
-async function extractNilgiri(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
+export async function extractNilgiri(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
   const raw = JSON.parse(await fetchWithBackoff(NILGIRI_RESULTS)) as {
     generated_at?: string;
     benchmark?: { total_flags?: number; total_milestones?: number };
