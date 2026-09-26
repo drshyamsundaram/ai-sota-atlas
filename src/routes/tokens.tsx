@@ -30,7 +30,9 @@ import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -434,11 +436,20 @@ function TokensPage() {
               <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
-              {tokenSlices.map((s) => (
-                <SelectItem key={s.id} value={s.id}>
-                  {s.label}
-                </SelectItem>
-              ))}
+              {["Overall", "Programming", "Language"].map((g) => {
+                const items = tokenSlices.filter((s) => (s.group ?? "Overall") === g);
+                if (!items.length) return null;
+                return (
+                  <SelectGroup key={g}>
+                    <SelectLabel>{g}</SelectLabel>
+                    {items.map((s) => (
+                      <SelectItem key={s.id} value={s.id}>
+                        {s.label}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                );
+              })}
             </SelectContent>
           </Select>
           <Select value={country} onValueChange={setCountry}>
