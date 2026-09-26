@@ -206,7 +206,7 @@ function extractFromHtml(
         rank: out.length + 1,
         date_reported: retrievedAt.slice(0, 10),
         scope_region: regionFor(category),
-        task_type: "general",
+        task_type: category === "cybersecurity" ? "cybersecurity" : category === "hallucination_safety" ? "hallucination" : "general",
         raw_hash: `${hostName(url)}:${modelName}:${picked.name}`.slice(0, 96),
       };
       const validated = recordSchema.safeParse(candidate);
@@ -227,7 +227,7 @@ export async function runCollection(options?: {
 }): Promise<CollectionRun> {
   const started = Date.now();
   const perSourceLimit = options?.perSourceLimit ?? spec.max_items_per_category;
-  const maxPerCategory = options?.maxSourcesPerCategory ?? 4;
+  const maxPerCategory = options?.maxSourcesPerCategory ?? 6;
   const delayMin = options?.delayMinMs ?? 300;
   const delayMax = options?.delayMaxMs ?? 900;
 

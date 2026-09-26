@@ -20,6 +20,11 @@
         "title": "Global frontier",
         "sources": [
           "https://artificialanalysis.ai/leaderboards/models",
+          "https://gorilla.cs.berkeley.edu/leaderboard.html",
+          "https://aider.chat/docs/leaderboards/",
+          "https://lastexam.ai/",
+          "https://www.swebench.com/",
+          "https://arcprize.org/leaderboard",
           "https://www.vellum.ai/llm-leaderboard",
           "https://lmarena.ai/leaderboard",
           "https://openrouter.ai/rankings",
@@ -52,6 +57,44 @@
           "https://arxiv.org/abs/2409.12700",
           "https://genai.owasp.org/llm-top-10/",
           "https://labs.scale.com/leaderboard"
+        ]
+      },
+      {
+        "id": "cybersecurity",
+        "title": "Cybersecurity",
+        "metrics": [
+          "attack_chain_milestones",
+          "ctf_solve_rate",
+          "exploit_success_rate",
+          "vulnerability_detection",
+          "harmful_request_refusal"
+        ],
+        "sources": [
+          "https://www.benchlm.ai/cybersecurity",
+          "https://cybench.github.io/",
+          "https://crfm.stanford.edu/helm/"
+        ],
+        "reference_sources": [
+          {
+            "name": "Nilgiri (SPARC) - open cyber range for AI agents, 9-milestone / 32-flag attack chain",
+            "url": "https://www.linkedin.com/posts/sparc-ai-security_our-evaluation-of-cybersecurity-capabilities-activity-7485165149079851008-nPFd",
+            "note": "No public machine-readable leaderboard URL found yet; linked as reference, no scores extracted."
+          },
+          {
+            "name": "AgentCyberRange (Fudan)",
+            "url": "https://arxiv.org/abs/2606.14295",
+            "note": "Paper; reference only."
+          },
+          {
+            "name": "CyberSecEval (Meta PurpleLlama)",
+            "url": "https://github.com/meta-llama/PurpleLlama",
+            "note": "Reference only."
+          },
+          {
+            "name": "OWASP LLM Top 10",
+            "url": "https://genai.owasp.org/llm-top-10/",
+            "note": "Risk taxonomy; reference only."
+          }
         ]
       },
       {
@@ -103,6 +146,7 @@
     "For SLMs, emphasize latency, cost, footprint, and deployment constraints alongside accuracy.",
     "For hallucination, include hallucination_rate, factual_consistency, faithfulness, groundedness, and citation_accuracy when available.",
     "State benchmark contract differences (task type, domain, metric) when relevant.",
-    "Keep outputs concise, current, and source-backed."
+    "Keep outputs concise, current, and source-backed.",
+    "Cybersecurity: prefer long-horizon agentic cyber-range results (e.g. Nilgiri) over single-task CTF scores; never invent scores for reference-only sources."
   ]
 }

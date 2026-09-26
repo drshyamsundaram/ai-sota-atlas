@@ -75,6 +75,7 @@ export const normModel = (s: string) =>
 const CATEGORY_TITLES: Record<string, string> = {
   global_frontier: "Global frontier",
   hallucination_safety: "Hallucination & safety",
+  cybersecurity: "Cybersecurity",
   india: "India",
   china: "China",
   europe: "Europe",
