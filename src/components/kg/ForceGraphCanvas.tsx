@@ -144,7 +144,7 @@ const ForceGraphCanvas = forwardRef<ForceGraphHandle, Props>(function ForceGraph
             ctx.strokeStyle = colors.fg;
             ctx.stroke();
           }
-          const showLabel = mini ? n.size > 6 : scale > 1.4 || n.size > 7 || neighbours.has(n.id);
+          const showLabel = mini ? n.size > 9 : scale > 1.4 || n.size > 7 || neighbours.has(n.id);
           if (showLabel && !dim) {
             const fs = Math.max(9 / scale, 2.5);
             ctx.font = `${fs}px ui-monospace, monospace`;
