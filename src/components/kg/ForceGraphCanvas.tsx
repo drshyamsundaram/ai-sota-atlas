@@ -117,7 +117,7 @@ const ForceGraphCanvas = forwardRef<ForceGraphHandle, Props>(function ForceGraph
         enableZoomInteraction={!mini}
         enablePanInteraction={!mini}
         enableNodeDrag={!mini}
-        onEngineStop={() => !mini && !selectedId && fg.current?.zoomToFit(400, 40)}
+        onEngineStop={() => !selectedId && fg.current?.zoomToFit(400, mini ? 16 : 40)}
         onNodeHover={(n: any) => setHover(n?.id ?? null)}
         onNodeClick={(n: any) => onSelect?.(n as GraphNode)}
         onBackgroundClick={() => onSelect?.(null)}
