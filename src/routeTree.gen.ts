@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiDocsRouteImport } from './routes/api-docs'
+import { Route as DocsRouteImport } from './routes/docs'
 import { Route as KnowledgeGraphRouteImport } from './routes/knowledge-graph'
 import { Route as TokensRouteImport } from './routes/tokens'
 import { Route as ApiPublicDatasetRouteImport } from './routes/api/public/dataset'
@@ -29,6 +30,11 @@ const IndexRoute = IndexRouteImport.update({
 const ApiDocsRoute = ApiDocsRouteImport.update({
   id: '/api-docs',
   path: '/api-docs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocsRoute = DocsRouteImport.update({
+  id: '/docs',
+  path: '/docs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KnowledgeGraphRoute = KnowledgeGraphRouteImport.update({
@@ -80,6 +86,7 @@ const ApiPublicTokensRefreshRoute = ApiPublicTokensRefreshRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api-docs': typeof ApiDocsRoute
+  '/docs': typeof DocsRoute
   '/knowledge-graph': typeof KnowledgeGraphRoute
   '/tokens': typeof TokensRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
@@ -93,6 +100,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api-docs': typeof ApiDocsRoute
+  '/docs': typeof DocsRoute
   '/knowledge-graph': typeof KnowledgeGraphRoute
   '/tokens': typeof TokensRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
@@ -107,6 +115,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api-docs': typeof ApiDocsRoute
+  '/docs': typeof DocsRoute
   '/knowledge-graph': typeof KnowledgeGraphRoute
   '/tokens': typeof TokensRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
@@ -122,6 +131,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/api-docs'
+    | '/docs'
     | '/knowledge-graph'
     | '/tokens'
     | '/api/public/dataset'
@@ -135,6 +145,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/api-docs'
+    | '/docs'
     | '/knowledge-graph'
     | '/tokens'
     | '/api/public/dataset'
@@ -148,6 +159,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/api-docs'
+    | '/docs'
     | '/knowledge-graph'
     | '/tokens'
     | '/api/public/dataset'
@@ -162,6 +174,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiDocsRoute: typeof ApiDocsRoute
+  DocsRoute: typeof DocsRoute
   KnowledgeGraphRoute: typeof KnowledgeGraphRoute
   TokensRoute: typeof TokensRoute
   ApiPublicDatasetRoute: typeof ApiPublicDatasetRoute
@@ -186,6 +199,13 @@ declare module '@tanstack/react-router' {
       path: '/api-docs'
       fullPath: '/api-docs'
       preLoaderRoute: typeof ApiDocsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docs': {
+      id: '/docs'
+      path: '/docs'
+      fullPath: '/docs'
+      preLoaderRoute: typeof DocsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/knowledge-graph': {
@@ -269,6 +289,7 @@ const ApiPublicTokensRouteWithChildren = ApiPublicTokensRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiDocsRoute: ApiDocsRoute,
+  DocsRoute: DocsRoute,
   KnowledgeGraphRoute: KnowledgeGraphRoute,
   TokensRoute: TokensRoute,
   ApiPublicDatasetRoute: ApiPublicDatasetRoute,
