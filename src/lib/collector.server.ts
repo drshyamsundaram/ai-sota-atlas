@@ -316,8 +316,9 @@ export async function runCollection(options?: {
             outcomes.push({ url, category: cat.id, status: "blocked", records: 0 });
             continue;
           }
-          const html = await fetchWithBackoff(url);
-          const found = extractFromHtml(html, url, cat.id, perSourceLimit);
+          const found = /sparclabs\.github\.io\/nilgiri/.test(url)
+            ? await extractNilgiri(url, cat.id)
+            : extractFromHtml(await fetchWithBackoff(url), url, cat.id, perSourceLimit);
           records.push(...found);
           outcomes.push({
             url,
