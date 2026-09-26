@@ -11,9 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiDocsRouteImport } from './routes/api-docs'
+import { Route as KnowledgeGraphRouteImport } from './routes/knowledge-graph'
 import { Route as TokensRouteImport } from './routes/tokens'
 import { Route as ApiPublicDatasetRouteImport } from './routes/api/public/dataset'
 import { Route as ApiPublicDocsRouteImport } from './routes/api/public/docs'
+import { Route as ApiPublicGraphRouteImport } from './routes/api/public/graph'
 import { Route as ApiPublicIngestRouteImport } from './routes/api/public/ingest'
 import { Route as ApiPublicScrapeRouteImport } from './routes/api/public/scrape'
 import { Route as ApiPublicTokensRouteImport } from './routes/api/public/tokens'
@@ -29,6 +31,11 @@ const ApiDocsRoute = ApiDocsRouteImport.update({
   path: '/api-docs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KnowledgeGraphRoute = KnowledgeGraphRouteImport.update({
+  id: '/knowledge-graph',
+  path: '/knowledge-graph',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TokensRoute = TokensRouteImport.update({
   id: '/tokens',
   path: '/tokens',
@@ -42,6 +49,11 @@ const ApiPublicDatasetRoute = ApiPublicDatasetRouteImport.update({
 const ApiPublicDocsRoute = ApiPublicDocsRouteImport.update({
   id: '/api/public/docs',
   path: '/api/public/docs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicGraphRoute = ApiPublicGraphRouteImport.update({
+  id: '/api/public/graph',
+  path: '/api/public/graph',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicIngestRoute = ApiPublicIngestRouteImport.update({
@@ -68,9 +80,11 @@ const ApiPublicTokensRefreshRoute = ApiPublicTokensRefreshRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api-docs': typeof ApiDocsRoute
+  '/knowledge-graph': typeof KnowledgeGraphRoute
   '/tokens': typeof TokensRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
   '/api/public/docs': typeof ApiPublicDocsRoute
+  '/api/public/graph': typeof ApiPublicGraphRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
   '/api/public/scrape': typeof ApiPublicScrapeRoute
   '/api/public/tokens': typeof ApiPublicTokensRouteWithChildren
@@ -79,9 +93,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api-docs': typeof ApiDocsRoute
+  '/knowledge-graph': typeof KnowledgeGraphRoute
   '/tokens': typeof TokensRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
   '/api/public/docs': typeof ApiPublicDocsRoute
+  '/api/public/graph': typeof ApiPublicGraphRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
   '/api/public/scrape': typeof ApiPublicScrapeRoute
   '/api/public/tokens': typeof ApiPublicTokensRouteWithChildren
@@ -91,9 +107,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api-docs': typeof ApiDocsRoute
+  '/knowledge-graph': typeof KnowledgeGraphRoute
   '/tokens': typeof TokensRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
   '/api/public/docs': typeof ApiPublicDocsRoute
+  '/api/public/graph': typeof ApiPublicGraphRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
   '/api/public/scrape': typeof ApiPublicScrapeRoute
   '/api/public/tokens': typeof ApiPublicTokensRouteWithChildren
@@ -104,9 +122,11 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/api-docs'
+    | '/knowledge-graph'
     | '/tokens'
     | '/api/public/dataset'
     | '/api/public/docs'
+    | '/api/public/graph'
     | '/api/public/ingest'
     | '/api/public/scrape'
     | '/api/public/tokens'
@@ -115,9 +135,11 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/api-docs'
+    | '/knowledge-graph'
     | '/tokens'
     | '/api/public/dataset'
     | '/api/public/docs'
+    | '/api/public/graph'
     | '/api/public/ingest'
     | '/api/public/scrape'
     | '/api/public/tokens'
@@ -126,9 +148,11 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/api-docs'
+    | '/knowledge-graph'
     | '/tokens'
     | '/api/public/dataset'
     | '/api/public/docs'
+    | '/api/public/graph'
     | '/api/public/ingest'
     | '/api/public/scrape'
     | '/api/public/tokens'
@@ -138,9 +162,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiDocsRoute: typeof ApiDocsRoute
+  KnowledgeGraphRoute: typeof KnowledgeGraphRoute
   TokensRoute: typeof TokensRoute
   ApiPublicDatasetRoute: typeof ApiPublicDatasetRoute
   ApiPublicDocsRoute: typeof ApiPublicDocsRoute
+  ApiPublicGraphRoute: typeof ApiPublicGraphRoute
   ApiPublicIngestRoute: typeof ApiPublicIngestRoute
   ApiPublicScrapeRoute: typeof ApiPublicScrapeRoute
   ApiPublicTokensRoute: typeof ApiPublicTokensRouteWithChildren
@@ -162,6 +188,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiDocsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/knowledge-graph': {
+      id: '/knowledge-graph'
+      path: '/knowledge-graph'
+      fullPath: '/knowledge-graph'
+      preLoaderRoute: typeof KnowledgeGraphRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tokens': {
       id: '/tokens'
       path: '/tokens'
@@ -181,6 +214,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/docs'
       fullPath: '/api/public/docs'
       preLoaderRoute: typeof ApiPublicDocsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/graph': {
+      id: '/api/public/graph'
+      path: '/api/public/graph'
+      fullPath: '/api/public/graph'
+      preLoaderRoute: typeof ApiPublicGraphRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/ingest': {
@@ -229,9 +269,11 @@ const ApiPublicTokensRouteWithChildren = ApiPublicTokensRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiDocsRoute: ApiDocsRoute,
+  KnowledgeGraphRoute: KnowledgeGraphRoute,
   TokensRoute: TokensRoute,
   ApiPublicDatasetRoute: ApiPublicDatasetRoute,
   ApiPublicDocsRoute: ApiPublicDocsRoute,
+  ApiPublicGraphRoute: ApiPublicGraphRoute,
   ApiPublicIngestRoute: ApiPublicIngestRoute,
   ApiPublicScrapeRoute: ApiPublicScrapeRoute,
   ApiPublicTokensRoute: ApiPublicTokensRouteWithChildren,
