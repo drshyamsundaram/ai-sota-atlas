@@ -44,52 +44,146 @@
       {
         "id": "overall",
         "label": "All usage",
-        "url": "https://openrouter.ai/api/frontend/v1/rankings/models?view=week"
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/models?view=week",
+        "group": "Overall"
       },
       {
         "id": "prog-python",
         "label": "Programming \u00b7 Python",
-        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=Python"
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=Python",
+        "group": "Programming"
       },
       {
         "id": "prog-javascript",
         "label": "Programming \u00b7 JavaScript",
-        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=JavaScript"
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=JavaScript",
+        "group": "Programming"
       },
       {
         "id": "prog-typescript",
         "label": "Programming \u00b7 TypeScript",
-        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=TypeScript"
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=TypeScript",
+        "group": "Programming"
       },
       {
         "id": "prog-go",
         "label": "Programming \u00b7 Go",
-        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=Go"
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=Go",
+        "group": "Programming"
       },
       {
         "id": "prog-rust",
         "label": "Programming \u00b7 Rust",
-        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=Rust"
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=Rust",
+        "group": "Programming"
       },
       {
         "id": "nl-english",
         "label": "Language \u00b7 English",
-        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=English"
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=English",
+        "group": "Language"
       },
       {
         "id": "nl-spanish",
         "label": "Language \u00b7 Spanish",
-        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=Spanish"
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=Spanish",
+        "group": "Language"
       },
       {
         "id": "nl-german",
         "label": "Language \u00b7 German",
-        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=German"
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=German",
+        "group": "Language"
       },
       {
         "id": "nl-hindi",
         "label": "Language \u00b7 Hindi",
-        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=Hindi"
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=Hindi",
+        "group": "Language"
+      },
+      {
+        "id": "prog-java",
+        "label": "Programming \u00b7 Java",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=Java",
+        "group": "Programming"
+      },
+      {
+        "id": "prog-csharp",
+        "label": "Programming \u00b7 C#",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=C%23",
+        "group": "Programming"
+      },
+      {
+        "id": "prog-cpp",
+        "label": "Programming \u00b7 C++",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=C%2B%2B",
+        "group": "Programming"
+      },
+      {
+        "id": "prog-sql",
+        "label": "Programming \u00b7 SQL",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=SQL",
+        "group": "Programming"
+      },
+      {
+        "id": "prog-swift",
+        "label": "Programming \u00b7 Swift",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/programming-language?tag=Swift",
+        "group": "Programming"
+      },
+      {
+        "id": "nl-french",
+        "label": "Language \u00b7 French",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=French",
+        "group": "Language"
+      },
+      {
+        "id": "nl-japanese",
+        "label": "Language \u00b7 Japanese",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=Japanese",
+        "group": "Language"
+      },
+      {
+        "id": "nl-chinese",
+        "label": "Language \u00b7 Chinese (Simplified)",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=Chinese%20(Simplified)",
+        "group": "Language"
+      },
+      {
+        "id": "nl-portuguese",
+        "label": "Language \u00b7 Portuguese",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=Portuguese",
+        "group": "Language"
+      },
+      {
+        "id": "nl-arabic",
+        "label": "Language \u00b7 Arabic",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=Arabic",
+        "group": "Language"
+      },
+      {
+        "id": "nl-korean",
+        "label": "Language \u00b7 Korean",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=Korean",
+        "group": "Language"
+      },
+      {
+        "id": "nl-russian",
+        "label": "Language \u00b7 Russian",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=Russian",
+        "group": "Language"
+      },
+      {
+        "id": "nl-italian",
+        "label": "Language \u00b7 Italian",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=Italian",
+        "group": "Language"
+      },
+      {
+        "id": "nl-bengali",
+        "label": "Language \u00b7 Bengali",
+        "url": "https://openrouter.ai/api/frontend/v1/rankings/natural-language?tag=Bengali",
+        "group": "Language"
       }
     ],
     "developer_country": {

@@ -8,7 +8,7 @@ export type TokenKpi = {
   description: string;
 };
 
-export type TokenSlice = { id: string; label: string; url: string };
+export type TokenSlice = { id: string; label: string; url: string; group?: string };
 
 export const tokenSpec = rawTokenConfig.token_utilization_spec as {
   description: string;

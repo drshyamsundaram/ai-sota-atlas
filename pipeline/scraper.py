@@ -315,7 +315,7 @@ def extract_records(html: str, url: str, category: str) -> list[LeaderboardRecor
                         rank=rank,
                         date_reported=retrieved_at[:10],
                         scope_region=region_for_category(category),
-                        task_type="hallucination"
+                        task_type="cybersecurity" if category == "cybersecurity" else "hallucination"
                         if category == "hallucination_safety"
                         else "general",
                     ).with_hash()
