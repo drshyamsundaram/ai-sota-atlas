@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Cpu,
@@ -94,6 +94,7 @@ const TOOLTIP_STYLE = {
 } as const;
 
 function TokensPage() {
+  const queryClient = useQueryClient();
   const [slice, setSlice] = useState("overall");
   const [country, setCountry] = useState("all");
   const [search, setSearch] = useState("");
@@ -246,6 +247,8 @@ function TokensPage() {
     } finally {
       setIsRefreshing(false);
       await refetch();
+    void queryClient.invalidateQueries({ queryKey: ["kg-dataset"] });
+    void queryClient.invalidateQueries({ queryKey: ["kg-tokens"] });
     }
   };
 
