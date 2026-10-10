@@ -76,6 +76,8 @@ const CATEGORY_TITLES: Record<string, string> = {
   global_frontier: "Global frontier",
   hallucination_safety: "Hallucination & safety",
   cybersecurity: "Cybersecurity",
+  multimodal: "Multimodal",
+  ai_infrastructure: "AI infrastructure",
   india: "India",
   china: "China",
   europe: "Europe",
