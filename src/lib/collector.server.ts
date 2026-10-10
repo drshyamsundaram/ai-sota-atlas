@@ -345,6 +345,99 @@ export async function extractLiveCodeBench(pageUrl: string, category: string): P
   return out;
 }
 
+function pushRecord(out: LeaderboardRecord[], rec: Record<string, unknown>) {
+  const v = recordSchema.safeParse(rec);
+  if (v.success) out.push(v.data);
+}
+
+/** SWE-bench embeds its full results as JSON in <script id="leaderboard-data">. */
+export async function extractSweBench(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
+  const html = await fetchWithBackoff(pageUrl);
+  const m = html.match(/<script[^>]*id="leaderboard-data"[^>]*>([\s\S]*?)<\/script>/);
+  if (!m) throw new Error("swebench: embedded data not found");
+  const boards = JSON.parse(m[1] ?? "[]") as Array<{
+    name: string;
+    results: Array<{ name?: string; model_display?: string; resolved?: number; date?: string }>;
+  }>;
+  const verified = boards.find((b) => b.name === "Verified");
+  if (!verified) throw new Error("swebench: Verified board missing");
+  const best = new Map<string, { resolved: number; date: string | null }>();
+  for (const r of verified.results) {
+    const model = r.model_display || r.name;
+    if (!model || typeof r.resolved !== "number") continue;
+    const prev = best.get(model);
+    if (!prev || r.resolved > prev.resolved) best.set(model, { resolved: r.resolved, date: r.date ?? null });
+  }
+  const ranked = [...best.entries()].sort((a, b) => b[1].resolved - a[1].resolved).slice(0, 10);
+  const retrievedAt = new Date().toISOString();
+  const out: LeaderboardRecord[] = [];
+  ranked.forEach(([model, e], i) =>
+    pushRecord(out, {
+      source_name: "SWE-bench",
+      source_url: pageUrl,
+      retrieved_at: retrievedAt,
+      category,
+      model_name: model,
+      model_version: null,
+      benchmark_name: "SWE-bench Verified",
+      metric_name: "resolved_rate",
+      metric_value: e.resolved,
+      metric_unit: "percent",
+      rank: i + 1,
+      date_reported: e.date,
+      scope_region: "global",
+      task_type: "coding",
+      raw_hash: `swebench:${model}`.slice(0, 96),
+    }),
+  );
+  if (!out.length) throw new Error("swebench: rows failed validation");
+  return out;
+}
+
+/** modelgrep server-renders its table: Intelligence index (Artificial Analysis) and Code scores. */
+export async function extractModelgrep(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
+  const html = await fetchWithBackoff(pageUrl);
+  const body = html.slice(html.indexOf("<tbody"), html.indexOf("</tbody>"));
+  const strip = (s: string) => s.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  const rows = [...body.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/g)].map((r) =>
+    [...(r[1] ?? "").matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map((c) => strip(c[1] ?? "")),
+  );
+  const retrievedAt = new Date().toISOString();
+  const out: LeaderboardRecord[] = [];
+  const metrics = [
+    { col: 2, metric: "intelligence_index", bench: "Artificial Analysis Intelligence Index (via modelgrep)", task: "reasoning" },
+    { col: 3, metric: "coding_index", bench: "Artificial Analysis Coding Index (via modelgrep)", task: "coding" },
+  ];
+  for (const m of metrics) {
+    const scored = rows
+      .map((c) => ({ model: (c[1] ?? "").split(" ")[0], v: Number.parseFloat(c[m.col] ?? "") }))
+      .filter((r) => r.model && Number.isFinite(r.v))
+      .sort((a, b) => b.v - a.v)
+      .slice(0, 10);
+    scored.forEach((r, i) =>
+      pushRecord(out, {
+        source_name: "modelgrep",
+        source_url: pageUrl,
+        retrieved_at: retrievedAt,
+        category,
+        model_name: r.model,
+        model_version: null,
+        benchmark_name: m.bench,
+        metric_name: m.metric,
+        metric_value: r.v,
+        metric_unit: "index",
+        rank: i + 1,
+        date_reported: retrievedAt.slice(0, 10),
+        scope_region: "global",
+        task_type: m.task,
+        raw_hash: `modelgrep:${m.metric}:${r.model}`.slice(0, 96),
+      }),
+    );
+  }
+  if (!out.length) throw new Error("modelgrep: no rows");
+  return out;
+}
+
 /* ------------------------------ the run --------------------------------- */
 
 export async function runCollection(options?: {
@@ -379,7 +472,11 @@ export async function runCollection(options?: {
             ? await extractNilgiri(url, cat.id)
             : /livecodebench\.github\.io/.test(url)
               ? await extractLiveCodeBench(url, cat.id)
-              : extractFromHtml(await fetchWithBackoff(url), url, cat.id, perSourceLimit);
+              : /swebench\.com/.test(url)
+                ? await extractSweBench(url, cat.id)
+                : /modelgrep\.com/.test(url)
+                  ? await extractModelgrep(url, cat.id)
+                  : extractFromHtml(await fetchWithBackoff(url), url, cat.id, perSourceLimit);
           records.push(...found);
           outcomes.push({
             url,
