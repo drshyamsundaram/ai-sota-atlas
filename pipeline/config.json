@@ -19,6 +19,8 @@
         "id": "global_frontier",
         "title": "Global frontier",
         "sources": [
+          "https://lmarena.ai/leaderboard",
+          "https://crfm.stanford.edu/helm/capabilities/latest/",
           "https://artificialanalysis.ai/leaderboards/models",
           "https://gorilla.cs.berkeley.edu/leaderboard.html",
           "https://aider.chat/docs/leaderboards/",
@@ -27,7 +29,6 @@
           "https://modelgrep.com/",
           "https://arcprize.org/leaderboard",
           "https://www.vellum.ai/llm-leaderboard",
-          "https://lmarena.ai/leaderboard",
           "https://openrouter.ai/rankings",
           "https://paperswithcode.com/",
           "https://epoch.ai/benchmarks",
@@ -35,8 +36,7 @@
           "https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard",
           "https://huggingface.co/models",
           "https://benchlm.ai/",
-          "https://livecodebench.github.io/leaderboard.html",
-          "https://epoch.ai/benchmarks"
+          "https://livecodebench.github.io/leaderboard.html"
         ]
       },
       {
@@ -75,8 +75,7 @@
         "sources": [
           "https://sparclabs.github.io/nilgiri/leaderboard/",
           "https://www.benchlm.ai/cybersecurity",
-          "https://cybench.github.io/",
-          "https://crfm.stanford.edu/helm/"
+          "https://cybench.github.io/"
         ],
         "reference_sources": [
           {
@@ -95,6 +94,28 @@
             "note": "Risk taxonomy; reference only."
           }
         ]
+      },
+      {
+        "id": "multimodal",
+        "title": "Multimodal",
+        "metrics": [
+          "mmmu_pro_overall",
+          "mmmu_val_overall"
+        ],
+        "sources": [
+          "https://mmmu-benchmark.github.io/"
+        ]
+      },
+      {
+        "id": "ai_infrastructure",
+        "title": "AI infrastructure",
+        "metrics": [
+          "throughput_tokens_per_s"
+        ],
+        "sources": [
+          "https://github.com/mlcommons/inference_results_v6.0"
+        ],
+        "note": "MLPerf Inference measures system throughput for a workload model, not model quality."
       },
       {
         "id": "india",
