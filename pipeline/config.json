@@ -33,7 +33,9 @@
           "https://livebench.ai/",
           "https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard",
           "https://huggingface.co/models",
-          "https://benchlm.ai/"
+          "https://benchlm.ai/",
+          "https://livecodebench.github.io/leaderboard.html",
+          "https://epoch.ai/benchmarks"
         ]
       },
       {
