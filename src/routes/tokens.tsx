@@ -656,6 +656,20 @@ function TokensPage() {
           </div>
         </section>
       </main>
+      <SourcesPanel
+        title="Sources"
+        groups={[
+          {
+            label: "Token usage feeds (OpenRouter)",
+            rows: data?.records ?? [],
+            note: "Weekly per-model token feeds; country is attributed from the developer's home country.",
+          },
+          {
+            label: "Configured category feeds",
+            rows: tokenSlices.map((s) => ({ source_name: s.label, source_url: s.url })),
+          },
+        ]}
+      />
     </div>
   );
 }

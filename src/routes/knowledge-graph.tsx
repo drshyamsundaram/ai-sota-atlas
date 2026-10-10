@@ -304,6 +304,13 @@ function KnowledgeGraphPage() {
           )}
         </aside>
       </main>
+      <SourcesPanel
+        title="Graph sources"
+        groups={[
+          { label: "Benchmarks & leaderboards", rows: benchRecords },
+          { label: "Token usage", rows: tokenRecords },
+        ]}
+      />
     </div>
   );
 }
