@@ -47,7 +47,7 @@
 | `src/lib/dataset-store.ts`, `token-store.ts` | Read/write latest batches |
 | `src/lib/graph.ts` | Pure knowledge-graph builder shared by UI and API |
 | `src/hooks/use-kg-data.ts` | Graph data queries (60s poll, refetch on focus) |
-| `src/lib/collector.server.ts` extractors | `extractNilgiri` (results.json), `extractLiveCodeBench` (performances JSON, 12-month Pass@1), SWE-bench embedded data, modelgrep AA indices |
+| `src/lib/collector.server.ts` extractors | `extractNilgiri` (results.json), `extractLiveCodeBench` (performances JSON, 12-month Pass@1), SWE-bench embedded data, modelgrep AA indices, `extractLmArena` (HF datasets-server rows, overall split), `extractHelm` (HELM Capabilities release JSON, Accuracy table), `extractMmmu` (leaderboard_data.json), `extractMlperf` (newest MLCommons summary_results.json, closed datacenter offline tokens/s) |
 | `src/components/SourcesPanel.tsx` | Per-source row counts on token report and KG |
 | `src/lib/ontology.ts`, `ontology/*.ttl` | TTL ontologies per section + live metrics on /docs |
 | `src/routes/api/public/*` | dataset, scrape, ingest, tokens, tokens/refresh, graph, docs |
