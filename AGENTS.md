@@ -9,3 +9,4 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 - Knowledge graph is built client/server by pure `buildGraph` in src/lib/graph.ts from the existing leaderboard + token datasets; canvas lib loads lazily behind ClientOnly (browser-only).
+- Ontologies live in /ontology/*.ttl (one per site section) and are imported raw into /docs for download + metrics; keep them in sync with schema changes.

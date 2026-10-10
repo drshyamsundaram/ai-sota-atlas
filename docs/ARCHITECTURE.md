@@ -6,7 +6,7 @@
                 +-------------------------------+
   Browser  ---> | TanStack Start (React 19, SSR)|
                 |  /  /tokens  /knowledge-graph |
-                |  /api-docs  /docs             |
+                |  /api-docs  /docs (4 tabs)    |
                 +---------------+---------------+
                                 |
                    server routes /api/public/*
@@ -47,12 +47,15 @@
 | `src/lib/dataset-store.ts`, `token-store.ts` | Read/write latest batches |
 | `src/lib/graph.ts` | Pure knowledge-graph builder shared by UI and API |
 | `src/hooks/use-kg-data.ts` | Graph data queries (60s poll, refetch on focus) |
+| `src/lib/collector.server.ts` extractors | `extractNilgiri` (results.json), `extractLiveCodeBench` (performances JSON, 12-month Pass@1), SWE-bench embedded data, modelgrep AA indices |
+| `src/components/SourcesPanel.tsx` | Per-source row counts on token report and KG |
+| `src/lib/ontology.ts`, `ontology/*.ttl` | TTL ontologies per section + live metrics on /docs |
 | `src/routes/api/public/*` | dataset, scrape, ingest, tokens, tokens/refresh, graph, docs |
 
 ## Refresh flow
 
 1. User clicks **Refresh now** → `POST /api/public/scrape`.
-2. Collector fetches each source politely (robots.txt, 1–5 s jitter, backoff on 408/429/5xx).
+2. Collector fetches up to 16 sources per category politely (robots.txt, 1–5 s jitter, backoff on 408/429/5xx).
 3. Rows are validated with Zod; failed sources keep their previous rows.
 4. Token collector runs in the same request.
 5. New batch stored; client invalidates dataset, token and KG queries.
@@ -66,3 +69,11 @@ Nodes: model, developer, country, benchmark, category, slice. Edges: builds, bas
 - Public endpoints are read-only except scrape/refresh/ingest, which only write validated, normalized data.
 - No Node-native packages server-side; Python runs only offline.
 - Browser-only libraries are dynamically imported to stay SSR-safe.
+
+## Ontology layer
+
+Three OWL/Turtle schemas mirror the data model: `leaderboard.ttl` (Model, Benchmark, BenchmarkResult, Category, Source, Region, Batch), `tokens.ttl` (TokenObservation, TokenSlice, SliceGroup, Kpi, Developer, Country) and `knowledge-graph.ttl` (Node subclasses and the builds / basedIn / scoredOn / belongsTo / usedIn relations used by `buildGraph`). `/docs` → Ontology downloads them and computes metrics in the browser.
+
+## Documentation
+
+`README.md`, `docs/HOW_TO_USE.md`, `docs/ARCHITECTURE.md` are imported raw into `/docs`; repo-relative links are rewritten to tab switches so they work in-app and on GitHub.

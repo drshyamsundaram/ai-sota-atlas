@@ -1,0 +1,5 @@
+- [x] Architecture doc update + fix in-app doc links
+- [x] Docs updated for recent changes; How-to-use guide
+- [x] Sources panels on token report + KG
+- [x] Verify KG updates
+- [x] TTL ontologies per section, downloads, metrics, ontology/ folder
