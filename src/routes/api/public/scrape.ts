@@ -21,7 +21,7 @@ export const Route = createFileRoute("/api/public/scrape")({
         };
         try {
           const { runCollection, mergeWithPrevious } = await import("@/lib/collector.server");
-          const run = await runCollection();
+          const run = await runCollection({ maxSourcesPerCategory: 12 });
           const previous = await getLatestDataset();
           const merged = mergeWithPrevious(run.records, previous?.records ?? []);
 
