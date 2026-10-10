@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { SourcesPanel } from "@/components/SourcesPanel";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
