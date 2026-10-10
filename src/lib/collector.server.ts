@@ -510,6 +510,42 @@ export async function extractRegional(category: string): Promise<LeaderboardReco
         raw_hash: `lmarena:${category}:${r.model_name}`.slice(0, 96),
       }),
     );
+  // Also slice modelgrep's server-rendered table (Intelligence index) by region.
+  try {
+    const mgUrl = "https://modelgrep.com/";
+    const html = await fetchWithBackoff(mgUrl);
+    const body = html.slice(html.indexOf("<tbody"), html.indexOf("</tbody>"));
+    const strip = (s: string) => s.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+    const rows = [...body.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/g)].map((r) =>
+      [...(r[1] ?? "").matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map((c) => strip(c[1] ?? "")),
+    );
+    rows
+      .map((c) => ({ model: (c[1] ?? "").split(" ")[0], v: Number.parseFloat(c[2] ?? "") }))
+      .filter((r) => r.model && Number.isFinite(r.v) && spec.hints.test(r.model))
+      .sort((a, b) => b.v - a.v)
+      .slice(0, 10)
+      .forEach((r, i) =>
+        pushRecord(out, {
+          source_name: "modelgrep",
+          source_url: mgUrl,
+          retrieved_at: ctx.retrievedAt,
+          category,
+          model_name: r.model,
+          model_version: null,
+          benchmark_name: `Artificial Analysis Intelligence Index — ${spec.region} models`,
+          metric_name: "intelligence_index",
+          metric_value: r.v,
+          metric_unit: "index",
+          rank: i + 1,
+          date_reported: ctx.retrievedAt.slice(0, 10),
+          scope_region: category,
+          task_type: "reasoning",
+          raw_hash: `modelgrep:${category}:${r.model}`.slice(0, 96),
+        }),
+      );
+  } catch {
+    /* modelgrep slice is best-effort */
+  }
   if (!out.length) throw new Error(`regional: no ${spec.region} rows`);
   return out;
 }
