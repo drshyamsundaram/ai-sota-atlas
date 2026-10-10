@@ -554,7 +554,8 @@ export async function extractMmmu(pageUrl: string, category: string): Promise<Le
 
 /** MLPerf Inference: newest round's summary_results.json; best closed-division datacenter tokens/s per LLM workload. */
 export async function extractMlperf(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
-  let rows: Array<Record<string, unknown>> = [];
+  type Mlp = { Suite?: string; Scenario?: string; Performance_Units?: string; Category?: string; compliance?: unknown; Model?: string; Performance_Result?: number; Submitter?: string; System?: string };
+  let rows: Mlp[] = [];
   let round = "";
   for (const v of ["6.1", "6.0", "5.1"]) {
     try {
@@ -569,7 +570,7 @@ export async function extractMlperf(pageUrl: string, category: string): Promise<
   }
   if (!rows.length) throw new Error("mlperf: no results file");
   const ctx = { pageUrl, category, retrievedAt: new Date().toISOString() };
-  const best = new Map<string, Record<string, unknown>>();
+  const best = new Map<string, Mlp>();
   for (const r of rows) {
     if (r.Suite !== "datacenter" || r.Scenario !== "Offline" || r.Performance_Units !== "Tokens/s") continue;
     if (!(r.Category === "closed" || r.compliance === "closed")) continue;
