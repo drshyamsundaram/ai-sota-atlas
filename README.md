@@ -19,9 +19,11 @@ Created by [Dr Shyam Sundaram](https://www.linkedin.com/in/bioenable/).
 | Documentation | `/docs` | README, How to use, Architecture and Ontology (TTL downloads + metrics) |
 
 ### Categories
-- **Global frontier** — BenchLM, Aider, Humanity's Last Exam, SWE-bench Verified, LiveCodeBench, modelgrep (AA Intelligence & Coding index), Berkeley function-calling, ARC Prize, Vectara
+- **Global frontier** — LMArena (Text Arena ratings, via its Hugging Face dataset), Stanford HELM Capabilities (mean score), BenchLM, Aider, Humanity's Last Exam, SWE-bench Verified, LiveCodeBench, modelgrep (AA Intelligence & Coding index), Berkeley function-calling, ARC Prize, Vectara
 - **Hallucination & safety** — Suprmind, Vectara (hallucination_rate, factual_consistency, faithfulness, groundedness, citation_accuracy)
-- **Cybersecurity** — Nilgiri cyber range (SPARC Labs), BenchLM cybersecurity, Cybench, Stanford HELM
+- **Cybersecurity** — Nilgiri cyber range (SPARC Labs), BenchLM cybersecurity, Cybench
+- **Multimodal** — MMMU-Pro and MMMU (Val) overall accuracy (from MMMU's published `leaderboard_data.json`)
+- **AI infrastructure** — MLPerf Inference (MLCommons): best closed-division datacenter offline throughput (tokens/s) per LLM workload. Measures hardware/system speed, not model quality
 - **India, China, Europe** — regional benchmarks and model families
 
 Sources are defined in `pipeline/config.json`. Pages that draw their tables in the browser, or publish no table, are kept as reference-only — scores are never invented.

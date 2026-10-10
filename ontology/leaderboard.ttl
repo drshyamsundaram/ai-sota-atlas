@@ -36,6 +36,8 @@ sota:sourceUrl a owl:DatatypeProperty ; rdfs:domain sota:Source ; rdfs:range xsd
 sota:global_frontier a sota:Category ; rdfs:label "Global frontier" .
 sota:hallucination_safety a sota:Category ; rdfs:label "Hallucination and safety" .
 sota:cybersecurity a sota:Category ; rdfs:label "Cybersecurity" .
+sota:multimodal a sota:Category ; rdfs:label "Multimodal" .
+sota:ai_infrastructure a sota:Category ; rdfs:label "AI infrastructure" .
 sota:india a sota:Category ; rdfs:label "India" .
 sota:china a sota:Category ; rdfs:label "China" .
 sota:europe a sota:Category ; rdfs:label "Europe" .

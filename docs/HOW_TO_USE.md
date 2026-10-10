@@ -6,7 +6,7 @@
 3. Optional: pick an **Auto-refresh** interval (1m – 6h) to keep re-reading the latest stored batch.
 
 ## 2. Explore leaderboards
-- Choose a **category** (Global frontier, Hallucination & safety, Cybersecurity, India, China, Europe).
+- Choose a **category** (Global frontier, Hallucination & safety, Cybersecurity, Multimodal, AI infrastructure, India, China, Europe).
 - Narrow with **Leaderboard filters**: metric, region, search.
 - Read the charts, then the **Details** table for exact scores, ranks, sources and dates.
 - **Import JSON** lets you preview your own normalized records file without saving it.
@@ -32,3 +32,10 @@
 - Token data covers OpenRouter traffic only; country = developer home country.
 - Sites that draw tables in the browser may return no scores; nothing is invented.
 - Model names differ between sources, so only some models are linked in the graph.
+
+
+## Classic and new benchmarks
+- **LMArena** ratings are human-preference Elo-style scores (unit `elo`); compare ranks, not absolute gaps.
+- **MMMU** rows exclude the Human Expert reference rows.
+- **MLPerf Inference** rows name the workload model (e.g. llama2-70b) and the submitting system in *Version*; read them as hardware throughput.
+- ImageNet, COCO, GLUE/SuperGLUE, SQuAD and WMT are not tracked: they are saturated or rarely used for current LLMs.
