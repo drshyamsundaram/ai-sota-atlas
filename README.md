@@ -24,7 +24,7 @@ Created by [Dr Shyam Sundaram](https://www.linkedin.com/in/bioenable/).
 - **Cybersecurity** — Nilgiri cyber range (SPARC Labs), BenchLM cybersecurity, Cybench
 - **Multimodal** — MMMU-Pro and MMMU (Val) overall accuracy (from MMMU's published `leaderboard_data.json`)
 - **AI infrastructure** — MLPerf Inference (MLCommons): best closed-division datacenter offline throughput (tokens/s) per LLM workload. Measures hardware/system speed, not model quality
-- **India, China, Europe** — regional benchmarks and model families
+- **India, China, Europe** — regional benchmarks and model families. China and Europe also get dedicated slices of the global leaderboards: LMArena's published ratings and modelgrep's Intelligence Index are filtered by developer origin (e.g. Mistral, Aleph Alpha for Europe; DeepSeek, Qwen, GLM, Kimi, MiMo, Ernie, Step for China), so regional leaders are ranked against each other on the same scales as the global boards
 
 Sources are defined in `pipeline/config.json`. Pages that draw their tables in the browser, or publish no table, are kept as reference-only — scores are never invented.
 
