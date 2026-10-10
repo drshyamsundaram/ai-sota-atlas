@@ -1,0 +1,31 @@
+@prefix sota: <https://ai-sota-atlas.lovable.app/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+<https://ai-sota-atlas.lovable.app/ontology/knowledge-graph> a owl:Ontology ;
+  rdfs:label "AI SOTA Shift Tracker - LLM & Tokenomics KG ontology" ;
+  owl:imports <https://ai-sota-atlas.lovable.app/ontology/leaderboard>, <https://ai-sota-atlas.lovable.app/ontology/tokens> ;
+  dcterms:creator "Dr Shyam Sundaram" ; owl:versionInfo "1.0" .
+
+sota:Node a owl:Class ; rdfs:label "Graph node" .
+sota:Model a owl:Class ; rdfs:subClassOf sota:Node .
+sota:Developer a owl:Class ; rdfs:subClassOf sota:Node .
+sota:Country a owl:Class ; rdfs:subClassOf sota:Node .
+sota:Benchmark a owl:Class ; rdfs:subClassOf sota:Node .
+sota:Category a owl:Class ; rdfs:subClassOf sota:Node .
+sota:TokenSlice a owl:Class ; rdfs:subClassOf sota:Node .
+
+sota:builds a owl:ObjectProperty ; rdfs:domain sota:Developer ; rdfs:range sota:Model ; owl:inverseOf sota:developedBy .
+sota:developedBy a owl:ObjectProperty .
+sota:basedIn a owl:ObjectProperty ; rdfs:domain sota:Developer ; rdfs:range sota:Country .
+sota:scoredOn a owl:ObjectProperty ; rdfs:domain sota:Model ; rdfs:range sota:Benchmark .
+sota:belongsTo a owl:ObjectProperty ; rdfs:domain sota:Benchmark ; rdfs:range sota:Category .
+sota:usedIn a owl:ObjectProperty ; rdfs:domain sota:Model ; rdfs:range sota:TokenSlice .
+
+sota:totalTokens a owl:DatatypeProperty ; rdfs:domain sota:Model ; rdfs:range xsd:decimal .
+sota:bestScore a owl:DatatypeProperty ; rdfs:domain sota:Model ; rdfs:range xsd:decimal .
+sota:degree a owl:DatatypeProperty ; rdfs:domain sota:Node ; rdfs:range xsd:integer .
+sota:linkWeight a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sota:normalizedName a owl:DatatypeProperty ; rdfs:domain sota:Model ; rdfs:range xsd:string .

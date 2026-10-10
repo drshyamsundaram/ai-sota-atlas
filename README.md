@@ -2,7 +2,7 @@
 
 Tracks state-of-the-art (SOTA) shifts across public LLM leaderboards, token-utilisation rankings and an LLM & Tokenomics knowledge graph.
 
-**Live app:** https://ai-sota-atlas.lovable.app · **Docs in the app:** `/docs` · **Architecture:** [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+**Live app:** https://ai-sota-atlas.lovable.app · **Docs in the app:** `/docs` · **Architecture:** [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · **How to use:** [docs/HOW_TO_USE.md](docs/HOW_TO_USE.md) · **Ontologies:** [ontology/](ontology/README.md)
 
 Created by [Dr Shyam Sundaram](https://www.linkedin.com/in/bioenable/).
 
@@ -16,10 +16,10 @@ Created by [Dr Shyam Sundaram](https://www.linkedin.com/in/bioenable/).
 | Token utilisation report | `/tokens` | KPI band, data-quality panel, charts, country drill-down, granular table, CSV export |
 | LLM & Tokenomics KG | `/knowledge-graph` | Interactive graph of models, developers, countries, benchmarks, categories and token slices |
 | API docs | `/api-docs` | Public REST endpoints (OpenAPI JSON at `/api/public/docs`) |
-| Documentation | `/docs` | This README and the technical architecture, rendered in the UI |
+| Documentation | `/docs` | README, How to use, Architecture and Ontology (TTL downloads + metrics) |
 
 ### Categories
-- **Global frontier** — BenchLM, Aider, Humanity's Last Exam, Berkeley function-calling, SWE-bench, ARC Prize, Vectara
+- **Global frontier** — BenchLM, Aider, Humanity's Last Exam, SWE-bench Verified, LiveCodeBench, modelgrep (AA Intelligence & Coding index), Berkeley function-calling, ARC Prize, Vectara
 - **Hallucination & safety** — Suprmind, Vectara (hallucination_rate, factual_consistency, faithfulness, groundedness, citation_accuracy)
 - **Cybersecurity** — Nilgiri cyber range (SPARC Labs), BenchLM cybersecurity, Cybench, Stanford HELM
 - **India, China, Europe** — regional benchmarks and model families
@@ -34,6 +34,8 @@ Sources are defined in `pipeline/config.json`. Pages that draw their tables in t
 - **Import JSON** previews a normalized records file client-side.
 - **Token report**: pick a slice (Overall / Programming / Language), a country or developer, drill down, export CSV.
 - **Knowledge graph**: filter node types, country, category, slice, top-N; search; click a node for connections, scores and token KPIs; export PNG/JSON. Auto-updates every ~60s, on tab focus and after every refresh.
+
+Token report and knowledge graph pages each show a **Sources** panel listing every feed in the current batch with row counts.
 
 ## 3. Data model
 
@@ -92,7 +94,11 @@ Async, robots.txt-aware, randomized 1–5 s delays, rotating User-Agents, Pydant
 - Model names differ across sources, so only part of the models are matched in the knowledge graph (shown on the page).
 - Some benchmark sites render tables client-side and yield no scores yet.
 
-## 7. Development
+## 7. Ontologies
+
+`ontology/leaderboard.ttl`, `ontology/tokens.ttl`, `ontology/knowledge-graph.ttl` — OWL schemas per section; downloadable at `/docs` → Ontology. See [ontology/README.md](ontology/README.md).
+
+## 8. Development
 
 ```sh
 git clone <this-repository-url>

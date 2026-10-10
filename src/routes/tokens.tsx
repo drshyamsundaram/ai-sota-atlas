@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { SourcesPanel } from "@/components/SourcesPanel";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
@@ -656,6 +657,20 @@ function TokensPage() {
           </div>
         </section>
       </main>
+      <SourcesPanel
+        title="Sources"
+        groups={[
+          {
+            label: "Token usage feeds (OpenRouter)",
+            rows: data?.records ?? [],
+            note: "Weekly per-model token feeds; country is attributed from the developer's home country.",
+          },
+          {
+            label: "Configured category feeds",
+            rows: tokenSlices.map((s) => ({ source_name: s.label, source_url: s.url })),
+          },
+        ]}
+      />
     </div>
   );
 }

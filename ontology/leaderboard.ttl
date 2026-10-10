@@ -1,0 +1,55 @@
+@prefix sota: <https://ai-sota-atlas.lovable.app/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+<https://ai-sota-atlas.lovable.app/ontology/leaderboard> a owl:Ontology ;
+  rdfs:label "AI SOTA Shift Tracker - Leaderboard ontology" ;
+  dcterms:creator "Dr Shyam Sundaram" ; owl:versionInfo "1.0" .
+
+sota:Model a owl:Class ; rdfs:label "LLM model" .
+sota:Benchmark a owl:Class ; rdfs:label "Benchmark" .
+sota:Category a owl:Class ; rdfs:label "Evaluation category" .
+sota:Source a owl:Class ; rdfs:label "Data source" .
+sota:BenchmarkResult a owl:Class ; rdfs:label "Normalized benchmark result" .
+sota:Region a owl:Class ; rdfs:label "Scope region" .
+sota:Batch a owl:Class ; rdfs:label "Collection batch" .
+
+sota:forModel a owl:ObjectProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:range sota:Model .
+sota:onBenchmark a owl:ObjectProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:range sota:Benchmark .
+sota:inCategory a owl:ObjectProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:range sota:Category .
+sota:fromSource a owl:ObjectProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:range sota:Source .
+sota:scopeRegion a owl:ObjectProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:range sota:Region .
+sota:inBatch a owl:ObjectProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:range sota:Batch .
+
+sota:modelVersion a owl:DatatypeProperty ; rdfs:domain sota:Model ; rdfs:range xsd:string .
+sota:metricName a owl:DatatypeProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:range xsd:string .
+sota:metricValue a owl:DatatypeProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:range xsd:decimal .
+sota:metricUnit a owl:DatatypeProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:range xsd:string .
+sota:rank a owl:DatatypeProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:range xsd:integer .
+sota:dateReported a owl:DatatypeProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:range xsd:date .
+sota:retrievedAt a owl:DatatypeProperty ; rdfs:range xsd:dateTime .
+sota:taskType a owl:DatatypeProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:range xsd:string .
+sota:sourceUrl a owl:DatatypeProperty ; rdfs:domain sota:Source ; rdfs:range xsd:anyURI .
+
+sota:global_frontier a sota:Category ; rdfs:label "Global frontier" .
+sota:hallucination_safety a sota:Category ; rdfs:label "Hallucination and safety" .
+sota:cybersecurity a sota:Category ; rdfs:label "Cybersecurity" .
+sota:india a sota:Category ; rdfs:label "India" .
+sota:china a sota:Category ; rdfs:label "China" .
+sota:europe a sota:Category ; rdfs:label "Europe" .
+sota:region_global a sota:Region ; rdfs:label "global" .
+sota:region_india a sota:Region ; rdfs:label "india" .
+sota:region_china a sota:Region ; rdfs:label "china" .
+sota:region_europe a sota:Region ; rdfs:label "europe" .
+sota:region_us a sota:Region ; rdfs:label "us" .
+sota:src_benchlm a sota:Source ; rdfs:label "BenchLM" ; sota:sourceUrl "https://benchlm.ai/"^^xsd:anyURI .
+sota:src_nilgiri a sota:Source ; rdfs:label "Nilgiri (SPARC Labs)" ; sota:sourceUrl "https://sparclabs.github.io/nilgiri/leaderboard/"^^xsd:anyURI .
+sota:src_livecodebench a sota:Source ; rdfs:label "LiveCodeBench" ; sota:sourceUrl "https://livecodebench.github.io/"^^xsd:anyURI .
+sota:src_swebench a sota:Source ; rdfs:label "SWE-bench" ; sota:sourceUrl "https://www.swebench.com/"^^xsd:anyURI .
+sota:src_modelgrep a sota:Source ; rdfs:label "modelgrep" ; sota:sourceUrl "https://modelgrep.com/"^^xsd:anyURI .
+sota:src_aider a sota:Source ; rdfs:label "Aider" ; sota:sourceUrl "https://aider.chat/docs/leaderboards/"^^xsd:anyURI .
+sota:src_hle a sota:Source ; rdfs:label "Humanity's Last Exam" ; sota:sourceUrl "https://lastexam.ai/"^^xsd:anyURI .
+sota:src_vectara a sota:Source ; rdfs:label "Vectara" ; sota:sourceUrl "https://huggingface.co/spaces/vectara/leaderboard"^^xsd:anyURI .
+sota:src_suprmind a sota:Source ; rdfs:label "Suprmind" ; sota:sourceUrl "https://suprmind.ai/hub/ai-hallucination-rates-and-benchmarks/"^^xsd:anyURI .
