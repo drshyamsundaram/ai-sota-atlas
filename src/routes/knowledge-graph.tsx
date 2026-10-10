@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { KgGraph, type ForceGraphHandle } from "@/components/kg/KgGraph";
 import { useKgData } from "@/hooks/use-kg-data";
 import { NODE_TYPES, type GraphNode, type NodeType } from "@/lib/graph";
+import { SourcesPanel } from "@/components/SourcesPanel";
 
 export const Route = createFileRoute("/knowledge-graph")({
   head: () => ({
@@ -39,8 +40,8 @@ const RELATION_LABEL: Record<string, string> = {
 };
 
 function KnowledgeGraphPage() {
-  const { graph, isLoading } = useKgData();
   const { graph, isLoading, benchRecords, tokenRecords } = useKgData();
+  const fgRef = useRef<ForceGraphHandle>(null);
   const [types, setTypes] = useState<Set<NodeType>>(new Set(NODE_TYPES.map((t) => t.id)));
   const [country, setCountry] = useState("all");
   const [category, setCategory] = useState("all");
