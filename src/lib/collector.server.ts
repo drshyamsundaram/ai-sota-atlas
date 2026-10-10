@@ -438,6 +438,162 @@ export async function extractModelgrep(pageUrl: string, category: string): Promi
   return out;
 }
 
+type Ctx = { pageUrl: string; category: string; retrievedAt: string };
+function emit(
+  out: LeaderboardRecord[],
+  ctx: Ctx,
+  r: { source: string; model: string; bench: string; metric: string; value: number; unit: string; rank: number; date: string | null; task: string; key: string; version?: string | null },
+) {
+  pushRecord(out, {
+    source_name: r.source,
+    source_url: ctx.pageUrl,
+    retrieved_at: ctx.retrievedAt,
+    category: ctx.category,
+    model_name: r.model,
+    model_version: r.version ?? null,
+    benchmark_name: r.bench,
+    metric_name: r.metric,
+    metric_value: r.value,
+    metric_unit: r.unit,
+    rank: r.rank,
+    date_reported: r.date,
+    scope_region: "global",
+    task_type: r.task,
+    raw_hash: r.key.slice(0, 96),
+  });
+}
+
+/** LMArena publishes its ratings as a Hugging Face dataset; read via the datasets-server JSON API. */
+export async function extractLmArena(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
+  const api =
+    "https://datasets-server.huggingface.co/rows?dataset=lmarena-ai/leaderboard-dataset&config=text&split=latest&offset=0&length=100";
+  const data = JSON.parse(await fetchWithBackoff(api)) as {
+    rows: Array<{ row: { model_name: string; rating: number; rank: number; category: string; leaderboard_publish_date: string } }>;
+  };
+  const ctx = { pageUrl, category, retrievedAt: new Date().toISOString() };
+  const out: LeaderboardRecord[] = [];
+  data.rows
+    .map((r) => r.row)
+    .filter((r) => r.category === "overall" && Number.isFinite(r.rating))
+    .sort((a, b) => b.rating - a.rating)
+    .slice(0, 10)
+    .forEach((r, i) =>
+      emit(out, ctx, {
+        source: "LMArena", model: r.model_name, bench: "LMArena Text Arena (overall)", metric: "arena_rating",
+        value: Math.round(r.rating * 10) / 10, unit: "elo", rank: i + 1, date: r.leaderboard_publish_date ?? null,
+        task: "chat_preference", key: `lmarena:${r.model_name}`,
+      }),
+    );
+  if (!out.length) throw new Error("lmarena: no overall rows");
+  return out;
+}
+
+/** HELM Capabilities publishes per-release JSON; the "Accuracy" table holds the mean score. */
+export async function extractHelm(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
+  const base = "https://storage.googleapis.com/crfm-helm-public/capabilities/benchmark_output";
+  let release = "v1.12.0";
+  try {
+    const rels = JSON.parse(await fetchWithBackoff(`${base}/releases.json`)) as unknown;
+    if (Array.isArray(rels) && typeof rels[0] === "string") release = rels[0];
+  } catch {
+    /* fall back to known release */
+  }
+  const tables = JSON.parse(await fetchWithBackoff(`${base}/releases/${release}/groups/core_scenarios.json`)) as Array<{
+    title: string;
+    rows: Array<Array<{ value?: unknown }>>;
+  }>;
+  const t = tables.find((x) => x.title === "Accuracy") ?? tables[0];
+  if (!t) throw new Error("helm: no tables");
+  const ctx = { pageUrl, category, retrievedAt: new Date().toISOString() };
+  const out: LeaderboardRecord[] = [];
+  t.rows
+    .map((r) => ({ model: String(r[0]?.value ?? ""), v: Number(r[1]?.value) }))
+    .filter((r) => r.model && Number.isFinite(r.v))
+    .sort((a, b) => b.v - a.v)
+    .slice(0, 10)
+    .forEach((r, i) =>
+      emit(out, ctx, {
+        source: "Stanford HELM", model: r.model, bench: `HELM Capabilities (${release})`, metric: "mean_score",
+        value: Math.round(r.v * 1000) / 10, unit: "percent", rank: i + 1, date: null, task: "reasoning",
+        key: `helm:${release}:${r.model}`,
+      }),
+    );
+  if (!out.length) throw new Error("helm: no rows");
+  return out;
+}
+
+/** MMMU's leaderboard page loads ./leaderboard_data.json; rank models (not human experts) by MMMU-Pro overall. */
+export async function extractMmmu(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
+  const url = new URL("leaderboard_data.json", pageUrl.endsWith("/") ? pageUrl : `${pageUrl}/`).toString();
+  const data = JSON.parse(await fetchWithBackoff(url)) as {
+    leaderboardData: Array<{ info: { name: string; date?: string; type?: string }; pro?: { overall?: string }; validation?: { overall?: string } }>;
+  };
+  const ctx = { pageUrl, category, retrievedAt: new Date().toISOString() };
+  const out: LeaderboardRecord[] = [];
+  const models = data.leaderboardData.filter((m) => m.info.type !== "human_expert");
+  const boards = [
+    { key: "pro" as const, bench: "MMMU-Pro", metric: "mmmu_pro_overall" },
+    { key: "validation" as const, bench: "MMMU (Val)", metric: "mmmu_val_overall" },
+  ];
+  for (const b of boards) {
+    models
+      .map((m) => ({ m, v: Number.parseFloat(m[b.key]?.overall ?? "") }))
+      .filter((r) => Number.isFinite(r.v))
+      .sort((a, b2) => b2.v - a.v)
+      .slice(0, 10)
+      .forEach((r, i) =>
+        emit(out, ctx, {
+          source: "MMMU", model: r.m.info.name, bench: b.bench, metric: b.metric, value: r.v, unit: "percent",
+          rank: i + 1, date: r.m.info.date ?? null, task: "multimodal", key: `mmmu:${b.metric}:${r.m.info.name}`,
+        }),
+      );
+  }
+  if (!out.length) throw new Error("mmmu: no rows");
+  return out;
+}
+
+/** MLPerf Inference: newest round's summary_results.json; best closed-division datacenter tokens/s per LLM workload. */
+export async function extractMlperf(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
+  let rows: Array<Record<string, unknown>> = [];
+  let round = "";
+  for (const v of ["6.1", "6.0", "5.1"]) {
+    try {
+      rows = JSON.parse(
+        await fetchWithBackoff(`https://raw.githubusercontent.com/mlcommons/inference_results_v${v}/main/summary_results.json`, 1),
+      );
+      round = `v${v}`;
+      if (rows.length) break;
+    } catch {
+      /* try older round */
+    }
+  }
+  if (!rows.length) throw new Error("mlperf: no results file");
+  const ctx = { pageUrl, category, retrievedAt: new Date().toISOString() };
+  const best = new Map<string, Record<string, unknown>>();
+  for (const r of rows) {
+    if (r.Suite !== "datacenter" || r.Scenario !== "Offline" || r.Performance_Units !== "Tokens/s") continue;
+    if (!(r.Category === "closed" || r.compliance === "closed")) continue;
+    const model = String(r.Model);
+    const prev = best.get(model);
+    if (!prev || Number(r.Performance_Result) > Number(prev.Performance_Result)) best.set(model, r);
+  }
+  const out: LeaderboardRecord[] = [];
+  [...best.entries()]
+    .sort((a, b) => Number(b[1].Performance_Result) - Number(a[1].Performance_Result))
+    .slice(0, 10)
+    .forEach(([model, r], i) =>
+      emit(out, ctx, {
+        source: "MLPerf Inference", model, version: `${r.Submitter} · ${r.System}`.slice(0, 120),
+        bench: `MLPerf Inference ${round} (datacenter, offline)`, metric: "throughput_tokens_per_s",
+        value: Number(r.Performance_Result), unit: "tokens/s", rank: i + 1, date: null, task: "infrastructure",
+        key: `mlperf:${round}:${model}`,
+      }),
+    );
+  if (!out.length) throw new Error("mlperf: no LLM tokens/s rows");
+  return out;
+}
+
+
 /* ------------------------------ the run --------------------------------- */
 
 export async function runCollection(options?: {
@@ -476,6 +632,14 @@ export async function runCollection(options?: {
                 ? await extractSweBench(url, cat.id)
                 : /modelgrep\.com/.test(url)
                   ? await extractModelgrep(url, cat.id)
+                  : /lmarena/.test(url)
+                    ? await extractLmArena(url, cat.id)
+                    : /crfm\.stanford\.edu\/helm/.test(url)
+                      ? await extractHelm(url, cat.id)
+                      : /mmmu-benchmark\.github\.io/.test(url)
+                        ? await extractMmmu(url, cat.id)
+                        : /mlcommons|inference_results/.test(url)
+                          ? await extractMlperf(url, cat.id)
                   : extractFromHtml(await fetchWithBackoff(url), url, cat.id, perSourceLimit);
           records.push(...found);
           outcomes.push({
