@@ -286,6 +286,65 @@ export async function extractNilgiri(pageUrl: string, category: string): Promise
   return out;
 }
 
+/* ---------------------------- LiveCodeBench ----------------------------- */
+
+const LCB_RESULTS = "https://livecodebench.github.io/performances_generation.json";
+
+type LcbRow = { model?: string; date?: number; "pass@1"?: number };
+
+/** LiveCodeBench renders client-side; aggregate its published performances JSON. */
+export async function extractLiveCodeBench(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
+  const raw = JSON.parse(await fetchWithBackoff(LCB_RESULTS)) as { performances?: LcbRow[] };
+  const rows = (raw.performances ?? []).filter(
+    (r) => r.model && typeof r["pass@1"] === "number" && typeof r.date === "number",
+  );
+  if (!rows.length) throw new Error("livecodebench: no performances");
+
+  // Match the site's default view: questions from the most recent 12 months.
+  const maxDate = Math.max(...rows.map((r) => r.date!));
+  const cutoff = maxDate - 365 * 24 * 3600 * 1000;
+  const recent = rows.filter((r) => r.date! >= cutoff);
+
+  const byModel = new Map<string, { sum: number; n: number }>();
+  for (const r of recent) {
+    const e = byModel.get(r.model!) ?? { sum: 0, n: 0 };
+    e.sum += r["pass@1"]!;
+    e.n += 1;
+    byModel.set(r.model!, e);
+  }
+  const ranked = [...byModel.entries()]
+    .filter(([, e]) => e.n >= 30)
+    .map(([model, e]) => ({ model, avg: e.sum / e.n, n: e.n }))
+    .sort((a, b) => b.avg - a.avg)
+    .slice(0, 10);
+  if (!ranked.length) throw new Error("livecodebench: no models with enough questions");
+
+  const retrievedAt = new Date().toISOString();
+  const out: LeaderboardRecord[] = [];
+  ranked.forEach(({ model, avg, n }, i) => {
+    const v = recordSchema.safeParse({
+      source_name: "LiveCodeBench",
+      source_url: pageUrl,
+      retrieved_at: retrievedAt,
+      category,
+      model_name: model,
+      model_version: null,
+      benchmark_name: "LiveCodeBench (12-month window)",
+      metric_name: "pass_at_1",
+      metric_value: Number(avg.toFixed(1)),
+      metric_unit: "percent",
+      rank: i + 1,
+      date_reported: new Date(maxDate).toISOString().slice(0, 10),
+      scope_region: "global",
+      task_type: "coding",
+      raw_hash: `livecodebench:${model}`.slice(0, 96),
+    });
+    if (v.success) out.push(v.data);
+  });
+  if (!out.length) throw new Error("livecodebench: rows failed validation");
+  return out;
+}
+
 /* ------------------------------ the run --------------------------------- */
 
 export async function runCollection(options?: {
@@ -318,7 +377,9 @@ export async function runCollection(options?: {
           }
           const found = /sparclabs\.github\.io\/nilgiri/.test(url)
             ? await extractNilgiri(url, cat.id)
-            : extractFromHtml(await fetchWithBackoff(url), url, cat.id, perSourceLimit);
+            : /livecodebench\.github\.io/.test(url)
+              ? await extractLiveCodeBench(url, cat.id)
+              : extractFromHtml(await fetchWithBackoff(url), url, cat.id, perSourceLimit);
           records.push(...found);
           outcomes.push({
             url,
