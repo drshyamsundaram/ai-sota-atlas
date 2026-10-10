@@ -1,0 +1,43 @@
+@prefix sota: <https://ai-sota-atlas.lovable.app/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+<https://ai-sota-atlas.lovable.app/ontology/tokens> a owl:Ontology ;
+  rdfs:label "AI SOTA Shift Tracker - Token utilisation ontology" ;
+  dcterms:creator "Dr Shyam Sundaram" ; owl:versionInfo "1.0" .
+
+sota:Model a owl:Class ; rdfs:label "LLM model" .
+sota:Developer a owl:Class ; rdfs:label "Model developer" .
+sota:Country a owl:Class ; rdfs:label "Country" .
+sota:TokenSlice a owl:Class ; rdfs:label "Token usage slice" .
+sota:SliceGroup a owl:Class ; rdfs:label "Slice group" .
+sota:TokenObservation a owl:Class ; rdfs:label "Weekly token observation" .
+sota:Kpi a owl:Class ; rdfs:label "Token KPI" .
+sota:Source a owl:Class ; rdfs:label "Data source" .
+
+sota:observedModel a owl:ObjectProperty ; rdfs:domain sota:TokenObservation ; rdfs:range sota:Model .
+sota:inSlice a owl:ObjectProperty ; rdfs:domain sota:TokenObservation ; rdfs:range sota:TokenSlice .
+sota:inGroup a owl:ObjectProperty ; rdfs:domain sota:TokenSlice ; rdfs:range sota:SliceGroup .
+sota:developedBy a owl:ObjectProperty ; rdfs:domain sota:Model ; rdfs:range sota:Developer .
+sota:basedIn a owl:ObjectProperty ; rdfs:domain sota:Developer ; rdfs:range sota:Country .
+sota:fromSource a owl:ObjectProperty ; rdfs:range sota:Source .
+
+sota:tokensProcessed a owl:DatatypeProperty ; rdfs:domain sota:TokenObservation ; rdfs:range xsd:decimal .
+sota:tokenSharePct a owl:DatatypeProperty ; rdfs:domain sota:TokenObservation ; rdfs:range xsd:decimal .
+sota:tokenGrowthPct a owl:DatatypeProperty ; rdfs:domain sota:TokenObservation ; rdfs:range xsd:decimal .
+sota:rank a owl:DatatypeProperty ; rdfs:range xsd:integer .
+sota:retrievedAt a owl:DatatypeProperty ; rdfs:range xsd:dateTime .
+sota:higherIsBetter a owl:DatatypeProperty ; rdfs:domain sota:Kpi ; rdfs:range xsd:boolean .
+sota:sourceUrl a owl:DatatypeProperty ; rdfs:range xsd:anyURI .
+
+sota:group_overall a sota:SliceGroup ; rdfs:label "Overall" .
+sota:group_programming a sota:SliceGroup ; rdfs:label "Programming" .
+sota:group_language a sota:SliceGroup ; rdfs:label "Language" .
+sota:kpi_tokens_processed a sota:Kpi ; rdfs:label "Tokens processed" ; sota:higherIsBetter true .
+sota:kpi_token_share a sota:Kpi ; rdfs:label "Token share" ; sota:higherIsBetter true .
+sota:kpi_weekly_growth a sota:Kpi ; rdfs:label "Weekly growth" ; sota:higherIsBetter true .
+sota:kpi_country_share a sota:Kpi ; rdfs:label "Country token share" ; sota:higherIsBetter true .
+sota:kpi_models_per_country a sota:Kpi ; rdfs:label "Models per country" ; sota:higherIsBetter true .
+sota:src_openrouter a sota:Source ; rdfs:label "OpenRouter rankings" ; sota:sourceUrl "https://openrouter.ai/rankings"^^xsd:anyURI .

@@ -40,7 +40,7 @@ const RELATION_LABEL: Record<string, string> = {
 
 function KnowledgeGraphPage() {
   const { graph, isLoading } = useKgData();
-  const fgRef = useRef<ForceGraphHandle>(null);
+  const { graph, isLoading, benchRecords, tokenRecords } = useKgData();
   const [types, setTypes] = useState<Set<NodeType>>(new Set(NODE_TYPES.map((t) => t.id)));
   const [country, setCountry] = useState("all");
   const [category, setCategory] = useState("all");
