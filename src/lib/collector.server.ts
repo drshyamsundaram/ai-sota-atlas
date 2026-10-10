@@ -667,6 +667,22 @@ export async function runCollection(options?: {
   // sequentially with a randomized delay between requests.
   await Promise.all(
     categories.map(async (cat) => {
+      // Regional categories get a dedicated slice of LMArena's published ratings.
+      if (REGION_HINTS[cat.id]) {
+        try {
+          const found = await extractRegional(cat.id);
+          records.push(...found);
+          outcomes.push({ url: "https://lmarena.ai/leaderboard", category: cat.id, status: "ok", records: found.length });
+        } catch (error) {
+          outcomes.push({
+            url: "https://lmarena.ai/leaderboard",
+            category: cat.id,
+            status: "failed",
+            records: 0,
+            detail: error instanceof Error ? error.message.slice(0, 140) : "error",
+          });
+        }
+      }
       const sources = (cat.sources ?? []).slice(0, maxPerCategory);
       for (const url of sources) {
         await sleep(jitter(delayMin, delayMax));
