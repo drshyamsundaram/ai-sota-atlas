@@ -463,6 +463,93 @@ function emit(
   });
 }
 
+/** Developer-origin keyword maps for regional slices of global leaderboards. */
+const REGION_HINTS: Record<string, { region: string; hints: RegExp }> = {
+  europe: {
+    region: "Europe",
+    hints: /mistral|magistral|mixtral|ministral|pixtral|aleph|luminous|lighton|poolside|h company|holistic|le chat|deepcogito|cogito|sauerkraut|occiglot|teuken|euro-?llm|salamandra/i,
+  },
+  china: {
+    region: "China",
+    hints: /deepseek|qwen|qwq|glm|zhipu|chatglm|moonshot|kimi|yi[- ]|01\.ai|minimax|abab|stepfun|step-|hunyuan|ernie|wenxin|doubao|seed-|bytedance|xiaomi|mimo|kwaipilot|kat-|internlm|baichuan|spark desk|ling-|ring-|dots\.llm|skywork|telechat|sensenova/i,
+  },
+};
+
+/** Slices LMArena's published ratings to models from a given developer region. */
+export async function extractRegional(category: string): Promise<LeaderboardRecord[]> {
+  const spec = REGION_HINTS[category];
+  if (!spec) throw new Error(`regional: unknown category ${category}`);
+  const api =
+    "https://datasets-server.huggingface.co/rows?dataset=lmarena-ai/leaderboard-dataset&config=text&split=latest&offset=0&length=100";
+  const data = JSON.parse(await fetchWithBackoff(api)) as {
+    rows: Array<{ row: { model_name: string; rating: number; category: string; leaderboard_publish_date: string } }>;
+  };
+  const ctx = { pageUrl: "https://lmarena.ai/leaderboard", category, retrievedAt: new Date().toISOString() };
+  const out: LeaderboardRecord[] = [];
+  data.rows
+    .map((r) => r.row)
+    .filter((r) => r.category === "overall" && Number.isFinite(r.rating) && spec.hints.test(r.model_name))
+    .sort((a, b) => b.rating - a.rating)
+    .slice(0, 10)
+    .forEach((r, i) =>
+      pushRecord(out, {
+        source_name: "LMArena",
+        source_url: ctx.pageUrl,
+        retrieved_at: ctx.retrievedAt,
+        category,
+        model_name: r.model_name,
+        model_version: null,
+        benchmark_name: `LMArena Text Arena — ${spec.region} models`,
+        metric_name: "arena_rating",
+        metric_value: Math.round(r.rating * 10) / 10,
+        metric_unit: "elo",
+        rank: i + 1,
+        date_reported: r.leaderboard_publish_date ?? null,
+        scope_region: category,
+        task_type: "chat_preference",
+        raw_hash: `lmarena:${category}:${r.model_name}`.slice(0, 96),
+      }),
+    );
+  // Also slice modelgrep's server-rendered table (Intelligence index) by region.
+  try {
+    const mgUrl = "https://modelgrep.com/";
+    const html = await fetchWithBackoff(mgUrl);
+    const body = html.slice(html.indexOf("<tbody"), html.indexOf("</tbody>"));
+    const strip = (s: string) => s.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+    const rows = [...body.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/g)].map((r) =>
+      [...(r[1] ?? "").matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map((c) => strip(c[1] ?? "")),
+    );
+    rows
+      .map((c) => ({ model: (c[1] ?? "").split(" ")[0], v: Number.parseFloat(c[2] ?? "") }))
+      .filter((r) => r.model && Number.isFinite(r.v) && spec.hints.test(r.model))
+      .sort((a, b) => b.v - a.v)
+      .slice(0, 10)
+      .forEach((r, i) =>
+        pushRecord(out, {
+          source_name: "modelgrep",
+          source_url: mgUrl,
+          retrieved_at: ctx.retrievedAt,
+          category,
+          model_name: r.model,
+          model_version: null,
+          benchmark_name: `Artificial Analysis Intelligence Index — ${spec.region} models`,
+          metric_name: "intelligence_index",
+          metric_value: r.v,
+          metric_unit: "index",
+          rank: i + 1,
+          date_reported: ctx.retrievedAt.slice(0, 10),
+          scope_region: category,
+          task_type: "reasoning",
+          raw_hash: `modelgrep:${category}:${r.model}`.slice(0, 96),
+        }),
+      );
+  } catch {
+    /* modelgrep slice is best-effort */
+  }
+  if (!out.length) throw new Error(`regional: no ${spec.region} rows`);
+  return out;
+}
+
 /** LMArena publishes its ratings as a Hugging Face dataset; read via the datasets-server JSON API. */
 export async function extractLmArena(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
   const api =
@@ -616,6 +703,22 @@ export async function runCollection(options?: {
   // sequentially with a randomized delay between requests.
   await Promise.all(
     categories.map(async (cat) => {
+      // Regional categories get a dedicated slice of LMArena's published ratings.
+      if (REGION_HINTS[cat.id]) {
+        try {
+          const found = await extractRegional(cat.id);
+          records.push(...found);
+          outcomes.push({ url: "https://lmarena.ai/leaderboard", category: cat.id, status: "ok", records: found.length });
+        } catch (error) {
+          outcomes.push({
+            url: "https://lmarena.ai/leaderboard",
+            category: cat.id,
+            status: "failed",
+            records: 0,
+            detail: error instanceof Error ? error.message.slice(0, 140) : "error",
+          });
+        }
+      }
       const sources = (cat.sources ?? []).slice(0, maxPerCategory);
       for (const url of sources) {
         await sleep(jitter(delayMin, delayMax));
