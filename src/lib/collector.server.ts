@@ -355,7 +355,7 @@ export async function extractSweBench(pageUrl: string, category: string): Promis
   const html = await fetchWithBackoff(pageUrl);
   const m = html.match(/<script[^>]*id="leaderboard-data"[^>]*>([\s\S]*?)<\/script>/);
   if (!m) throw new Error("swebench: embedded data not found");
-  const boards = JSON.parse(m[1]) as Array<{
+  const boards = JSON.parse(m[1] ?? "[]") as Array<{
     name: string;
     results: Array<{ name?: string; model_display?: string; resolved?: number; date?: string }>;
   }>;
@@ -400,7 +400,7 @@ export async function extractModelgrep(pageUrl: string, category: string): Promi
   const body = html.slice(html.indexOf("<tbody"), html.indexOf("</tbody>"));
   const strip = (s: string) => s.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
   const rows = [...body.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/g)].map((r) =>
-    [...r[1].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map((c) => strip(c[1])),
+    [...(r[1] ?? "").matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map((c) => strip(c[1] ?? "")),
   );
   const retrievedAt = new Date().toISOString();
   const out: LeaderboardRecord[] = [];
