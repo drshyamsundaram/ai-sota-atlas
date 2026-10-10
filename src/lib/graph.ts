@@ -81,6 +81,7 @@ const CATEGORY_TITLES: Record<string, string> = {
   india: "India",
   china: "China",
   europe: "Europe",
+  mea: "Middle East & Africa",
 };
 
 export function buildGraph(
