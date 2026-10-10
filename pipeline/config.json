@@ -157,6 +157,18 @@
           "https://hcompany.ai/",
           "https://arxiv.org/abs/2509.12345"
         ]
+      },
+      {
+        "id": "mea",
+        "title": "Middle East & Africa",
+        "sources": [
+          "https://www.tii.ae/falcon",
+          "https://falconllm.tii.ae/",
+          "https://mbzuai.ac.ae/news/mbzuai-launches-k2-think/",
+          "https://www.inceptionai.ai/jais",
+          "https://sdaia.gov.sa/en/SDAIA/about/Pages/AboutALLaM.aspx",
+          "https://www.qcri.org/fanar/"
+        ]
       }
     ]
   },
