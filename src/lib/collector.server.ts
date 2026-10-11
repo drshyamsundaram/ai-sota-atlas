@@ -217,6 +217,118 @@ function extractFromHtml(
   return out;
 }
 
+/* -------------------- Suprmind hallucination metrics -------------------- */
+
+/** Strips run-configuration notes that follow the model name in a cell. */
+function cleanSuprmindName(cell: string): string {
+  let name = cell
+    .split(/\s+(?:AA max run|AA build|AA configuration|Not yet publicly|Vectara,|The high setting|HalluHard on)/i)[0]!
+    .replace(/[.\s]+$/, "")
+    .trim();
+  // Drop a trailing sentence fragment after the first period-space.
+  const dot = name.indexOf(". ");
+  if (dot > 0) name = name.slice(0, dot);
+  return name.trim();
+}
+
+const SUPRMIND_MAIN_METRICS: { head: RegExp; name: string }[] = [
+  { head: /^aa accuracy/i, name: "aa_accuracy" },
+  { head: /^aa hallucination/i, name: "aa_hallucination_rate" },
+  { head: /^aa index/i, name: "aa_index" },
+  { head: /^vectara \(new/i, name: "vectara_hhem_new" },
+  { head: /^vectara \(orig/i, name: "vectara_hhem_orig" },
+  { head: /^facts/i, name: "facts_grounding" },
+  { head: /^simpleqa/i, name: "simpleqa_verified" },
+  { head: /^halluhard/i, name: "halluhard" },
+];
+
+export async function extractSuprmind(
+  pageUrl: string,
+  category: string,
+): Promise<LeaderboardRecord[]> {
+  const html = await fetchWithBackoff(pageUrl);
+  const retrievedAt = new Date().toISOString();
+  const out: LeaderboardRecord[] = [];
+  const tables = html.match(/<table[\s\S]*?<\/table>/gi) ?? [];
+
+  const push = (
+    modelName: string,
+    metric: { name: string; value: number; unit: string },
+    benchmark: string,
+  ) => {
+    const candidate = {
+      source_name: hostName(pageUrl),
+      source_url: pageUrl,
+      retrieved_at: retrievedAt,
+      category,
+      model_name: modelName,
+      model_version: null,
+      benchmark_name: benchmark,
+      metric_name: metric.name,
+      metric_value: metric.value,
+      metric_unit: metric.unit,
+      rank: null,
+      date_reported: retrievedAt.slice(0, 10),
+      scope_region: regionFor(category),
+      task_type: "hallucination",
+      raw_hash: `suprmind:${modelName}:${metric.name}`.slice(0, 96),
+    };
+    const validated = recordSchema.safeParse(candidate);
+    if (validated.success) out.push(validated.data);
+  };
+
+  for (const table of tables) {
+    const rows = table.match(/<tr[\s\S]*?<\/tr>/gi) ?? [];
+    if (rows.length < 2) continue;
+    const cellsOf = (row: string) =>
+      (row.match(/<t[hd][^>]*>[\s\S]*?<\/t[hd]>/gi) ?? []).map(stripTags);
+    const header = cellsOf(rows[0]!);
+
+    // Main table: Model | Lab | AA accuracy | AA hallucination | ... | HalluHard
+    if (header.some((h) => /^aa accuracy/i.test(h))) {
+      const modelIdx = header.findIndex((h) => /^model/i.test(h));
+      const metricCols = header
+        .map((h, i) => ({ i, m: SUPRMIND_MAIN_METRICS.find((mm) => mm.head.test(h)) }))
+        .filter((c) => c.m && c.i !== modelIdx);
+      for (const row of rows.slice(1)) {
+        const cells = cellsOf(row);
+        if (cells.length !== header.length) continue;
+        const modelName = cleanSuprmindName(cells[modelIdx] ?? "");
+        if (!modelName || modelName.length < 2 || modelName.length > 60) continue;
+        for (const { i, m } of metricCols) {
+          const raw = (cells[i] ?? "").replace(/&Dagger;|‡|†/g, "").trim();
+          if (!raw || raw === "-") continue;
+          const parsed = parseNumber(raw);
+          if (parsed) push(modelName, { name: m!.name, ...parsed }, "suprmind.ai");
+        }
+      }
+      continue;
+    }
+
+    // Vectara-style table: Model | Provider | Hallucination Rate | Factual Consistency
+    if (header.some((h) => /hallucination rate/i.test(h))) {
+      const modelIdx = header.findIndex((h) => /^model/i.test(h));
+      const hallIdx = header.findIndex((h) => /hallucination rate/i.test(h));
+      const factIdx = header.findIndex((h) => /factual consistency/i.test(h));
+      for (const row of rows.slice(1)) {
+        const cells = cellsOf(row);
+        if (cells.length !== header.length) continue;
+        const modelName = (cells[modelIdx] ?? "").trim();
+        if (!modelName || modelName.length < 2 || modelName.length > 60) continue;
+        for (const [idx, name] of [
+          [hallIdx, "hallucination_rate"],
+          [factIdx, "factual_consistency"],
+        ] as const) {
+          if (idx < 0) continue;
+          const parsed = parseNumber(cells[idx] ?? "");
+          if (parsed) push(modelName, { name, ...parsed }, "vectara_hhem");
+        }
+      }
+    }
+  }
+  return out;
+}
+
 /* ------------------------- Nilgiri cyber range -------------------------- */
 
 const NILGIRI_RESULTS =
@@ -718,8 +830,10 @@ export async function runCollection(options?: {
             outcomes.push({ url, category: cat.id, status: "blocked", records: 0 });
             continue;
           }
-          const found = /sparclabs\.github\.io\/nilgiri/.test(url)
-            ? await extractNilgiri(url, cat.id)
+          const found = /suprmind\.ai/.test(url)
+            ? await extractSuprmind(url, cat.id)
+            : /sparclabs\.github\.io\/nilgiri/.test(url)
+              ? await extractNilgiri(url, cat.id)
             : /livecodebench\.github\.io/.test(url)
               ? await extractLiveCodeBench(url, cat.id)
               : /swebench\.com/.test(url)
