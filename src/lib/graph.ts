@@ -1,7 +1,8 @@
 import type { LeaderboardRecord } from "./schema";
 import type { TokenRecord } from "./token-schema";
+import { accelerators, hardwareDisclosures, serverSystems } from "@/data/hardware";
 
-export type NodeType = "model" | "developer" | "country" | "benchmark" | "category" | "slice";
+export type NodeType = "model" | "developer" | "country" | "benchmark" | "category" | "slice" | "accelerator" | "server" | "hardware_vendor";
 
 export type GraphNode = {
   id: string;
@@ -15,7 +16,7 @@ export type GraphNode = {
 export type GraphLink = {
   source: string;
   target: string;
-  relation: "builds" | "based_in" | "scored_on" | "belongs_to" | "used_in";
+  relation: "builds" | "based_in" | "scored_on" | "belongs_to" | "used_in" | "manufactures" | "contains" | "trained_on" | "finetuned_on" | "served_on" | "benchmarked_on" | "estimated_suitable_for";
   label?: string | undefined;
   weight?: number | undefined;
 };
@@ -29,6 +30,9 @@ export const NODE_TYPES: { id: NodeType; label: string; color: string }[] = [
   { id: "benchmark", label: "Benchmark", color: "var(--chart-4)" },
   { id: "category", label: "Category", color: "var(--chart-5)" },
   { id: "slice", label: "Token slice", color: "var(--muted-foreground)" },
+  { id: "accelerator", label: "Accelerator", color: "var(--chart-2)" },
+  { id: "server", label: "Server system", color: "var(--chart-5)" },
+  { id: "hardware_vendor", label: "Hardware vendor", color: "var(--chart-4)" },
 ];
 
 /** Infer developer for benchmark-only model names. */
@@ -92,9 +96,10 @@ export function buildGraph(
   const links = new Map<string, GraphLink>();
   const add = (n: GraphNode) => {
     const cur = nodes.get(n.id);
-    if (!cur) nodes.set(n.id, { ...n, meta: { ...(n.meta ?? {}) } });
-    else cur.meta = { ...cur.meta, ...(n.meta ?? {}) };
-    return nodes.get(n.id)!;
+    if (cur) { cur.meta = { ...cur.meta, ...(n.meta ?? {}) }; return cur; }
+    const created = { ...n, meta: { ...(n.meta ?? {}) } };
+    nodes.set(n.id, created);
+    return created;
   };
   const link = (l: GraphLink) => {
     const k = `${l.source}|${l.relation}|${l.target}`;
@@ -124,8 +129,8 @@ export function buildGraph(
     link({ source: mid, target: sId, relation: "used_in", weight: t.tokens_processed, label: t.tokens_display });
     if (t.slice_id === "overall") {
       tokenByModel.set(mid, (tokenByModel.get(mid) ?? 0) + t.tokens_processed);
-      const n = nodes.get(mid)!;
-      n.meta = { ...n.meta, share_pct: t.token_share_pct, growth_pct: t.token_growth_pct, tokens: t.tokens_display };
+      const n = nodes.get(mid);
+      if (n) n.meta = { ...n.meta, share_pct: t.token_share_pct, growth_pct: t.token_growth_pct, tokens: t.tokens_display };
     } else if (!tokenByModel.has(mid)) {
       tokenByModel.set(mid, 0);
     }
@@ -133,7 +138,7 @@ export function buildGraph(
 
   // Benchmark side
   for (const r of records) {
-    const full = r.model_version ? `${r.model_name} ${r.model_version}` : r.model_name;
+    const full = r.model_version && r.category !== "ai_infrastructure" ? `${r.model_name} ${r.model_version}` : r.model_name;
     const key = normModel(full);
     const mid = `model:${key}`;
     benchModels.add(key);
@@ -150,7 +155,8 @@ export function buildGraph(
       label: r.rank ? `#${r.rank}` : r.metric_value != null ? `${r.metric_value} ${r.metric_unit}` : undefined,
     });
     link({ source: bId, target: catId, relation: "belongs_to" });
-    if (hint && !nodes.get(mid)!.meta?.['developer']) {
+    const modelNode = nodes.get(mid);
+    if (hint && modelNode && !modelNode.meta?.['developer']) {
       const [, dev, country] = hint;
       const devId = `developer:${dev}`;
       const cId = `country:${country}`;
@@ -158,8 +164,41 @@ export function buildGraph(
       add({ id: cId, type: "country", label: country, size: 1 });
       link({ source: devId, target: mid, relation: "builds" });
       link({ source: devId, target: cId, relation: "based_in" });
-      nodes.get(mid)!.meta = { ...nodes.get(mid)!.meta, developer: dev, country };
+      modelNode.meta = { ...modelNode.meta, developer: dev, country };
     }
+  }
+
+  // Hardware provenance: benchmarked-on is not trained-on or production-served-on.
+  for (const r of records) {
+    if (!r.hardware_context) continue;
+    const h = r.hardware_context;
+    const mid = `model:${normModel(r.model_name)}`;
+    const id = `server:mlperf:${h.submitter}:${h.system}`;
+    add({ id, type: "server", label: h.system, size: 4, meta: { vendor: h.submitter,
+      precision: h.precision, accelerators: h.accelerators, scenario: h.scenario,
+      division: h.division, round: h.round, evidence: "Measured MLPerf result", url: h.source_url } });
+    link({ source: mid, target: id, relation: "benchmarked_on", label: `${r.metric_value} ${r.metric_unit} · ${h.round} · ${h.scenario} · ${h.precision}` });
+  }
+  for (const a of accelerators) {
+    const vendorId = `hardware_vendor:${a.vendor}`;
+    add({ id: vendorId, type: "hardware_vendor", label: a.vendor, size: 4 });
+    add({ id: `accelerator:${a.id}`, type: "accelerator", label: a.name, size: 4,
+      meta: { memory_gb: a.memoryGb, bandwidth_tb_s: a.bandwidthTb, evidence: "Manufacturer specification", verified: a.source.verified, url: a.source.url } });
+    link({ source: vendorId, target: `accelerator:${a.id}`, relation: "manufactures" });
+  }
+  for (const s of serverSystems) {
+    const vendorId = `hardware_vendor:${s.vendor}`;
+    add({ id: vendorId, type: "hardware_vendor", label: s.vendor, size: 4 });
+    add({ id: `server:${s.id}`, type: "server", label: s.name, size: 4,
+      meta: { count: s.count, evidence: "Manufacturer configuration", url: s.source.url } });
+    link({ source: vendorId, target: `server:${s.id}`, relation: "manufactures" });
+    link({ source: `server:${s.id}`, target: `accelerator:${s.acceleratorId}`, relation: "contains", label: `${s.count} accelerators` });
+  }
+  for (const d of hardwareDisclosures) {
+    const id = `model:${normModel(d.model)}`;
+    add({ id, type: "model", label: d.model, size: 2.5,
+      meta: { hardware_evidence: d.detail, hardware_source: d.source.url } });
+    link({ source: id, target: `accelerator:${d.acceleratorId}`, relation: d.phase, label: d.detail });
   }
 
   // Sizing

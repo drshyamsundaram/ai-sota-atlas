@@ -9,6 +9,7 @@ import { KgGraph, type ForceGraphHandle } from "@/components/kg/KgGraph";
 import { useKgData } from "@/hooks/use-kg-data";
 import { NODE_TYPES, type GraphNode, type NodeType } from "@/lib/graph";
 import { SourcesPanel } from "@/components/SourcesPanel";
+import { accelerators, serverSystems, hardwareDisclosures } from "@/data/hardware";
 
 export const Route = createFileRoute("/knowledge-graph")({
   head: () => ({
@@ -37,6 +38,9 @@ const RELATION_LABEL: Record<string, string> = {
   scored_on: "scored on",
   belongs_to: "belongs to",
   used_in: "used in",
+  manufactures: "manufactures", contains: "contains", trained_on: "reported trained on",
+  finetuned_on: "reported fine-tuned on", served_on: "reported served on",
+  benchmarked_on: "measured benchmark on", estimated_suitable_for: "estimated suitable for",
 };
 
 function KnowledgeGraphPage() {
@@ -60,8 +64,8 @@ function KnowledgeGraphPage() {
     for (const l of graph.links) {
       if (!adj.has(l.source)) adj.set(l.source, new Set());
       if (!adj.has(l.target)) adj.set(l.target, new Set());
-      adj.get(l.source)!.add(l.target);
-      adj.get(l.target)!.add(l.source);
+      adj.get(l.source)?.add(l.target);
+      adj.get(l.target)?.add(l.source);
     }
     // choose models
     let models = byType("model");
@@ -85,6 +89,8 @@ function KnowledgeGraphPage() {
         for (const n of adj.get(id) ?? [])
           if (n.startsWith("country:") || n.startsWith("category:")) keep.add(n);
     if (country !== "all") keep.add(country);
+    if (country === "all" && category === "all" && slice === "all")
+      for (const n of graph.nodes) if (["accelerator", "server", "hardware_vendor"].includes(n.type)) keep.add(n.id);
     const nodes = graph.nodes.filter((n) => keep.has(n.id) && types.has(n.type));
     const ids = new Set(nodes.map((n) => n.id));
     return {
@@ -98,10 +104,10 @@ function KnowledgeGraphPage() {
     const label = new Map(graph.nodes.map((n) => [n.id, n]));
     return graph.links
       .filter((l) => l.source === selected.id || l.target === selected.id)
-      .map((l) => {
+      .flatMap((l) => {
         const out = l.source === selected.id;
-        const other = label.get(out ? l.target : l.source)!;
-        return { l, out, other };
+        const other = label.get(out ? l.target : l.source);
+        return other ? [{ l, out, other }] : [];
       })
       .sort((a, b) => a.other.type.localeCompare(b.other.type));
   }, [selected, graph]);
@@ -134,13 +140,14 @@ function KnowledgeGraphPage() {
       <header className="border-b border-border">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-6">
           <div>
-            <nav className="mono-label mb-2 flex gap-4">
+            <nav className="mono-label mb-2 flex flex-wrap gap-4">
               <Link to="/" className="hover:text-primary">← Dashboard</Link>
               <Link to="/tokens" className="hover:text-primary">Token utilisation</Link>
               <Link to="/api-docs" className="hover:text-primary">API docs</Link>
             <Link to="/docs" className="hover:text-primary">
               Docs
             </Link>
+            <Link to="/hardware" className="hover:text-primary">Hardware &amp; Chipsets</Link>
             </nav>
             <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
               <Network className="size-6 text-primary" /> LLM &amp; Tokenomics KG
@@ -280,8 +287,8 @@ function KnowledgeGraphPage() {
                 <ul className="max-h-[380px] space-y-1 overflow-auto text-sm">
                   {connections.map(({ l, out, other }, i) => (
                     <li key={i}>
-                      <button
-                        className="w-full rounded px-2 py-1 text-left hover:bg-muted"
+                      <Button variant="ghost"
+                        className="h-auto w-full justify-start whitespace-normal rounded px-2 py-1 text-left"
                         onClick={() => {
                           setSelected(other);
                           fgRef.current?.zoomTo(other.id);
@@ -292,7 +299,7 @@ function KnowledgeGraphPage() {
                         </span>{" "}
                         {other.label}
                         {l.label ? <span className="text-muted-foreground"> · {l.label}</span> : null}
-                      </button>
+                      </Button>
                     </li>
                   ))}
                 </ul>
@@ -300,6 +307,7 @@ function KnowledgeGraphPage() {
               <div className="mono-label flex gap-3">
                 <Link to="/" className="hover:text-primary">Leaderboard →</Link>
                 <Link to="/tokens" className="hover:text-primary">Tokens report →</Link>
+                <Link to="/hardware" className="hover:text-primary">Hardware →</Link>
               </div>
             </div>
           )}
@@ -310,6 +318,7 @@ function KnowledgeGraphPage() {
         groups={[
           { label: "Benchmarks & leaderboards", rows: benchRecords },
           { label: "Token usage", rows: tokenRecords },
+          { label: "Hardware specifications & disclosures", rows: [...accelerators.map((a) => a.source), ...serverSystems.map((s) => s.source), ...hardwareDisclosures.map((d) => d.source)].map((s) => ({ source_name: s.label, source_url: s.url })), note: "Manufacturer specifications and explicit disclosures; no inferred training or serving relationships." },
         ]}
       />
     </div>

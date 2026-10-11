@@ -266,7 +266,7 @@ function TokensPage() {
       <header className="border-b border-border">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-6">
           <div>
-            <nav className="mono-label mb-2 flex gap-4">
+            <nav className="mono-label mb-2 flex flex-wrap gap-4">
               <Link to="/" className="hover:text-primary">
                 ← Dashboard
               </Link>
@@ -276,6 +276,7 @@ function TokensPage() {
             <Link to="/docs" className="hover:text-primary">
               Docs
             </Link>
+            <Link to="/hardware" className="hover:text-primary">Hardware &amp; Chipsets</Link>
             </nav>
             <h1 className="text-2xl font-semibold tracking-tight">Token utilisation report</h1>
             <p className="mono-label mt-2 flex items-center gap-2">
