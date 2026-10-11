@@ -254,6 +254,35 @@
         "url": "https://awsdocs-neuron.readthedocs-hosted.com/en/latest/about-neuron/arch/neuron-hardware/inferentia2.html",
         "verified": "2026-10-11"
       }
+    },
+    {
+      "id": "gb200-gpu",
+      "name": "GB200 Blackwell GPU",
+      "vendor": "NVIDIA",
+      "architecture": "Blackwell",
+      "form": "GB200 Superchip (2 GPUs + Grace CPU)",
+      "memoryGb": 186,
+      "memoryType": "HBM3e \u00b7 372 GB per Superchip",
+      "bandwidthTb": 8,
+      "powerW": null,
+      "interconnect": "NVLink 5 \u00b7 1.8 TB/s",
+      "compute": "Vendor system-level precision figures; see GB200 NVL72 specifications",
+      "precision": "FP32, TF32, BF16, FP16, FP8, FP4",
+      "software": "CUDA \u00b7 PyTorch \u00b7 NCCL \u00b7 TensorRT-LLM",
+      "availability": "Publicly documented product; regional capacity varies",
+      "cloud": "Provider-specific HGX / DGX capacity",
+      "workloads": [
+        "pretraining",
+        "finetuning",
+        "lora",
+        "qlora",
+        "inference"
+      ],
+      "source": {
+        "label": "NVIDIA GB200 specifications",
+        "url": "https://www.nvidia.com/en-us/data-center/gb200-nvl72/",
+        "verified": "2026-10-11"
+      }
     }
   ],
   "systems": [
@@ -330,6 +359,44 @@
       "source": {
         "label": "Supermicro system specifications",
         "url": "https://www.supermicro.com/en/products/system/datasheet/SYS-821GE-TNHR",
+        "verified": "2026-10-11"
+      }
+    },
+    {
+      "id": "gb200-nvl72",
+      "name": "GB200 NVL72",
+      "vendor": "NVIDIA",
+      "acceleratorId": "gb200-gpu",
+      "count": 72,
+      "cpu": "36 NVIDIA Grace CPUs \u00b7 2,592 Arm Neoverse V2 cores",
+      "ram": "17 TB LPDDR5X (CPU memory; separate from GPU HBM)",
+      "storage": "Deployment-specific",
+      "network": "Scale-out networking deployment-specific",
+      "topology": "72-GPU NVLink domain \u00b7 130 TB/s aggregate",
+      "powerCooling": "Rack-scale liquid-cooled; facility power must be assessed",
+      "cloud": "Provider-specific; price not verified",
+      "source": {
+        "label": "NVIDIA GB200 NVL72 specifications",
+        "url": "https://www.nvidia.com/en-us/data-center/gb200-nvl72/",
+        "verified": "2026-10-11"
+      }
+    },
+    {
+      "id": "sr685a-mi300x",
+      "name": "ThinkSystem SR685a V3 \u00b7 MI300X board",
+      "vendor": "Lenovo",
+      "acceleratorId": "mi300x",
+      "count": 8,
+      "cpu": "AMD EPYC; exact CPU configuration not verified",
+      "ram": "Configuration-dependent; not verified",
+      "storage": "Configuration-dependent",
+      "network": "Configuration-dependent",
+      "topology": "8-GPU MI300X OAM board \u00b7 Infinity Fabric",
+      "powerCooling": "Configuration-dependent; verify server installation requirements",
+      "cloud": "OEM system; price not verified",
+      "source": {
+        "label": "Lenovo MI300X 8-GPU board guide",
+        "url": "https://lenovopress.lenovo.com/lp1943-thinksystem-amd-mi300x-192gb-750w-8-gpu-board",
         "verified": "2026-10-11"
       }
     }
