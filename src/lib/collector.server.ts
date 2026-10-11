@@ -222,7 +222,7 @@ function extractFromHtml(
 /** Strips run-configuration notes that follow the model name in a cell. */
 function cleanSuprmindName(cell: string): string {
   let name = cell
-    .split(/\s+(?:AA max run|AA configuration|Not yet publicly|Vectara,|The high setting|HalluHard on)/i)[0]!
+    .split(/\s+(?:AA max run|AA build|AA configuration|Not yet publicly|Vectara,|The high setting|HalluHard on)/i)[0]!
     .replace(/[.\s]+$/, "")
     .trim();
   // Drop a trailing sentence fragment after the first period-space.
