@@ -17,6 +17,7 @@ Created by [Dr Shyam Sundaram](https://www.linkedin.com/in/bioenable/).
 | LLM & Tokenomics KG | `/knowledge-graph` | Interactive graph of models, developers, countries, benchmarks, categories and token slices |
 | API docs | `/api-docs` | Public REST endpoints (OpenAPI JSON at `/api/public/docs`) |
 | Documentation | `/docs` | README, How to use, Architecture and Ontology (TTL downloads + metrics) |
+| Hardware & Chipsets | `/hardware` | Accelerator catalogue, server systems, side-by-side comparison, workload memory sizing and measured MLPerf results |
 
 ### Categories
 - **Global frontier** — LMArena (Text Arena ratings, via its Hugging Face dataset), Stanford HELM Capabilities (mean score), BenchLM, Aider, Humanity's Last Exam, SWE-bench Verified, LiveCodeBench, modelgrep (AA Intelligence & Coding index), Berkeley function-calling, ARC Prize, Vectara
@@ -99,7 +100,20 @@ Async, robots.txt-aware, randomized 1–5 s delays, rotating User-Agents, Pydant
 
 ## 7. Ontologies
 
-`ontology/leaderboard.ttl`, `ontology/tokens.ttl`, `ontology/knowledge-graph.ttl` — OWL schemas per section; downloadable at `/docs` → Ontology. See [ontology/README.md](ontology/README.md).
+`ontology/leaderboard.ttl`, `ontology/tokens.ttl`, `ontology/knowledge-graph.ttl`, `ontology/hardware.ttl` — OWL schemas per section; downloadable at `/docs` → Ontology. See [ontology/README.md](ontology/README.md).
+
+## Hardware & Chipsets
+
+The `/hardware` section connects model evaluation with deployment constraints. Its source-linked catalogue covers NVIDIA H100/H200/B200 and GB200, AMD MI300X/MI325X/MI350X, Google TPU v5p and AWS Trainium2/Inferentia2. Server configurations include NVIDIA DGX and GB200 NVL72, Dell PowerEdge, Lenovo ThinkSystem and Supermicro; HPE is currently a configuration reference, with unverified values left unknown.
+
+- Search/filter by chip vendor and workload; inspect precision, theoretical compute, memory/bandwidth, power, interconnect and software; compare up to four accelerators and export the filtered catalogue or servers as CSV.
+- Workloads are pretraining/continued pretraining, full fine-tuning, LoRA, QLoRA and inference. Memory sizing is a planning estimate, not a promised fit, tokens/second prediction or time-to-train calculator.
+- Decimal GB is used consistently; source GiB values are converted and identified. Aggregate GPU memory is not automatically one shared memory pool; CPU RAM is separate.
+- The sizing panel separates weights, trainable gradients/Adam states, adapters, architecture-specific KV cache, explicit activation/runtime budget and reserved memory. Unknown KV configuration produces a partial estimate.
+- Live MLPerf results preserve workload, system, submitter, accelerator description, weight precision, scenario, division, version, source URL and retrieval time. Compare like-for-like workloads; Offline throughput is not serving latency.
+- **Refresh now** runs the primary collection and checks machine-readable MLPerf results. Curated product specifications retain their last verification date until explicitly reverified. Cloud capacity and prices are not guaranteed; prices remain unknown.
+- The graph adds accelerator, server-system and hardware-vendor nodes. Reported training is supported by model-specific evidence (initially Meta Llama 3.1 405B on H100); benchmarked-on is a separate relation, never proof of pretraining or production deployment. Sizing estimates are not stored as historical graph facts.
+- MLPerf Training is reference-only: prescribed task time-to-target results are not interchangeable with arbitrary LLM training or fine-tuning.
 
 ## 8. Development
 

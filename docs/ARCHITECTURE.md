@@ -27,7 +27,7 @@
 
 | Layer | Technology |
 | --- | --- |
-| Framework | TanStack Start v1, React 19, Vite 7, edge (Worker) runtime |
+| Framework | TanStack Start v1, React 19, Vite 8, edge (Worker) runtime |
 | Styling | Tailwind CSS v4, semantic tokens in `src/styles.css`, dark instrument-panel theme |
 | Data fetching | TanStack Query (polling, invalidation after refresh) |
 | Tables / charts | TanStack Table, Recharts (`var(--chart-1..5)`) |
@@ -51,6 +51,11 @@
 | `src/components/SourcesPanel.tsx` | Per-source row counts on token report and KG |
 | `src/lib/ontology.ts`, `ontology/*.ttl` | TTL ontologies per section + live metrics on /docs |
 | `src/routes/api/public/*` | dataset, scrape, ingest, tokens, tokens/refresh, graph, docs |
+| `src/data/hardware.json`, `hardware.ts` | Curated source-linked accelerator specs, server configurations, model disclosures and references |
+| `src/lib/hardware-schema.ts`, `hardware-sizing.ts` | Browser-safe record types, workload memory calculations and CSV escaping |
+| `src/lib/hardware-collector.server.ts` | Bounded fetch/retries for published MLPerf inference JSON; preserves system context |
+| `src/lib/hardware.functions.ts` | Public read-only server function and shared query options for `/hardware` |
+| `src/components/hardware/*`, `src/routes/hardware.tsx` | Catalogue comparisons, workload sizing and live measured system results |
 
 ## Refresh flow
 
@@ -62,7 +67,9 @@
 
 ## Knowledge graph
 
-Nodes: model, developer, country, benchmark, category, slice. Edges: builds, based_in, scored_on, belongs_to, used_in. Model names are normalized (vendor prefixes, "by x", parentheticals stripped) to merge leaderboard and token entities; match stats are returned with the graph.
+Nodes: model, developer, country, benchmark, category, slice, accelerator, server and hardware_vendor. Edges add manufactures, contains, trained_on, finetuned_on, served_on and benchmarked_on; estimated_suitable_for is reserved for explicitly labelled planning estimates, not automatically asserted by the catalogue. Model names are normalized (vendor prefixes, "by x", parentheticals stripped) to merge leaderboard and token entities; match stats describe only benchmark/token overlap, not hardware disclosure coverage.
+
+`buildGraph` imports the browser-safe hardware catalogue so UI and API share identical facts. Unfiltered graph views retain catalogue nodes even when top-N excludes the model with a hardware disclosure. Filtered regional/category views do not imply hardware usage from developer origin. MLPerf systems are separate server nodes, not model version suffixes.
 
 ## Security & constraints
 
@@ -72,7 +79,19 @@ Nodes: model, developer, country, benchmark, category, slice. Edges: builds, bas
 
 ## Ontology layer
 
-Three OWL/Turtle schemas mirror the data model: `leaderboard.ttl` (Model, Benchmark, BenchmarkResult, Category, Source, Region, Batch), `tokens.ttl` (TokenObservation, TokenSlice, SliceGroup, Kpi, Developer, Country) and `knowledge-graph.ttl` (Node subclasses and the builds / basedIn / scoredOn / belongsTo / usedIn relations used by `buildGraph`). `/docs` → Ontology downloads them and computes metrics in the browser.
+Four OWL/Turtle schemas mirror the data model: `leaderboard.ttl`, `tokens.ttl`, `knowledge-graph.ttl` and `hardware.ttl`. The hardware schema defines accelerator, server system, hardware vendor, specifications, measurements, disclosures and workload estimates, with provenance-sensitive relationships. The graph ontology imports the other three. `/docs` → Ontology downloads them and computes declaration/triple metrics in the browser (triple count is approximate).
+
+## Hardware data and refresh boundaries
+
+The hardware page loader uses `queryClient.ensureQueryData(hardwareQueryOptions)` and the component uses `useSuspenseQuery`. A read-only server function fetches the newest readable MLPerf Inference summary (v6.1 → v6.0 → v5.1), with timeouts and bounded retries; it returns an unavailable state rather than fabricated results. Five-minute polling and focus refetch update measured results. Curated product values ship as configuration and do not get their verification dates changed by polling.
+
+The primary MLPerf collector reuses this parser, picks the highest Offline closed-division tokens/s result per workload for the existing dashboard, and stores structured `hardware_context` alongside each normalized record. Failed collection retains previous records. The hardware page displays all qualifying measured configurations, not just the dashboard winners. Prices remain unverified; no new database table or anonymous write API is introduced.
+
+## Memory sizing contract
+
+All calculations use decimal GB. Weights = parameters × bytes per weight. Full-training Adam states use 14 additional bytes per trainable parameter (BF16 gradients, FP32 master weights and two FP32 moments); adapter weights use two bytes per adapter parameter. QLoRA base weights use 0.5 bytes per parameter, excluding quantization metadata which belongs in the explicit runtime budget.
+
+Inference KV cache = 2 × layers × KV heads × head dimension × sequence length × concurrency × KV bytes (BF16 by default). Unknown architecture omits KV cache and explicitly marks the result incomplete. Activations/runtime are a user budget, not a derived prediction. Reserved memory is applied as subtotal / (1 − reserve fraction). Accelerator count is a memory lower bound plus a separate 25% contingency envelope, not a validated tensor-parallel layout. Pretraining needs token-volume, checkpoint, data-pipeline and networking assessment beyond these memory figures.
 
 ## Documentation
 

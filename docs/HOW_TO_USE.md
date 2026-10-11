@@ -38,4 +38,17 @@
 - **LMArena** ratings are human-preference Elo-style scores (unit `elo`); compare ranks, not absolute gaps.
 - **MMMU** rows exclude the Human Expert reference rows.
 - **MLPerf Inference** rows name the workload model (e.g. llama2-70b) and the submitting system in *Version*; read them as hardware throughput.
+- New MLPerf batches retain the submitting system and weight precision as separate hardware details; older stored batches may still use the Version column until the next successful refresh.
 - ImageNet, COCO, GLUE/SuperGLUE, SQuAD and WMT are not tracked: they are saturated or rarely used for current LLMs.
+
+## 7. Hardware & Chipsets (`/hardware`)
+
+1. Open **Hardware & Chipsets** from the menu. Filter by chip vendor or workload, or search an accelerator/server name.
+2. In **Accelerators**, click a chip name for precision, compute, software and source details. Check two to four **Compare** boxes for the side-by-side table. Dense and sparse theoretical performance are not measured tokens/s.
+3. Switch to **Servers** for accelerator count, aggregate memory, host CPU/RAM, storage, network topology and cooling. Unknown configuration values are left explicit; PSU ratings are not measured system draw.
+4. Use **Workload sizing**: enter model parameters, precision, context/sequence length, concurrency/microbatch, runtime budget and memory reserve. LoRA/QLoRA also need adapter share. For inference, enter actual transformer layers, KV heads (not query heads) and head dimension; disable **Known KV-cache architecture** if these are unknown.
+5. Treat the accelerator-count range as a memory-only planning envelope. Sequence length and batch affect activation requirements, which you must budget separately. Training estimates assume BF16 trainable parameters with FP32 Adam states. No time-to-train is predicted.
+6. Read **Measured inference performance** by matching workload, scenario, accuracy target, precision and system size. These are MLPerf Offline results, not interactive latency. Search the measured systems separately from the catalogue.
+7. **CSV** exports the filtered active catalogue tab. **Refresh now** runs the primary benchmark/token collection and rechecks MLPerf hardware results; product sheets retain their last verification date.
+8. Review **Reported model–hardware relationships** and **Sources & verification**. The knowledge graph separates manufacturer composition, explicitly reported training and measured benchmark execution. Missing disclosures are not filled by guessing.
+9. Download `hardware.ttl` alongside the other three schemas from **Docs → Ontology**; view live ontology metrics there. MLPerf Training and HPE configuration links are currently references, not populated benchmark/server claims.
