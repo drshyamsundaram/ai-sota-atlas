@@ -74,6 +74,7 @@
         ],
         "sources": [
           "https://sparclabs.github.io/nilgiri/leaderboard/",
+          "https://benchlm.ai/benchmarks/cybergym",
           "https://www.benchlm.ai/cybersecurity",
           "https://cybench.github.io/"
         ],
@@ -94,6 +95,29 @@
             "note": "Risk taxonomy; reference only."
           }
         ]
+      },
+      {
+        "id": "clinical",
+        "title": "Clinical",
+        "metrics": ["mean_win_rate", "healthbench_score", "healthbench_hard_score"],
+        "sources": [
+          "https://medhelm.org/",
+          "https://benchlm.ai/benchmarks/healthbench",
+          "https://benchlm.ai/benchmarks/healthbench-hard"
+        ],
+        "reference_sources": [
+          { "name": "EvidenceMD", "url": "https://evidencemd.ai/blogs/evidencemd-benchmarks", "note": "Self-reported HealthBench claims." },
+          { "name": "John Snow Labs Medical LLMs", "url": "https://www.johnsnowlabs.com/healthcare-llm/", "note": "Self-reported." }
+        ]
+      },
+      {
+        "id": "life_sciences",
+        "title": "Life sciences",
+        "metrics": ["labbench2_score"],
+        "sources": [
+          "https://benchlm.ai/benchmarks/labbench2"
+        ],
+        "note": "Biology foundation models (AlphaFold, ESM, imaging models) are catalogued, not ranked: they use domain-specific benchmarks."
       },
       {
         "id": "multimodal",
