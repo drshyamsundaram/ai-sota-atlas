@@ -14,3 +14,4 @@
 - Hardware specifications and server configurations live in the typed configuration-driven catalogue; keep measured MLPerf results, explicit model disclosures and memory estimates separate to preserve provenance.
 - MLPerf records retain structured hardware context rather than putting systems in model versions, so graph identity stays model-centric and measured hardware remains inspectable.
 - Hardware memory sizing uses decimal GB, explicit activation budgets and architecture-specific KV inputs; never derive throughput or training duration from theoretical compute.
+- Unranked specialist models/platforms live in src/data/specialist-models.json and are shown as catalogue + KG nodes, never as scored rows — keeps self-reported claims out of rankings.

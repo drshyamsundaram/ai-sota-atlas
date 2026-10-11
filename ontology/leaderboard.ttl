@@ -38,6 +38,12 @@ sota:sourceUrl a owl:DatatypeProperty ; rdfs:domain sota:Source ; rdfs:range xsd
 sota:global_frontier a sota:Category ; rdfs:label "Global frontier" .
 sota:hallucination_safety a sota:Category ; rdfs:label "Hallucination and safety" .
 sota:cybersecurity a sota:Category ; rdfs:label "Cybersecurity" .
+sota:clinical a sota:Category ; rdfs:label "Clinical" .
+sota:life_sciences a sota:Category ; rdfs:label "Life sciences" .
+sota:SpecialistModel a owl:Class ; rdfs:subClassOf sota:Model ; rdfs:label "Unranked specialist model or platform" .
+sota:evidenceLevel a owl:DatatypeProperty ; rdfs:domain sota:SpecialistModel ; rdfs:range xsd:string ; rdfs:comment "self_reported, reference, platform or ranked_elsewhere." .
+sota:src_medhelm a sota:Source ; rdfs:label "MedHELM (Stanford)" ; sota:sourceUrl "https://medhelm.org/"^^xsd:anyURI .
+sota:src_benchlm_benchmarks a sota:Source ; rdfs:label "BenchLM benchmark pages (HealthBench, LABBench2, CyberGym)" ; sota:sourceUrl "https://benchlm.ai/benchmarks/"^^xsd:anyURI .
 sota:multimodal a sota:Category ; rdfs:label "Multimodal" .
 sota:ai_infrastructure a sota:Category ; rdfs:label "AI infrastructure" .
 sota:india a sota:Category ; rdfs:label "India" .

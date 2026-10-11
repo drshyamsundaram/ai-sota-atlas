@@ -96,3 +96,6 @@ Inference KV cache = 2 × layers × KV heads × head dimension × sequence lengt
 ## Documentation
 
 `README.md`, `docs/HOW_TO_USE.md`, `docs/ARCHITECTURE.md` are imported raw into `/docs`; repo-relative links are rewritten to tab switches so they work in-app and on GitHub.
+
+## Domain categories and specialist catalogue
+`extractBenchlmBenchmark` parses BenchLM `/benchmarks/<slug>` tables (HealthBench, HealthBench Hard, LABBench2, CyberGym); `extractMedhelm` parses the MedHELM "Current leaders" block. The unranked catalogue lives in `src/data/specialist-models.json` and feeds both the dashboard panel and `buildGraph` (model → category `belongs_to`, developer `builds`, `based_in`). Self-reported claims are text only and never enter score rankings.
