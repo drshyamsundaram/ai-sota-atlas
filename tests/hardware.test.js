@@ -1,10 +1,10 @@
 import { describe, expect, test } from "bun:test";
-import { sizeWorkload, csvText, type SizingInput } from "./hardware-sizing";
-import { parseHardwareResults } from "./hardware-collector.server";
-import { buildGraph } from "./graph";
-import { recordSchema } from "./schema";
+import { sizeWorkload, csvText } from "../src/lib/hardware-sizing";
+import { parseHardwareResults } from "../src/lib/hardware-collector.server";
+import { buildGraph } from "../src/lib/graph";
+import { recordSchema } from "../src/lib/schema";
 
-const input: SizingInput = { parametersB: 8, precisionBytes: 2, workload: "inference", sequence: 8192,
+const input = { parametersB: 8, precisionBytes: 2, workload: "inference", sequence: 8192,
   batch: 1, layers: 32, kvHeads: 8, headDim: 128, kvBytes: 2, activationGb: 4,
   adapterPct: 1, headroomPct: 20, acceleratorGb: 80, kvKnown: true };
 describe("Hardware memory estimates", () => {
