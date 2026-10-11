@@ -72,7 +72,7 @@ function HardwarePage() {
   }
   return <div className="min-h-screen bg-background text-foreground">
     <header className="border-b border-border"><div className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
-      <nav className="mono-label mb-4 flex flex-wrap gap-x-5 gap-y-2"><Link to="/" className="hover:text-primary">← Dashboard</Link><Link to="/tokens" className="hover:text-primary">Token utilisation</Link><Link to="/knowledge-graph" className="hover:text-primary">LLM & Tokenomics KG</Link><Link to="/docs" className="hover:text-primary">Docs</Link></nav>
+      <nav className="mono-label mb-4 flex flex-wrap gap-x-5 gap-y-2"><Link to="/" className="hover:text-primary">← Dashboard</Link><Link to="/tokens" className="hover:text-primary">Token utilisation</Link><Link to="/knowledge-graph" className="hover:text-primary">AI-SOTA KG</Link><Link to="/docs" className="hover:text-primary">Docs</Link></nav>
       <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="flex items-center gap-3 text-3xl font-semibold"><Cpu className="size-7 shrink-0 text-primary" />Hardware &amp; Chipsets</h1>
         <p className="mono-label mt-3">Pretraining · full fine-tuning · LoRA / QLoRA · inference</p></div>
         <div className="flex gap-2"><Button variant="outline" size="sm" disabled={refreshing || isFetching} onClick={refresh}><RefreshCw className={`size-4 ${refreshing ? "animate-spin" : ""}`} />{refreshing ? "Collecting…" : "Refresh now"}</Button><Button size="sm" onClick={exportCsv}><Download className="size-4" />CSV</Button></div>

@@ -16,7 +16,7 @@ export function KgMiniCard() {
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3">
         <div className="flex items-center gap-2">
           <Network className="size-4 text-primary" />
-          <span className="text-sm font-semibold">LLM &amp; Tokenomics KG</span>
+          <span className="text-sm font-semibold">AI-SOTA KG</span>
           <span className="mono-label hidden sm:inline">
             · {graph.nodes.length} nodes · {graph.links.length} links
           </span>

@@ -309,7 +309,7 @@ function Dashboard() {
               Token utilisation
             </Link>
             <Link to="/knowledge-graph" className="hover:text-primary">
-              LLM &amp; Tokenomics KG
+              AI-SOTA KG
             </Link>
             <Link to="/api-docs" className="hover:text-primary">
               API docs
@@ -745,7 +745,7 @@ python pipeline/process.py --in pipeline/out/raw.json \\
               Token utilisation
             </Link>
             <Link to="/knowledge-graph" className="hover:text-primary">
-              LLM &amp; Tokenomics KG
+              AI-SOTA KG
             </Link>
             <Link to="/api-docs" className="hover:text-primary">
               API docs

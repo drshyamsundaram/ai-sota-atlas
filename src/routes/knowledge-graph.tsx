@@ -9,18 +9,19 @@ import { KgGraph, type ForceGraphHandle } from "@/components/kg/KgGraph";
 import { useKgData } from "@/hooks/use-kg-data";
 import { NODE_TYPES, type GraphNode, type NodeType } from "@/lib/graph";
 import { SourcesPanel } from "@/components/SourcesPanel";
+import { searchGraphNodes } from "@/lib/graph-search";
 import { accelerators, serverSystems, hardwareDisclosures } from "@/data/hardware";
 
 export const Route = createFileRoute("/knowledge-graph")({
   head: () => ({
     meta: [
-      { title: "LLM & Tokenomics KG — AI SOTA Shift Tracker" },
+      { title: "AI-SOTA KG — AI SOTA Shift Tracker" },
       {
         name: "description",
         content:
           "Interactive knowledge graph linking LLMs, developers, countries, benchmarks and token usage.",
       },
-      { property: "og:title", content: "LLM & Tokenomics KG — AI SOTA Shift Tracker" },
+      { property: "og:title", content: "AI-SOTA KG — AI SOTA Shift Tracker" },
       {
         property: "og:description",
         content: "Explore how models, benchmarks, developers, countries and token usage connect.",
@@ -53,6 +54,7 @@ function KnowledgeGraphPage() {
   const [topN, setTopN] = useState(40);
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<GraphNode | null>(null);
+  const matches = useMemo(() => searchGraphNodes(graph.nodes, query), [graph.nodes, query]);
 
   const byType = (t: NodeType) => graph.nodes.filter((n) => n.type === t);
   const countries = useMemo(() => byType("country"), [graph]);
@@ -83,6 +85,10 @@ function KnowledgeGraphPage() {
       .sort((a, b) => (b.tokens ?? 0) - (a.tokens ?? 0) || b.size - a.size)
       .slice(0, topN);
     const keep = new Set(models.map((m) => m.id));
+    if (selected) {
+      keep.add(selected.id);
+      for (const id of adj.get(selected.id) ?? []) keep.add(id);
+    }
     for (const m of models) for (const n of adj.get(m.id) ?? []) keep.add(n);
     for (const id of [...keep])
       if (id.startsWith("developer:") || id.startsWith("benchmark:"))
@@ -97,7 +103,7 @@ function KnowledgeGraphPage() {
       nodes,
       links: graph.links.filter((l) => ids.has(l.source) && ids.has(l.target)),
     };
-  }, [graph, types, country, category, slice, topN]);
+  }, [graph, types, country, category, slice, topN, selected]);
 
   const connections = useMemo(() => {
     if (!selected) return [];
@@ -112,14 +118,17 @@ function KnowledgeGraphPage() {
       .sort((a, b) => a.other.type.localeCompare(b.other.type));
   }, [selected, graph]);
 
+  function selectSearchResult(hit: GraphNode) {
+    setCountry("all");
+    setCategory("all");
+    setSlice("all");
+    setTypes(new Set(NODE_TYPES.map((t) => t.id)));
+    setSelected(hit);
+  }
+
   function runSearch() {
-    const q = query.trim().toLowerCase();
-    if (!q) return;
-    const hit = filtered.nodes.find((n) => n.label.toLowerCase().includes(q));
-    if (hit) {
-      setSelected(hit);
-      fgRef.current?.zoomTo(hit.id);
-    }
+    const hit = matches[0];
+    if (hit) selectSearchResult(hit);
   }
 
   function exportJson() {
@@ -127,7 +136,7 @@ function KnowledgeGraphPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "llm_tokenomics_kg.json";
+    a.download = "ai_sota_kg.json";
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -150,7 +159,7 @@ function KnowledgeGraphPage() {
             <Link to="/hardware" className="hover:text-primary">Hardware &amp; Chipsets</Link>
             </nav>
             <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
-              <Network className="size-6 text-primary" /> LLM &amp; Tokenomics KG
+              <Network className="size-6 text-primary" /> AI-SOTA KG
             </h1>
             <p className="mono-label mt-2">
               {graph.nodes.length} nodes · {graph.links.length} links · {graph.stats.matched} models
@@ -179,6 +188,7 @@ function KnowledgeGraphPage() {
             <div className="flex gap-2">
               <Input
                 value={query}
+                aria-label="Search graph nodes"
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && runSearch()}
                 placeholder="e.g. Claude"
@@ -187,6 +197,22 @@ function KnowledgeGraphPage() {
                 <Search className="size-4" />
               </Button>
             </div>
+            {query.trim() && (
+              <div className="mt-3" aria-live="polite">
+                <p className="mono-label mb-2">{isLoading ? "Loading…" : `${matches.length} matches`}</p>
+                {!isLoading && matches.length === 0 && <p className="text-sm text-muted-foreground">No matching nodes.</p>}
+                <ul aria-label="Search results" className="max-h-64 space-y-1 overflow-auto">
+                  {matches.slice(0, 20).map((node) => (
+                    <li key={node.id}>
+                      <Button variant="ghost" className="h-auto w-full flex-col items-start whitespace-normal px-2 py-2 text-left" onClick={() => selectSearchResult(node)}>
+                        <span className="break-words">{node.label}</span>
+                        <span className="mono-label">{node.type.replace(/_/g, " ")}</span>
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
           <div className="space-y-3 rounded-lg border border-border bg-card p-4">
             <p className="mono-label">Node types</p>

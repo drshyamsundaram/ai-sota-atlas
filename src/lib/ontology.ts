@@ -37,6 +37,6 @@ export function ontologyMetrics(ttl: string): OntologyMetrics {
 export const ONTOLOGIES = [
   { id: "leaderboard", label: "Leaderboard dashboard", file: "leaderboard.ttl", ttl: leaderboard },
   { id: "tokens", label: "Token utilisation report", file: "tokens.ttl", ttl: tokens },
-  { id: "kg", label: "LLM & Tokenomics KG", file: "knowledge-graph.ttl", ttl: kg },
+  { id: "kg", label: "AI-SOTA KG", file: "knowledge-graph.ttl", ttl: kg },
   { id: "hardware", label: "Hardware & Chipsets", file: "hardware.ttl", ttl: hardware },
 ] as const;
