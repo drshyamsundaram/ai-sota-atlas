@@ -1,6 +1,6 @@
 # AI SOTA Shift Tracker
 
-Tracks state-of-the-art (SOTA) shifts across public LLM leaderboards, token-utilisation rankings and an LLM & Tokenomics knowledge graph.
+Tracks state-of-the-art (SOTA) shifts across public LLM leaderboards, token-utilisation rankings and the AI-SOTA KG knowledge graph.
 
 **Live app:** https://ai-sota-atlas.lovable.app · **Docs in the app:** `/docs` · **Architecture:** [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · **How to use:** [docs/HOW_TO_USE.md](docs/HOW_TO_USE.md) · **Ontologies:** [ontology/](ontology/README.md)
 
@@ -14,7 +14,7 @@ Created by [Dr Shyam Sundaram](https://www.linkedin.com/in/bioenable/).
 | --- | --- | --- |
 | Leaderboard dashboard | `/` | Normalized benchmark results per category, filters, charts, details table, batch status, Refresh now / Auto-refresh |
 | Token utilisation report | `/tokens` | KPI band, data-quality panel, charts, country drill-down, granular table, CSV export |
-| LLM & Tokenomics KG | `/knowledge-graph` | Interactive graph of models, developers, countries, benchmarks, categories and token slices |
+| AI-SOTA KG | `/knowledge-graph` | Interactive graph of models, developers, countries, benchmarks, categories and token slices |
 | API docs | `/api-docs` | Public REST endpoints (OpenAPI JSON at `/api/public/docs`) |
 | Documentation | `/docs` | README, How to use, Architecture and Ontology (TTL downloads + metrics) |
 | Hardware & Chipsets | `/hardware` | Accelerator catalogue, server systems, side-by-side comparison, workload memory sizing and measured MLPerf results |

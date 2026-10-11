@@ -6,7 +6,7 @@ Turtle (OWL) schemas, one per section of the AI SOTA Shift Tracker. Prefix `sota
 | --- | --- |
 | `leaderboard.ttl` | Leaderboard dashboard (`/`) |
 | `tokens.ttl` | Token utilisation report (`/tokens`) |
-| `knowledge-graph.ttl` | LLM & Tokenomics KG (`/knowledge-graph`); imports the other three |
+| `knowledge-graph.ttl` | AI-SOTA KG (`/knowledge-graph`); imports the other three |
 | `hardware.ttl` | Hardware & Chipsets (`/hardware`); facts, measurements, disclosures and workload estimates |
 
 ## Metrics

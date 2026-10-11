@@ -5,7 +5,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
 <https://ai-sota-atlas.lovable.app/ontology/knowledge-graph> a owl:Ontology ;
-  rdfs:label "AI SOTA Shift Tracker - LLM & Tokenomics KG ontology" ;
+  rdfs:label "AI SOTA Shift Tracker - AI-SOTA KG ontology" ;
   owl:imports <https://ai-sota-atlas.lovable.app/ontology/leaderboard>, <https://ai-sota-atlas.lovable.app/ontology/tokens>, <https://ai-sota-atlas.lovable.app/ontology/hardware> ;
   dcterms:creator "Dr Shyam Sundaram" ; owl:versionInfo "1.0" .
 

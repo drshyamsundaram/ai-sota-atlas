@@ -17,7 +17,7 @@
 - Check the **KPI band** and the **Data quality** panel (coverage, week covered, consistency checks).
 - **Export CSV** for the rows you are viewing. The **Sources** panel lists every feed used.
 
-## 4. LLM & Tokenomics KG (`/knowledge-graph`)
+## 4. AI-SOTA KG (`/knowledge-graph`)
 - Click the small graph on the home page or the menu link.
 - Toggle node types, filter by country / category / slice, set **Top N**, or search a name.
 - Click a node to see its connections, scores and token numbers; jump to the leaderboard or token report.
