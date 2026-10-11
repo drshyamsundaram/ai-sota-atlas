@@ -78,10 +78,9 @@ const ForceGraphCanvas = forwardRef<ForceGraphHandle, Props>(function ForceGraph
     g.d3Force("link")?.distance(mini ? 28 : 55);
   }, [mini, graphData]);
 
-  // Gentle drift for the mini card
+  // Fit changed datasets promptly, including hardware-only filters.
   useEffect(() => {
-    if (!mini) return;
-    const t = setTimeout(() => fg.current?.zoomToFit(400, 16), 1500);
+    const t = setTimeout(() => fg.current?.zoomToFit(400, mini ? 16 : 40), 1200);
     return () => clearTimeout(t);
   }, [mini, graphData, width]);
 
