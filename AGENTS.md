@@ -10,3 +10,6 @@
 <!-- LOVABLE:END -->
 - Knowledge graph is built client/server by pure `buildGraph` in src/lib/graph.ts from the existing leaderboard + token datasets; canvas lib loads lazily behind ClientOnly (browser-only).
 - Ontologies live in /ontology/*.ttl (one per site section) and are imported raw into /docs for download + metrics; keep them in sync with schema changes.
+- Hardware specifications and server configurations live in the typed configuration-driven catalogue; keep measured MLPerf results, explicit model disclosures and memory estimates separate to preserve provenance.
+- MLPerf records retain structured hardware context rather than putting systems in model versions, so graph identity stays model-centric and measured hardware remains inspectable.
+- Hardware memory sizing uses decimal GB, explicit activation budgets and architecture-specific KV inputs; never derive throughput or training duration from theoretical compute.

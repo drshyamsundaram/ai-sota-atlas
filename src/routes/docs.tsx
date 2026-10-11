@@ -3,6 +3,7 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import readme from "../../README.md?raw";
 import architecture from "../../docs/ARCHITECTURE.md?raw";
 import howTo from "../../docs/HOW_TO_USE.md?raw";
@@ -50,16 +51,17 @@ function DocsPage() {
     <div className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border px-6 py-4 flex flex-wrap items-center gap-4">
         <Link to="/" className="mono-label hover:text-primary">← Dashboard</Link>
+        <Link to="/hardware" className="mono-label hover:text-primary">Hardware &amp; Chipsets</Link>
         <h1 className="text-lg font-semibold">Documentation</h1>
         <div className="ml-auto flex flex-wrap gap-2">
           {(Object.keys(LABELS) as Tab[]).map((k) => (
-            <button
+            <Button variant="outline" size="sm"
               key={k}
               onClick={() => setTab(k)}
               className={`mono-label rounded border px-3 py-1 ${tab === k ? "border-primary text-primary" : "border-border hover:text-primary"}`}
             >
               {LABELS[k]}
-            </button>
+            </Button>
           ))}
         </div>
       </header>
@@ -103,15 +105,15 @@ function OntologyTab() {
       <ul>
         {rows.map((o) => (
           <li key={o.id}>
-            <button className="inline-flex items-center gap-2 text-primary hover:underline" onClick={() => download(o.file, o.ttl)}>
+            <Button variant="link" className="inline-flex h-auto items-center gap-2 p-0 text-primary hover:underline" onClick={() => download(o.file, o.ttl)}>
               <Download className="h-4 w-4" /> {o.file}
-            </button>{" "}
+            </Button>{" "}
             — {o.label}
           </li>
         ))}
       </ul>
       <h2>Ontology metrics</h2>
-      <table>
+      <div className="overflow-x-auto"><table>
         <thead>
           <tr>
             <th>Metric</th>
@@ -135,7 +137,7 @@ function OntologyTab() {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table></div>
       <p>Metrics are computed live from the files shipped with the app, so they stay in step with the repository.</p>
     </div>
   );

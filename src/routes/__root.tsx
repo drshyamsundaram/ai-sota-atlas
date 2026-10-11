@@ -88,8 +88,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "AI SOTA Shift Tracker | LLM Leaderboard Signals | Dr Shyam S" },
       { name: "twitter:description", content: "Track state-of-the-art LLM shifts across global, hallucination, India, China and Europe leaderboards from one normalized, source-backed dataset." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f9cff0b2-5f28-4cc4-9702-da34a5fc1702/id-preview-bbb77ed8--8a975322-4e1e-4dc3-a248-98d9c35881d6.lovable.app-1785649646536.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f9cff0b2-5f28-4cc4-9702-da34a5fc1702/id-preview-bbb77ed8--8a975322-4e1e-4dc3-a248-98d9c35881d6.lovable.app-1785649646536.png" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },

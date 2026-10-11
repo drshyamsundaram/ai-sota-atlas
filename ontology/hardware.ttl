@@ -1,0 +1,45 @@
+@prefix sota: <https://ai-sota-atlas.lovable.app/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+<https://ai-sota-atlas.lovable.app/ontology/hardware> a owl:Ontology ; rdfs:label "LLM Hardware and Chipsets" ; dcterms:creator "Dr Shyam Sundaram" ; owl:versionInfo "1.0" .
+
+sota:Accelerator a owl:Class ; rdfs:label "Accelerator chipset" .
+sota:ServerSystem a owl:Class ; rdfs:label "Server configuration or rack system" .
+sota:HardwareVendor a owl:Class .
+sota:HardwareEvidence a owl:Class .
+sota:HardwareMeasurement a owl:Class ; rdfs:subClassOf sota:HardwareEvidence .
+sota:HardwareDisclosure a owl:Class ; rdfs:subClassOf sota:HardwareEvidence .
+sota:ManufacturerSpecification a owl:Class ; rdfs:subClassOf sota:HardwareEvidence .
+sota:WorkloadEstimate a owl:Class ; rdfs:comment "Planning estimate, not measured performance or proof of deployment." .
+sota:Workload a owl:Class .
+
+sota:manufactures a owl:ObjectProperty ; rdfs:domain sota:HardwareVendor .
+sota:contains a owl:ObjectProperty ; rdfs:domain sota:ServerSystem ; rdfs:range sota:Accelerator .
+sota:trainedOn a owl:ObjectProperty ; rdfs:domain sota:Model ; rdfs:range sota:Accelerator ; rdfs:comment "Explicitly reported training only." .
+sota:finetunedOn a owl:ObjectProperty ; rdfs:domain sota:Model ; rdfs:range sota:Accelerator .
+sota:servedOn a owl:ObjectProperty ; rdfs:domain sota:Model ; rdfs:range sota:Accelerator .
+sota:benchmarkedOn a owl:ObjectProperty ; rdfs:domain sota:Model ; rdfs:range sota:ServerSystem ; rdfs:comment "Benchmark execution, not historical training or production use." .
+sota:estimatedSuitableFor a owl:ObjectProperty ; rdfs:range sota:WorkloadEstimate ; rdfs:comment "Estimated suitability is never asserted as deployment evidence." .
+sota:hasHardwareEvidence a owl:ObjectProperty ; rdfs:range sota:HardwareEvidence .
+
+sota:memoryGb a owl:DatatypeProperty ; rdfs:domain sota:Accelerator ; rdfs:range xsd:decimal .
+sota:bandwidthTbPerSecond a owl:DatatypeProperty ; rdfs:domain sota:Accelerator ; rdfs:range xsd:decimal .
+sota:powerWatts a owl:DatatypeProperty ; rdfs:domain sota:Accelerator ; rdfs:range xsd:decimal .
+sota:acceleratorCount a owl:DatatypeProperty ; rdfs:domain sota:ServerSystem ; rdfs:range xsd:integer .
+sota:verifiedAt a owl:DatatypeProperty ; rdfs:range xsd:date .
+sota:evidenceUrl a owl:DatatypeProperty ; rdfs:range xsd:anyURI .
+sota:precision a owl:DatatypeProperty ; rdfs:range xsd:string .
+sota:scenario a owl:DatatypeProperty ; rdfs:range xsd:string .
+sota:division a owl:DatatypeProperty ; rdfs:range xsd:string .
+sota:resultVersion a owl:DatatypeProperty ; rdfs:range xsd:string .
+sota:estimatedMemoryGb a owl:DatatypeProperty ; rdfs:domain sota:WorkloadEstimate ; rdfs:range xsd:decimal .
+sota:assumptions a owl:DatatypeProperty ; rdfs:domain sota:WorkloadEstimate ; rdfs:range xsd:string .
+
+sota:pretraining a sota:Workload ; rdfs:label "Pretraining or continued pretraining" .
+sota:full_finetuning a sota:Workload ; rdfs:label "Full fine-tuning" .
+sota:lora a sota:Workload ; rdfs:label "LoRA fine-tuning" .
+sota:qlora a sota:Workload ; rdfs:label "QLoRA fine-tuning" .
+sota:inference a sota:Workload ; rdfs:label "Inference" .

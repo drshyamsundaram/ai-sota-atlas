@@ -18,6 +18,11 @@ export const recordSchema = z.object({
   scope_region: z.enum(scopeRegions).catch("unknown"),
   task_type: z.string().default("general"),
   raw_hash: z.string().default(""),
+  hardware_context: z.object({
+    system: z.string(), submitter: z.string(), round: z.string(), scenario: z.string(),
+    division: z.string(), precision: z.string(), accelerators: z.string(),
+    source_url: z.string().url(),
+  }).optional(),
 });
 
 export const datasetSchema = z.object({

@@ -1,6 +1,7 @@
 import leaderboard from "../../ontology/leaderboard.ttl?raw";
 import tokens from "../../ontology/tokens.ttl?raw";
 import kg from "../../ontology/knowledge-graph.ttl?raw";
+import hardware from "../../ontology/hardware.ttl?raw";
 
 export type OntologyMetrics = {
   classes: number;
@@ -37,4 +38,5 @@ export const ONTOLOGIES = [
   { id: "leaderboard", label: "Leaderboard dashboard", file: "leaderboard.ttl", ttl: leaderboard },
   { id: "tokens", label: "Token utilisation report", file: "tokens.ttl", ttl: tokens },
   { id: "kg", label: "LLM & Tokenomics KG", file: "knowledge-graph.ttl", ttl: kg },
+  { id: "hardware", label: "Hardware & Chipsets", file: "hardware.ttl", ttl: hardware },
 ] as const;

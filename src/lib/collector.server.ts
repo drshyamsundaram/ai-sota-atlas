@@ -641,42 +641,32 @@ export async function extractMmmu(pageUrl: string, category: string): Promise<Le
 
 /** MLPerf Inference: newest round's summary_results.json; best closed-division datacenter tokens/s per LLM workload. */
 export async function extractMlperf(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
-  type Mlp = { Suite?: string; Scenario?: string; Performance_Units?: string; Category?: string; compliance?: unknown; Model?: string; Performance_Result?: number; Submitter?: string; System?: string };
-  let rows: Mlp[] = [];
-  let round = "";
-  for (const v of ["6.1", "6.0", "5.1"]) {
-    try {
-      rows = JSON.parse(
-        await fetchWithBackoff(`https://raw.githubusercontent.com/mlcommons/inference_results_v${v}/main/summary_results.json`, 1),
-      );
-      round = `v${v}`;
-      if (rows.length) break;
-    } catch {
-      /* try older round */
-    }
-  }
-  if (!rows.length) throw new Error("mlperf: no results file");
+  const { collectHardwareMeasurements } = await import("./hardware-collector.server");
+  const feed = await collectHardwareMeasurements();
+  if (feed.status !== "ok") throw new Error("mlperf: no results file");
   const ctx = { pageUrl, category, retrievedAt: new Date().toISOString() };
-  const best = new Map<string, Mlp>();
-  for (const r of rows) {
-    if (r.Suite !== "datacenter" || r.Scenario !== "Offline" || r.Performance_Units !== "Tokens/s") continue;
-    if (!(r.Category === "closed" || r.compliance === "closed")) continue;
-    const model = String(r.Model);
+  const best = new Map<string, (typeof feed.measurements)[number]>();
+  for (const r of feed.measurements) {
+    const model = r.model;
     const prev = best.get(model);
-    if (!prev || Number(r.Performance_Result) > Number(prev.Performance_Result)) best.set(model, r);
+    if (!prev || r.value > prev.value) best.set(model, r);
   }
   const out: LeaderboardRecord[] = [];
   [...best.entries()]
-    .sort((a, b) => Number(b[1].Performance_Result) - Number(a[1].Performance_Result))
+    .sort((a, b) => b[1].value - a[1].value)
     .slice(0, 10)
-    .forEach(([model, r], i) =>
+    .forEach(([model, r], i) => {
       emit(out, ctx, {
-        source: "MLPerf Inference", model, version: `${r.Submitter} · ${r.System}`.slice(0, 120),
-        bench: `MLPerf Inference ${round} (datacenter, offline)`, metric: "throughput_tokens_per_s",
-        value: Number(r.Performance_Result), unit: "tokens/s", rank: i + 1, date: null, task: "infrastructure",
-        key: `mlperf:${round}:${model}`,
-      }),
-    );
+        source: "MLPerf Inference", model,
+        bench: `MLPerf Inference ${r.round} (datacenter, offline)`, metric: "throughput_tokens_per_s",
+        value: r.value, unit: "tokens/s", rank: i + 1, date: null, task: "infrastructure",
+        key: `mlperf:${r.round}:${model}`,
+      });
+      const row = out.at(-1);
+      if (row) row.hardware_context = { system: r.system, submitter: r.submitter,
+        round: r.round, scenario: r.scenario, division: r.division, precision: r.precision,
+        accelerators: r.accelerators, source_url: r.sourceUrl };
+    });
   if (!out.length) throw new Error("mlperf: no LLM tokens/s rows");
   return out;
 }

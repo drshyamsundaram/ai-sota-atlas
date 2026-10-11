@@ -22,6 +22,8 @@ sota:inCategory a owl:ObjectProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:r
 sota:fromSource a owl:ObjectProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:range sota:Source .
 sota:scopeRegion a owl:ObjectProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:range sota:Region .
 sota:inBatch a owl:ObjectProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:range sota:Batch .
+sota:measuredSystem a owl:ObjectProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:range sota:ServerSystem .
+sota:hardwareContext a owl:DatatypeProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:range xsd:string ; rdfs:comment "Retains submitter, system, accelerator configuration, precision, scenario, division, version and source URL." .
 
 sota:modelVersion a owl:DatatypeProperty ; rdfs:domain sota:Model ; rdfs:range xsd:string .
 sota:metricName a owl:DatatypeProperty ; rdfs:domain sota:BenchmarkResult ; rdfs:range xsd:string .

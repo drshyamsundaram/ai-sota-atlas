@@ -1,0 +1,429 @@
+{
+  "accelerators": [
+    {
+      "id": "h100",
+      "name": "H100 SXM",
+      "vendor": "NVIDIA",
+      "architecture": "Hopper",
+      "form": "SXM5",
+      "memoryGb": 80,
+      "memoryType": "HBM3",
+      "bandwidthTb": 3.35,
+      "powerW": 700,
+      "interconnect": "NVLink 4 \u00b7 900 GB/s",
+      "compute": "FP8 tensor 1,979 dense / 3,958 sparse TFLOPS; BF16 989 dense / 1,979 sparse TFLOPS",
+      "precision": "FP32, TF32, BF16, FP16, FP8, INT8",
+      "software": "CUDA \u00b7 PyTorch \u00b7 NCCL \u00b7 TensorRT-LLM",
+      "availability": "Publicly documented product; regional capacity varies",
+      "cloud": "Multiple cloud providers",
+      "workloads": [
+        "pretraining",
+        "finetuning",
+        "lora",
+        "qlora",
+        "inference"
+      ],
+      "source": {
+        "label": "NVIDIA specifications",
+        "url": "https://www.nvidia.com/en-us/data-center/h100/",
+        "verified": "2026-10-11"
+      }
+    },
+    {
+      "id": "h200",
+      "name": "H200 SXM",
+      "vendor": "NVIDIA",
+      "architecture": "Hopper",
+      "form": "SXM5",
+      "memoryGb": 141,
+      "memoryType": "HBM3e",
+      "bandwidthTb": 4.8,
+      "powerW": 700,
+      "interconnect": "NVLink 4 \u00b7 900 GB/s",
+      "compute": "FP8 tensor 1,979 dense / 3,958 sparse TFLOPS; BF16 989 dense / 1,979 sparse TFLOPS",
+      "precision": "FP32, TF32, BF16, FP16, FP8, INT8",
+      "software": "CUDA \u00b7 PyTorch \u00b7 NCCL \u00b7 TensorRT-LLM",
+      "availability": "Publicly documented product; regional capacity varies",
+      "cloud": "Multiple cloud providers",
+      "workloads": [
+        "pretraining",
+        "finetuning",
+        "lora",
+        "qlora",
+        "inference"
+      ],
+      "source": {
+        "label": "NVIDIA specifications",
+        "url": "https://www.nvidia.com/en-us/data-center/h200/",
+        "verified": "2026-10-11"
+      }
+    },
+    {
+      "id": "b200",
+      "name": "B200",
+      "vendor": "NVIDIA",
+      "architecture": "Blackwell",
+      "form": "SXM6",
+      "memoryGb": 180,
+      "memoryType": "HBM3e",
+      "bandwidthTb": 8,
+      "powerW": 1000,
+      "interconnect": "NVLink 5 \u00b7 1.8 TB/s",
+      "compute": "Peak figures depend on precision and sparsity; no normalized TFLOPS comparison asserted",
+      "precision": "FP32, TF32, BF16, FP16, FP8, FP4",
+      "software": "CUDA \u00b7 PyTorch \u00b7 NCCL \u00b7 TensorRT-LLM",
+      "availability": "Publicly documented product; regional capacity varies",
+      "cloud": "Provider-specific HGX / DGX capacity",
+      "workloads": [
+        "pretraining",
+        "finetuning",
+        "lora",
+        "qlora",
+        "inference"
+      ],
+      "source": {
+        "label": "NVIDIA specifications",
+        "url": "https://images.nvidia.com/aem-dam/Solutions/documents/HGX-B200-PCF-Summary.pdf",
+        "verified": "2026-10-11"
+      }
+    },
+    {
+      "id": "mi300x",
+      "name": "Instinct MI300X",
+      "vendor": "AMD",
+      "architecture": "CDNA 3",
+      "form": "OAM",
+      "memoryGb": 192,
+      "memoryType": "HBM3",
+      "bandwidthTb": 5.3,
+      "powerW": 750,
+      "interconnect": "Infinity Fabric \u00b7 PCIe 5.0 x16",
+      "compute": "FP8 1,307.4 dense / 2,614.9 sparse TFLOPS; BF16 653.7 dense / 1,307.4 sparse TFLOPS",
+      "precision": "FP32, BF16, FP16, FP8, INT8",
+      "software": "ROCm \u00b7 PyTorch \u00b7 RCCL \u00b7 vLLM",
+      "availability": "Publicly documented product; regional capacity varies",
+      "cloud": "Provider-specific GPU instances",
+      "workloads": [
+        "pretraining",
+        "finetuning",
+        "lora",
+        "qlora",
+        "inference"
+      ],
+      "source": {
+        "label": "AMD specifications",
+        "url": "https://www.amd.com/en/products/accelerators/instinct/mi300/mi300x.html",
+        "verified": "2026-10-11"
+      }
+    },
+    {
+      "id": "mi325x",
+      "name": "Instinct MI325X",
+      "vendor": "AMD",
+      "architecture": "CDNA 3",
+      "form": "OAM",
+      "memoryGb": 256,
+      "memoryType": "HBM3e",
+      "bandwidthTb": 6,
+      "powerW": 1000,
+      "interconnect": "Infinity Fabric \u00b7 PCIe 5.0 x16",
+      "compute": "FP8 1,307.4 dense / 2,614.9 sparse TFLOPS; BF16 653.7 dense / 1,307.4 sparse TFLOPS",
+      "precision": "FP32, BF16, FP16, FP8, INT8",
+      "software": "ROCm \u00b7 PyTorch \u00b7 RCCL \u00b7 vLLM",
+      "availability": "Publicly documented product; regional capacity varies",
+      "cloud": "Provider-specific availability",
+      "workloads": [
+        "pretraining",
+        "finetuning",
+        "lora",
+        "qlora",
+        "inference"
+      ],
+      "source": {
+        "label": "AMD specifications",
+        "url": "https://www.amd.com/en/products/accelerators/instinct/mi300/mi325x.html",
+        "verified": "2026-10-11"
+      }
+    },
+    {
+      "id": "mi350x",
+      "name": "Instinct MI350X",
+      "vendor": "AMD",
+      "architecture": "CDNA 4",
+      "form": "OAM",
+      "memoryGb": 288,
+      "memoryType": "HBM3e",
+      "bandwidthTb": 8,
+      "powerW": 1000,
+      "interconnect": "Infinity Fabric \u00b7 PCIe 5.0",
+      "compute": "OCP FP8 4.6 dense / 9.2 sparse PFLOPS; theoretical vendor peak",
+      "precision": "FP32, BF16, FP16, FP8, MXFP6, MXFP4",
+      "software": "ROCm \u00b7 PyTorch \u00b7 RCCL; validate version support",
+      "availability": "Publicly documented product; regional capacity varies",
+      "cloud": "Provider-specific availability",
+      "workloads": [
+        "pretraining",
+        "finetuning",
+        "lora",
+        "qlora",
+        "inference"
+      ],
+      "source": {
+        "label": "AMD specifications",
+        "url": "https://www.amd.com/en/products/accelerators/instinct/mi350/mi350x.html",
+        "verified": "2026-10-11"
+      }
+    },
+    {
+      "id": "tpu-v5p",
+      "name": "TPU v5p",
+      "vendor": "Google",
+      "architecture": "TPU v5p",
+      "form": "Cloud TPU chip",
+      "memoryGb": 102.005,
+      "memoryType": "HBM \u00b7 95 GiB",
+      "bandwidthTb": 2.765,
+      "powerW": null,
+      "interconnect": "ICI 1,200 GB/s bidirectional \u00b7 3D torus (cube+ slices)",
+      "compute": "BF16 459 TFLOPS; FP8 459 TFLOPS, vendor peak",
+      "precision": "BF16, FP8; compiler-dependent operation support",
+      "software": "XLA \u00b7 JAX \u00b7 PyTorch/XLA; validate quantization kernels",
+      "availability": "Publicly documented product; regional capacity varies",
+      "cloud": "Google Cloud",
+      "workloads": [
+        "pretraining",
+        "finetuning",
+        "lora",
+        "inference"
+      ],
+      "source": {
+        "label": "Google specifications",
+        "url": "https://docs.cloud.google.com/tpu/docs/v5p",
+        "verified": "2026-10-11"
+      }
+    },
+    {
+      "id": "trainium2",
+      "name": "Trainium2",
+      "vendor": "AWS",
+      "architecture": "Neuron v3",
+      "form": "Cloud accelerator",
+      "memoryGb": 103.079,
+      "memoryType": "HBM \u00b7 96 GiB",
+      "bandwidthTb": 2.9,
+      "powerW": null,
+      "interconnect": "NeuronLink v3 \u00b7 1.28 TB/s",
+      "compute": "BF16/FP16/TF32 667 TFLOPS; FP8 1,299 TFLOPS (vendor listed)",
+      "precision": "FP32, TF32, BF16, FP16, FP8",
+      "software": "AWS Neuron SDK \u00b7 PyTorch; compiler/operator coverage required",
+      "availability": "Publicly documented product; regional capacity varies",
+      "cloud": "AWS EC2 Trn2",
+      "workloads": [
+        "pretraining",
+        "finetuning",
+        "lora",
+        "inference"
+      ],
+      "source": {
+        "label": "AWS specifications",
+        "url": "https://awsdocs-neuron.readthedocs-hosted.com/en/latest/about-neuron/arch/neuron-hardware/trainium2.html",
+        "verified": "2026-10-11"
+      }
+    },
+    {
+      "id": "inferentia2",
+      "name": "Inferentia2",
+      "vendor": "AWS",
+      "architecture": "Neuron v2",
+      "form": "Cloud accelerator",
+      "memoryGb": 34.36,
+      "memoryType": "HBM \u00b7 32 GiB",
+      "bandwidthTb": 0.88,
+      "powerW": null,
+      "interconnect": "NeuronLink v2",
+      "compute": "FP32 47.5 TFLOPS; BF16/FP16/TF32 190 TFLOPS; INT8 380 TOPS",
+      "precision": "FP32, TF32, BF16, FP16, INT8",
+      "software": "AWS Neuron SDK \u00b7 compiled serving",
+      "availability": "Publicly documented product; regional capacity varies",
+      "cloud": "AWS EC2 Inf2",
+      "workloads": [
+        "inference"
+      ],
+      "source": {
+        "label": "AWS specifications",
+        "url": "https://awsdocs-neuron.readthedocs-hosted.com/en/latest/about-neuron/arch/neuron-hardware/inferentia2.html",
+        "verified": "2026-10-11"
+      }
+    },
+    {
+      "id": "gb200-gpu",
+      "name": "GB200 Blackwell GPU",
+      "vendor": "NVIDIA",
+      "architecture": "Blackwell",
+      "form": "GB200 Superchip (2 GPUs + Grace CPU)",
+      "memoryGb": 186,
+      "memoryType": "HBM3e \u00b7 372 GB per Superchip",
+      "bandwidthTb": 8,
+      "powerW": null,
+      "interconnect": "NVLink 5 \u00b7 1.8 TB/s",
+      "compute": "Vendor system-level precision figures; see GB200 NVL72 specifications",
+      "precision": "FP32, TF32, BF16, FP16, FP8, FP4",
+      "software": "CUDA \u00b7 PyTorch \u00b7 NCCL \u00b7 TensorRT-LLM",
+      "availability": "Publicly documented product; regional capacity varies",
+      "cloud": "Provider-specific HGX / DGX capacity",
+      "workloads": [
+        "pretraining",
+        "finetuning",
+        "lora",
+        "qlora",
+        "inference"
+      ],
+      "source": {
+        "label": "NVIDIA GB200 specifications",
+        "url": "https://www.nvidia.com/en-us/data-center/gb200-nvl72/",
+        "verified": "2026-10-11"
+      }
+    }
+  ],
+  "systems": [
+    {
+      "id": "dgx-h100",
+      "name": "DGX H100",
+      "vendor": "NVIDIA",
+      "acceleratorId": "h100",
+      "count": 8,
+      "cpu": "2 \u00d7 Intel Xeon Platinum 8480C \u00b7 112 cores total",
+      "ram": "2 TB",
+      "storage": "8 \u00d7 3.84 TB NVMe data; 2 \u00d7 1.92 TB OS",
+      "network": "8 \u00d7 ConnectX-7 \u00b7 up to 400 Gb/s per adapter",
+      "topology": "NVLink + 4 NVSwitch \u00b7 8-GPU domain",
+      "powerCooling": "10.2 kW maximum; air-cooled",
+      "cloud": "OEM / deployment-specific; price not verified",
+      "source": {
+        "label": "NVIDIA system specifications",
+        "url": "https://docs.nvidia.com/dgx/dgxh100-user-guide/introduction-to-dgxh100.html",
+        "verified": "2026-10-11"
+      }
+    },
+    {
+      "id": "dgx-h200",
+      "name": "DGX H200",
+      "vendor": "NVIDIA",
+      "acceleratorId": "h200",
+      "count": 8,
+      "cpu": "2 \u00d7 Intel Xeon Platinum 8480C",
+      "ram": "2 TB",
+      "storage": "8 \u00d7 3.84 TB NVMe data; 2 \u00d7 1.92 TB OS",
+      "network": "8 \u00d7 ConnectX-7 \u00b7 up to 400 Gb/s per adapter",
+      "topology": "NVLink + 4 NVSwitch \u00b7 8-GPU domain",
+      "powerCooling": "10.2 kW maximum; air-cooled",
+      "cloud": "OEM / deployment-specific; price not verified",
+      "source": {
+        "label": "NVIDIA system specifications",
+        "url": "https://docs.nvidia.com/dgx/dgxh100-user-guide/introduction-to-dgxh100.html",
+        "verified": "2026-10-11"
+      }
+    },
+    {
+      "id": "xe9680-mi300x",
+      "name": "PowerEdge XE9680 \u00b7 MI300X configuration",
+      "vendor": "Dell",
+      "acceleratorId": "mi300x",
+      "count": 8,
+      "cpu": "2 \u00d7 Intel Xeon Scalable; generation/configuration dependent",
+      "ram": "Up to 4 TB DDR5",
+      "storage": "NVMe configuration-dependent",
+      "network": "PCIe 5.0 network cards; configuration-dependent",
+      "topology": "8 \u00d7 MI300X \u00b7 Infinity Fabric",
+      "powerCooling": "Air-cooled; PSU ratings are not system draw",
+      "cloud": "OEM / deployment-specific; price not verified",
+      "source": {
+        "label": "Dell system specifications",
+        "url": "https://www.delltechnologies.com/asset/en-us/products/servers/technical-support/poweredge-xe9680-spec-sheet.pdf",
+        "verified": "2026-10-11"
+      }
+    },
+    {
+      "id": "supermicro-h200",
+      "name": "SYS-821GE-TNHR \u00b7 H200 configuration",
+      "vendor": "Supermicro",
+      "acceleratorId": "h200",
+      "count": 8,
+      "cpu": "2 \u00d7 4th/5th-gen Intel Xeon Scalable",
+      "ram": "Up to 8 TB DDR5",
+      "storage": "NVMe configuration-dependent",
+      "network": "PCIe 5.0 network expansion",
+      "topology": "HGX \u00b7 NVLink + NVSwitch",
+      "powerCooling": "8U air-cooled; 6 \u00d7 3,000 W PSUs (4+2), not measured draw",
+      "cloud": "OEM / deployment-specific; price not verified",
+      "source": {
+        "label": "Supermicro system specifications",
+        "url": "https://www.supermicro.com/en/products/system/datasheet/SYS-821GE-TNHR",
+        "verified": "2026-10-11"
+      }
+    },
+    {
+      "id": "gb200-nvl72",
+      "name": "GB200 NVL72",
+      "vendor": "NVIDIA",
+      "acceleratorId": "gb200-gpu",
+      "count": 72,
+      "cpu": "36 NVIDIA Grace CPUs \u00b7 2,592 Arm Neoverse V2 cores",
+      "ram": "17 TB LPDDR5X (CPU memory; separate from GPU HBM)",
+      "storage": "Deployment-specific",
+      "network": "Scale-out networking deployment-specific",
+      "topology": "72-GPU NVLink domain \u00b7 130 TB/s aggregate",
+      "powerCooling": "Rack-scale liquid-cooled; facility power must be assessed",
+      "cloud": "Provider-specific; price not verified",
+      "source": {
+        "label": "NVIDIA GB200 NVL72 specifications",
+        "url": "https://www.nvidia.com/en-us/data-center/gb200-nvl72/",
+        "verified": "2026-10-11"
+      }
+    },
+    {
+      "id": "sr685a-mi300x",
+      "name": "ThinkSystem SR685a V3 \u00b7 MI300X board",
+      "vendor": "Lenovo",
+      "acceleratorId": "mi300x",
+      "count": 8,
+      "cpu": "AMD EPYC; exact CPU configuration not verified",
+      "ram": "Configuration-dependent; not verified",
+      "storage": "Configuration-dependent",
+      "network": "Configuration-dependent",
+      "topology": "8-GPU MI300X OAM board \u00b7 Infinity Fabric",
+      "powerCooling": "Configuration-dependent; verify server installation requirements",
+      "cloud": "OEM system; price not verified",
+      "source": {
+        "label": "Lenovo MI300X 8-GPU board guide",
+        "url": "https://lenovopress.lenovo.com/lp1943-thinksystem-amd-mi300x-192gb-750w-8-gpu-board",
+        "verified": "2026-10-11"
+      }
+    }
+  ],
+  "disclosures": [
+    {
+      "model": "Llama 3.1 405B",
+      "acceleratorId": "h100",
+      "phase": "trained_on",
+      "detail": "Meta reports training on up to 16,384 H100 GPUs. Applies to this model version, not all Llama models.",
+      "source": {
+        "label": "The Llama 3 Herd of Models",
+        "url": "https://arxiv.org/html/2407.21783v2",
+        "verified": "2026-10-11"
+      }
+    }
+  ],
+  "referenceSources": [
+    {
+      "label": "MLPerf Training \u00b7 time-to-target tasks (reference)",
+      "url": "https://github.com/mlcommons/training_results_v5.0",
+      "verified": "2026-10-11"
+    },
+    {
+      "label": "HPE DL380a Gen11 \u00b7 configuration reference",
+      "url": "https://www.hpe.com/us/en/collaterals/collateral.a50004309enw.html",
+      "verified": "2026-10-11"
+    }
+  ]
+}

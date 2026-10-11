@@ -6,16 +6,16 @@ Turtle (OWL) schemas, one per section of the AI SOTA Shift Tracker. Prefix `sota
 | --- | --- |
 | `leaderboard.ttl` | Leaderboard dashboard (`/`) |
 | `tokens.ttl` | Token utilisation report (`/tokens`) |
-| `knowledge-graph.ttl` | LLM & Tokenomics KG (`/knowledge-graph`); imports the other two |
+| `knowledge-graph.ttl` | LLM & Tokenomics KG (`/knowledge-graph`); imports the other three |
+| `hardware.ttl` | Hardware & Chipsets (`/hardware`); facts, measurements, disclosures and workload estimates |
 
 ## Metrics
 
-| Metric | leaderboard | tokens | knowledge-graph |
-| --- | --- | --- | --- |
-| Classes | 7 | 8 | 7 |
-| Object properties | 6 | 6 | 6 |
-| Datatype properties | 9 | 7 | 5 |
-| Named individuals | 20 | 9 | 0 |
-| SubClassOf axioms | 0 | 0 | 6 |
+| Metric | leaderboard | tokens | knowledge-graph | hardware |
+| --- | --- | --- | --- | --- |
+| Classes | 7 | 8 | 10 | 9 |
+| Object properties | 7 | 6 | 13 | 8 |
+| Datatype properties | 10 | 7 | 5 | 12 |
+| SubClassOf axioms | 0 | 0 | 9 | 3 |
 
 Live metrics (including triples and domain/range axioms) are shown in the app under **Docs → Ontology**, where the files can also be downloaded.
