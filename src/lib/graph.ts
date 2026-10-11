@@ -201,6 +201,23 @@ export function buildGraph(
     link({ source: id, target: `accelerator:${d.acceleratorId}`, relation: d.phase, label: d.detail });
   }
 
+  // Specialist catalogue (unranked): model/platform → category, developer → country.
+  for (const s of specialistModels) {
+    const id = `model:${normModel(s.name)}`;
+    const catId = `category:${s.category}`;
+    const devId = `developer:${s.developer}`;
+    const cId = `country:${s.country}`;
+    add({ id, type: "model", label: s.name, size: 2.5,
+      meta: { specialist_kind: s.kind, evidence: s.evidence, benchmarks: s.benchmarks.join(", "), claim: s.claim ?? null, url: s.url } });
+    add({ id: catId, type: "category", label: CATEGORY_TITLES[s.category] ?? s.category, size: 1 });
+    add({ id: devId, type: "developer", label: s.developer, size: 1 });
+    add({ id: cId, type: "country", label: s.country, size: 1 });
+    link({ source: id, target: catId, relation: "belongs_to", label: s.kind });
+    link({ source: devId, target: id, relation: "builds" });
+    link({ source: devId, target: cId, relation: "based_in" });
+  }
+
+
   // Sizing
   const maxTok = Math.max(1, ...tokenByModel.values());
   const degree = new Map<string, number>();
