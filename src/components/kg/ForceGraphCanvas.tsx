@@ -80,9 +80,17 @@ const ForceGraphCanvas = forwardRef<ForceGraphHandle, Props>(function ForceGraph
 
   // Fit changed datasets promptly, including hardware-only filters.
   useEffect(() => {
-    const t = setTimeout(() => fg.current?.zoomToFit(400, mini ? 16 : 40), 1200);
+    const t = setTimeout(() => {
+      const node = (graphData.nodes as SimNode[]).find((n) => n.id === selectedId);
+      if (node?.x != null && node.y != null) {
+        fg.current?.centerAt(node.x, node.y, 600);
+        fg.current?.zoom(3, 600);
+      } else {
+        fg.current?.zoomToFit(400, mini ? 16 : 40);
+      }
+    }, 1200);
     return () => clearTimeout(t);
-  }, [mini, graphData, width]);
+  }, [mini, graphData, width, selectedId]);
 
   useImperativeHandle(ref, () => ({
     zoomTo: (id) => {
@@ -98,7 +106,7 @@ const ForceGraphCanvas = forwardRef<ForceGraphHandle, Props>(function ForceGraph
       if (!canvas) return;
       const a = document.createElement("a");
       a.href = canvas.toDataURL("image/png");
-      a.download = "llm_tokenomics_kg.png";
+      a.download = "ai_sota_kg.png";
       a.click();
     },
   }));
