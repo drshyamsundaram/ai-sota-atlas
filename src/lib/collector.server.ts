@@ -673,8 +673,9 @@ export async function extractBenchlmBenchmark(pageUrl: string, category: string)
   let rank = 0;
   for (const tr of body.split(/<tr[\s>]/).slice(1)) {
     const model = stripTags(tr.match(/<a[^>]*>([\s\S]*?)<\/a>/)?.[1] ?? "");
-    const scoreCell = tr.match(/font-mono[^>]*>\s*(-?\d+(?:\.\d+)?)\s*%?\s*</g)?.pop();
-    const value = scoreCell ? Number(scoreCell.match(/-?\d+(?:\.\d+)?/)![0]) : NaN;
+    const cells = [...tr.matchAll(/<span[^>]*font-mono[^>]*>([^<]*)<\/span>/g)].map((c) => c[1]!.trim());
+    const scoreText = cells.find((c) => /^-?\d+(?:\.\d+)?\s*%?$/.test(c));
+    const value = scoreText ? Number(scoreText.replace("%", "")) : NaN;
     if (!model || !Number.isFinite(value)) continue;
     rank += 1;
     emit(out, ctx, {
