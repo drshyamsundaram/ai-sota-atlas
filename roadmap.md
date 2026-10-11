@@ -3,6 +3,6 @@
 - [x] Sources panels on token report + KG
 - [x] Verify KG updates
 - [x] TTL ontologies per section, downloads, metrics, ontology/ folder
-- [ ] Hardware catalogue, server comparisons and workload sizing
-- [ ] Hardware evidence, MLPerf refresh and knowledge-graph integration
-- [ ] Hardware documentation, ontology and validation
+- [x] Hardware catalogue, server comparisons and workload sizing
+- [x] Hardware evidence, MLPerf refresh and knowledge-graph integration
+- [x] Hardware documentation, ontology and validation
