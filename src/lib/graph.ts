@@ -1,6 +1,7 @@
 import type { LeaderboardRecord } from "./schema";
 import type { TokenRecord } from "./token-schema";
 import { accelerators, hardwareDisclosures, serverSystems } from "@/data/hardware";
+import { specialistModels } from "@/data/specialist-models";
 
 export type NodeType = "model" | "developer" | "country" | "benchmark" | "category" | "slice" | "accelerator" | "server" | "hardware_vendor";
 
@@ -85,6 +86,8 @@ const CATEGORY_TITLES: Record<string, string> = {
   india: "India",
   china: "China",
   europe: "Europe",
+  clinical: "Clinical",
+  life_sciences: "Life sciences",
   mea: "Middle East & Africa",
 };
 
