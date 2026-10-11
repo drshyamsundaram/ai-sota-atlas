@@ -20,6 +20,7 @@
 ## 4. AI-SOTA KG (`/knowledge-graph`)
 - Click the small graph on the home page or the menu link.
 - Toggle node types, filter by country / category / slice, set **Top N**, or search a name.
+- Search checks the full graph, including nodes outside Top N. Choose a match or press Enter for the first result; selecting it clears filters and reveals its connections.
 - Click a node to see its connections, scores and token numbers; jump to the leaderboard or token report.
 - Export **PNG** or **JSON**. The **Graph sources** panel shows where every node came from.
 - The graph updates after every refresh, about once a minute, and when you return to the tab.

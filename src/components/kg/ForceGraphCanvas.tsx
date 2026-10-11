@@ -124,7 +124,15 @@ const ForceGraphCanvas = forwardRef<ForceGraphHandle, Props>(function ForceGraph
         enableZoomInteraction={!mini}
         enablePanInteraction={!mini}
         enableNodeDrag={!mini}
-        onEngineStop={() => !selectedId && fg.current?.zoomToFit(400, mini ? 16 : 40)}
+        onEngineTick={() => {
+          const node = (graphData.nodes as SimNode[]).find((n) => n.id === selectedId);
+          if (node?.x != null && node.y != null) fg.current?.centerAt(node.x, node.y);
+        }}
+        onEngineStop={() => {
+          const node = (graphData.nodes as SimNode[]).find((n) => n.id === selectedId);
+          if (node?.x != null && node.y != null) fg.current?.centerAt(node.x, node.y, 400);
+          else fg.current?.zoomToFit(400, mini ? 16 : 40);
+        }}
         onNodeHover={(n: any) => setHover(n?.id ?? null)}
         onNodeClick={(n: any) => onSelect?.(n as GraphNode)}
         onBackgroundClick={() => onSelect?.(null)}

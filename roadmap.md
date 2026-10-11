@@ -6,4 +6,4 @@
 - [x] Hardware catalogue, server comparisons and workload sizing
 - [x] Hardware evidence, MLPerf refresh and knowledge-graph integration
 - [x] Hardware documentation, ontology and validation
-- [ ] Rename the knowledge graph and verify full-dataset search and node focus.
+- [x] Rename the knowledge graph and verify full-dataset search and node focus.
