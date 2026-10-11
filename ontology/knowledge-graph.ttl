@@ -6,7 +6,7 @@
 
 <https://ai-sota-atlas.lovable.app/ontology/knowledge-graph> a owl:Ontology ;
   rdfs:label "AI SOTA Shift Tracker - LLM & Tokenomics KG ontology" ;
-  owl:imports <https://ai-sota-atlas.lovable.app/ontology/leaderboard>, <https://ai-sota-atlas.lovable.app/ontology/tokens> ;
+  owl:imports <https://ai-sota-atlas.lovable.app/ontology/leaderboard>, <https://ai-sota-atlas.lovable.app/ontology/tokens>, <https://ai-sota-atlas.lovable.app/ontology/hardware> ;
   dcterms:creator "Dr Shyam Sundaram" ; owl:versionInfo "1.0" .
 
 sota:Node a owl:Class ; rdfs:label "Graph node" .
@@ -16,6 +16,9 @@ sota:Country a owl:Class ; rdfs:subClassOf sota:Node .
 sota:Benchmark a owl:Class ; rdfs:subClassOf sota:Node .
 sota:Category a owl:Class ; rdfs:subClassOf sota:Node .
 sota:TokenSlice a owl:Class ; rdfs:subClassOf sota:Node .
+sota:Accelerator a owl:Class ; rdfs:subClassOf sota:Node .
+sota:ServerSystem a owl:Class ; rdfs:subClassOf sota:Node .
+sota:HardwareVendor a owl:Class ; rdfs:subClassOf sota:Node .
 
 sota:builds a owl:ObjectProperty ; rdfs:domain sota:Developer ; rdfs:range sota:Model ; owl:inverseOf sota:developedBy .
 sota:developedBy a owl:ObjectProperty .
@@ -23,6 +26,13 @@ sota:basedIn a owl:ObjectProperty ; rdfs:domain sota:Developer ; rdfs:range sota
 sota:scoredOn a owl:ObjectProperty ; rdfs:domain sota:Model ; rdfs:range sota:Benchmark .
 sota:belongsTo a owl:ObjectProperty ; rdfs:domain sota:Benchmark ; rdfs:range sota:Category .
 sota:usedIn a owl:ObjectProperty ; rdfs:domain sota:Model ; rdfs:range sota:TokenSlice .
+sota:manufactures a owl:ObjectProperty ; rdfs:domain sota:HardwareVendor .
+sota:contains a owl:ObjectProperty ; rdfs:domain sota:ServerSystem ; rdfs:range sota:Accelerator .
+sota:trainedOn a owl:ObjectProperty ; rdfs:domain sota:Model ; rdfs:range sota:Accelerator .
+sota:finetunedOn a owl:ObjectProperty ; rdfs:domain sota:Model ; rdfs:range sota:Accelerator .
+sota:servedOn a owl:ObjectProperty ; rdfs:domain sota:Model ; rdfs:range sota:Accelerator .
+sota:benchmarkedOn a owl:ObjectProperty ; rdfs:domain sota:Model ; rdfs:range sota:ServerSystem .
+sota:estimatedSuitableFor a owl:ObjectProperty ; rdfs:range sota:WorkloadEstimate .
 
 sota:totalTokens a owl:DatatypeProperty ; rdfs:domain sota:Model ; rdfs:range xsd:decimal .
 sota:bestScore a owl:DatatypeProperty ; rdfs:domain sota:Model ; rdfs:range xsd:decimal .
