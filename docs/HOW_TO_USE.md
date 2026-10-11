@@ -53,3 +53,9 @@
 7. **CSV** exports the filtered active catalogue tab. **Refresh now** runs the primary benchmark/token collection and rechecks MLPerf hardware results; product sheets retain their last verification date.
 8. Review **Reported model–hardware relationships** and **Sources & verification**. The knowledge graph separates manufacturer composition, explicitly reported training and measured benchmark execution. Missing disclosures are not filled by guessing.
 9. Download `hardware.ttl` alongside the other three schemas from **Docs → Ontology**; view live ontology metrics there. MLPerf Training and HPE configuration links are currently references, not populated benchmark/server claims.
+
+## Clinical, Life sciences and specialist catalogue
+- **Clinical** ranks models on MedHELM (mean win rate) and HealthBench / HealthBench Hard (via BenchLM).
+- **Life sciences** ranks models on LABBench2 (via BenchLM).
+- **Cybersecurity** adds CyberGym (via BenchLM) next to Nilgiri.
+- Each of these categories, plus India, shows a **Specialist models & platforms** panel: an unranked catalogue (EvidenceMD, Med-Gemini, AlphaFold 3, ESM3, BiomedCLIP, H-Optimus-0, MDASH, Security Copilot, CrowdStrike, SentinelOne, Cortex XSIAM, Bodhan AI and more). Badges show the evidence level: *Self-reported*, *Reference only*, *Platform / product* or *Ranked in leaderboards*. These entries also appear in the AI-SOTA KG linked to their category, developer and country.

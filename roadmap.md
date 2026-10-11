@@ -7,3 +7,4 @@
 - [x] Hardware evidence, MLPerf refresh and knowledge-graph integration
 - [x] Hardware documentation, ontology and validation
 - [x] Rename the knowledge graph and verify full-dataset search and node focus.
+- [x] Clinical + Life sciences categories, CyberGym, specialist catalogue (incl. Bodhan AI), KG/ontology/docs

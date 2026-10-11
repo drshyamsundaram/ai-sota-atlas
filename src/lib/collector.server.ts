@@ -662,6 +662,55 @@ export async function extractRegional(category: string): Promise<LeaderboardReco
   return out;
 }
 
+/** BenchLM per-benchmark pages render a server-side table: model link, creator span, percent score. */
+export async function extractBenchlmBenchmark(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
+  const html = await fetchWithBackoff(pageUrl);
+  const slug = new URL(pageUrl).pathname.split("/").filter(Boolean).pop() ?? "benchmark";
+  const caption = html.match(/Benchmark score results for ([^<]+)</)?.[1]?.trim() ?? slug;
+  const body = html.match(/<tbody[^>]*>([\s\S]*?)<\/tbody>/)?.[1] ?? "";
+  const ctx = { pageUrl, category, retrievedAt: new Date().toISOString() };
+  const out: LeaderboardRecord[] = [];
+  let rank = 0;
+  for (const tr of body.split(/<tr[\s>]/).slice(1)) {
+    const model = stripTags(tr.match(/<a[^>]*>([\s\S]*?)<\/a>/)?.[1] ?? "");
+    const cells = [...tr.matchAll(/<span[^>]*font-mono[^>]*>([^<]*)<\/span>/g)].map((c) => c[1]!.trim());
+    const scoreText = cells.find((c) => /^-?\d+(?:\.\d+)?\s*%?$/.test(c));
+    const value = scoreText ? Number(scoreText.replace("%", "")) : NaN;
+    if (!model || !Number.isFinite(value)) continue;
+    rank += 1;
+    emit(out, ctx, {
+      source: "BenchLM", model, bench: caption, metric: `${snake(slug)}_score`, value, unit: "percent",
+      rank, date: null, task: category, key: `benchlm:${slug}:${model}`,
+    });
+    if (rank >= 15) break;
+  }
+  if (!out.length) throw new Error(`benchlm ${slug}: no rows`);
+  return out;
+}
+
+/** MedHELM landing page lists "Current leaders" (rank, model, developer, mean win rate). */
+export async function extractMedhelm(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
+  const html = await fetchWithBackoff(pageUrl);
+  const start = html.indexOf("Current leaders");
+  if (start < 0) throw new Error("medhelm: leaders block missing");
+  const version = html.slice(start, start + 400).match(/v\d+\.\d+\.\d+/)?.[0] ?? null;
+  const tokens = stripTags(html.slice(start, start + 30000).replace(/</g, " <")).split(" ");
+  const text = tokens.join(" ");
+  const ctx = { pageUrl, category, retrievedAt: new Date().toISOString() };
+  const out: LeaderboardRecord[] = [];
+  const re = /(?:^|\s)(\d{1,2})\s+(.+?)\s+(Google|OpenAI|Anthropic|Meta|DeepSeek|Mistral|Alibaba|xAI|Microsoft|Qwen|Amazon)\s+(0\.\d{2,3})/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text)) && out.length < 15) {
+    emit(out, ctx, {
+      source: "MedHELM (Stanford)", model: m[2]!.trim(), bench: `MedHELM${version ? ` ${version}` : ""}`,
+      metric: "mean_win_rate", value: Number(m[4]), unit: "score", rank: Number(m[1]), date: null,
+      task: "clinical", key: `medhelm:${m[2]}`,
+    });
+  }
+  if (!out.length) throw new Error("medhelm: no rows parsed");
+  return out;
+}
+
 /** LMArena publishes its ratings as a Hugging Face dataset; read via the datasets-server JSON API. */
 export async function extractLmArena(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
   const api =
@@ -830,7 +879,11 @@ export async function runCollection(options?: {
             outcomes.push({ url, category: cat.id, status: "blocked", records: 0 });
             continue;
           }
-          const found = /suprmind\.ai/.test(url)
+          const found = /benchlm\.ai\/benchmarks\//.test(url)
+            ? await extractBenchlmBenchmark(url, cat.id)
+            : /medhelm\.org/.test(url)
+              ? await extractMedhelm(url, cat.id)
+            : /suprmind\.ai/.test(url)
             ? await extractSuprmind(url, cat.id)
             : /sparclabs\.github\.io\/nilgiri/.test(url)
               ? await extractNilgiri(url, cat.id)

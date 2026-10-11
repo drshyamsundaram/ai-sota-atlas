@@ -1,6 +1,7 @@
 import type { LeaderboardRecord } from "./schema";
 import type { TokenRecord } from "./token-schema";
 import { accelerators, hardwareDisclosures, serverSystems } from "@/data/hardware";
+import { specialistModels } from "@/data/specialist-models";
 
 export type NodeType = "model" | "developer" | "country" | "benchmark" | "category" | "slice" | "accelerator" | "server" | "hardware_vendor";
 
@@ -85,6 +86,8 @@ const CATEGORY_TITLES: Record<string, string> = {
   india: "India",
   china: "China",
   europe: "Europe",
+  clinical: "Clinical",
+  life_sciences: "Life sciences",
   mea: "Middle East & Africa",
 };
 
@@ -200,6 +203,23 @@ export function buildGraph(
       meta: { hardware_evidence: d.detail, hardware_source: d.source.url } });
     link({ source: id, target: `accelerator:${d.acceleratorId}`, relation: d.phase, label: d.detail });
   }
+
+  // Specialist catalogue (unranked): model/platform → category, developer → country.
+  for (const s of specialistModels) {
+    const id = `model:${normModel(s.name)}`;
+    const catId = `category:${s.category}`;
+    const devId = `developer:${s.developer}`;
+    const cId = `country:${s.country}`;
+    add({ id, type: "model", label: s.name, size: 2.5,
+      meta: { specialist_kind: s.kind, evidence: s.evidence, benchmarks: s.benchmarks.join(", "), claim: s.claim ?? null, url: s.url } });
+    add({ id: catId, type: "category", label: CATEGORY_TITLES[s.category] ?? s.category, size: 1 });
+    add({ id: devId, type: "developer", label: s.developer, size: 1 });
+    add({ id: cId, type: "country", label: s.country, size: 1 });
+    link({ source: id, target: catId, relation: "belongs_to", label: s.kind });
+    link({ source: devId, target: id, relation: "builds" });
+    link({ source: devId, target: cId, relation: "based_in" });
+  }
+
 
   // Sizing
   const maxTok = Math.max(1, ...tokenByModel.values());

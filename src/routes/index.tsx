@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { KgMiniCard } from "@/components/kg/KgMiniCard";
+import { SpecialistCatalogue } from "@/components/SpecialistCatalogue";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowUpRight,
@@ -441,6 +442,7 @@ function Dashboard() {
 
         <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_320px]">
           <div className="space-y-6">
+            <SpecialistCatalogue category={category} />
             <div className="panel p-5">
               <div className="flex flex-wrap items-center gap-3">
                 <div>
