@@ -20,7 +20,7 @@ export function WorkloadSizer({ accelerators }: { accelerators: Accelerator[] })
   const numeric = (key: keyof SizingInput, label: string, min = 0, step = 1) => (
     <label className="block space-y-1" key={key}>
       <span className="mono-label">{label}</span>
-      <Input aria-label={label} type="number" min={min} step={step} value={String(input[key])}
+      <Input aria-label={label} type="number" min={min} step={step} value={typeof input[key] === "number" && Number.isNaN(input[key]) ? "" : String(input[key])}
         onChange={(e) => update(key, e.target.value === "" ? NaN : Number(e.target.value))} />
     </label>
   );
@@ -32,7 +32,7 @@ export function WorkloadSizer({ accelerators }: { accelerators: Accelerator[] })
     <div className="grid gap-8 lg:grid-cols-[1.3fr_1fr]">
       <div className="grid content-start gap-4 sm:grid-cols-2 md:grid-cols-3">
         <label className="space-y-1"><span className="mono-label">Workload</span>
-          <Select value={input.workload} onValueChange={(v) => update("workload", v as Workload)}>
+          <Select value={input.workload} onValueChange={(v) => setInput((old) => ({ ...old, workload: v as Workload, precisionBytes: v === "qlora" ? 0.5 : 2 }))}>
             <SelectTrigger aria-label="Sizing workload" className="w-full"><SelectValue /></SelectTrigger>
             <SelectContent>{WORKLOADS.map((w) => <SelectItem key={w.id} value={w.id}>{w.label}</SelectItem>)}</SelectContent>
           </Select>
@@ -47,6 +47,7 @@ export function WorkloadSizer({ accelerators }: { accelerators: Accelerator[] })
           <Select value={String(input.precisionBytes)} onValueChange={(v) => update("precisionBytes", Number(v))} disabled={input.workload === "qlora"}>
             <SelectTrigger aria-label="Weight precision" className="w-full"><SelectValue /></SelectTrigger><SelectContent>
               <SelectItem value="2">BF16 / FP16 · 2 bytes</SelectItem>
+              {input.workload === "qlora" && <SelectItem value="0.5">4-bit base · 0.5 byte</SelectItem>}
               {input.workload === "inference" && <><SelectItem value="1">8-bit · 1 byte</SelectItem><SelectItem value="0.5">4-bit · 0.5 byte</SelectItem></>}
             </SelectContent>
           </Select>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ClientOnly } from "@tanstack/react-router";
 import { ExternalLink } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -12,7 +13,7 @@ export function HardwareBenchmarks({ feed }: { feed: HardwareFeed }) {
     <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl font-semibold">Measured inference performance</h2>
       <Input aria-label="Search measured systems" placeholder="Search workload or measured system" value={query} onChange={(e) => setQuery(e.target.value)} className="w-full sm:w-80" />
     </div>
-    <p className="mono-label mt-2">MLPerf · closed division · datacenter · Offline · checked {new Date(feed.checkedAt).toLocaleString()} · {rows.length} results</p>
+    <p className="mono-label mt-2">MLPerf · closed division · datacenter · Offline · checked <ClientOnly fallback={<span>latest source check</span>}>{new Date(feed.checkedAt).toISOString().replace("T", " ").slice(0, 19)} UTC</ClientOnly> · {rows.length} results</p>
     <p className="mt-3 text-sm text-muted-foreground">Compare the same workload, accuracy target, precision and scenario. Offline tokens/s measures batched throughput, not interactive latency or model quality. System sizes differ.</p>
     {feed.status !== "ok" ? <p role="status" className="mt-4 text-accent">{feed.error}</p> : <div className="mt-4 max-h-[420px] overflow-auto border border-border rounded-md">
       <Table><TableHeader><TableRow><TableHead>Workload / round</TableHead><TableHead>System / submitter</TableHead><TableHead>Accelerators</TableHead><TableHead>Weight precision</TableHead><TableHead className="text-right">Tokens/s</TableHead><TableHead>Evidence</TableHead></TableRow></TableHeader>
