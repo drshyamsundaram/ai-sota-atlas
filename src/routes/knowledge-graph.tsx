@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { PaniniChat } from "@/components/panini/PaniniChat";
 import { Disclaimer } from "@/components/Disclaimer";
 import { Download, FileJson, Maximize2, Network, Search } from "lucide-react";
 
