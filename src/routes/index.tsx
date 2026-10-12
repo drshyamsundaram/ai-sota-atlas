@@ -109,7 +109,7 @@ function Dashboard() {
   const [region, setRegion] = useState<string>("all");
   const [metric, setMetric] = useState<string>("all");
   const [query, setQuery] = useState("");
-  const [intervalMs, setIntervalMs] = useState<number>(60_000);
+  const [intervalMs, setIntervalMs] = useState<number>(60 * 60_000);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const {
