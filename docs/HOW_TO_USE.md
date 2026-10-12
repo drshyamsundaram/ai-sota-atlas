@@ -3,7 +3,7 @@
 ## 1. Get fresh data
 1. Open the **Dashboard** (`/`).
 2. Press **Refresh now**. The app collects every leaderboard and the token feeds, stores a new batch and reloads all pages, including the knowledge graph. The header shows the latest batch time and how many sources returned rows.
-3. Optional: pick an **Auto-refresh** interval (1m – 6h) to keep re-reading the latest stored batch.
+3. Optional: pick an **Auto-refresh** interval (1 hour or 6 hours) to keep re-reading the latest stored batch.
 
 ## 2. Explore leaderboards
 - Choose a **category** (Global frontier, Hallucination & safety, Cybersecurity, Multimodal, AI infrastructure, India, China, Europe).
