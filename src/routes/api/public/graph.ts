@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getLatestDataset } from "@/lib/dataset-store";
 import { getLatestTokenDataset } from "@/lib/token-store";
-import { buildGraph, miniGraph } from "@/lib/graph";
+import { buildGraph, miniGraph, toGml } from "@/lib/graph";
 
 export const Route = createFileRoute("/api/public/graph")({
   server: {

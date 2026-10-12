@@ -247,6 +247,43 @@ export function buildGraph(
   };
 }
 
+/** Serialize the graph to GML (Graph Modelling Language) for Gephi/Cytoscape/yEd. */
+export function toGml(g: KnowledgeGraph): string {
+  const esc = (s: string) => s.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+  const idx = new Map(g.nodes.map((n, i) => [n.id, i]));
+  const lines: string[] = ["graph [", "  directed 1", '  label "AI-SOTA KG"'];
+  for (const n of g.nodes) {
+    lines.push("  node [");
+    lines.push(`    id ${idx.get(n.id)}`);
+    lines.push(`    label "${esc(n.label)}"`);
+    lines.push(`    type "${n.type}"`);
+    lines.push(`    size ${n.size}`);
+    if (n.tokens != null) lines.push(`    tokens ${n.tokens}`);
+    for (const [k, v] of Object.entries(n.meta ?? {})) {
+      if (v == null) continue;
+      const key = k.replace(/[^a-zA-Z0-9_]/g, "_");
+      lines.push(
+        typeof v === "number" ? `    ${key} ${v}` : `    ${key} "${esc(String(v))}"`,
+      );
+    }
+    lines.push("  ]");
+  }
+  for (const l of g.links) {
+    const s = idx.get(l.source);
+    const t = idx.get(l.target);
+    if (s == null || t == null) continue;
+    lines.push("  edge [");
+    lines.push(`    source ${s}`);
+    lines.push(`    target ${t}`);
+    lines.push(`    relation "${l.relation}"`);
+    if (l.label) lines.push(`    label "${esc(l.label)}"`);
+    if (l.weight != null) lines.push(`    weight ${l.weight}`);
+    lines.push("  ]");
+  }
+  lines.push("]");
+  return lines.join("\n") + "\n";
+}
+
 /** Small subgraph for the landing card. */
 export function miniGraph(g: KnowledgeGraph, maxNodes = 40): KnowledgeGraph {
   const models = g.nodes
