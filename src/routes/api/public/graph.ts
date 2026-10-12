@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getLatestDataset } from "@/lib/dataset-store";
 import { getLatestTokenDataset } from "@/lib/token-store";
-import { buildGraph, miniGraph } from "@/lib/graph";
+import { buildGraph, miniGraph, toGml } from "@/lib/graph";
 
 export const Route = createFileRoute("/api/public/graph")({
   server: {
@@ -18,6 +18,17 @@ export const Route = createFileRoute("/api/public/graph")({
             nodes: graph.nodes.filter((n) => keep.has(n.id)),
             links: graph.links.filter((l) => keep.has(l.source) && keep.has(l.target)),
           };
+        }
+        if (url.searchParams.get("format") === "gml") {
+          return new Response(toGml(graph), {
+            status: 200,
+            headers: {
+              "content-type": "text/plain; charset=utf-8",
+              "content-disposition": 'attachment; filename="ai-sota-kg.gml"',
+              "cache-control": "no-store",
+              "Access-Control-Allow-Origin": "*",
+            },
+          });
         }
         return new Response(
           JSON.stringify({
