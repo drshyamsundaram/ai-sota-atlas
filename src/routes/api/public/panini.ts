@@ -19,6 +19,13 @@ export const Route = createFileRoute("/api/public/panini")({
       OPTIONS: async () => new Response(null, { status: 204, headers: CORS }),
       POST: async ({ request }) => {
         try {
+          const expected = process.env["PANINI_API_KEY"];
+          const provided =
+            request.headers.get("x-api-key") ??
+            request.headers.get("authorization")?.replace(/^Bearer\s+/i, "") ??
+            "";
+          if (!expected || !keyMatches(provided, expected))
+            return errorResponse(Object.assign(new Error("Valid API key required (x-api-key header or Bearer token)"), { statusCode: 401 }));
           const body = (await request.json()) as { messages?: { role: string; content: string }[]; message?: string };
           const raw = body.messages ?? (body.message ? [{ role: "user", content: body.message }] : []);
           const messages = raw
