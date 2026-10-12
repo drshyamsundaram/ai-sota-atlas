@@ -68,8 +68,8 @@ const ENDPOINTS: Endpoint[] = [
   {
     method: "POST",
     path: "/api/public/panini",
-    summary: "Panini chatbot — identifies exact AI-SOTA KG nodes. Body: { message } or { messages: [{role, content}] } (stateless; send full history). Returns { answer, json }.",
-    example: "curl -X POST /api/public/panini -H 'content-type: application/json' -d '{\"message\":\"Which Chinese model has the most tokens?\"}'",
+    summary: "Panini chatbot — identifies exact AI-SOTA KG nodes. Requires an API key (x-api-key header or Bearer token). Body: { message } or { messages: [{role, content}] } (stateless; send full history). Returns { answer, json }.",
+    example: "curl -X POST /api/public/panini -H 'content-type: application/json' -H 'x-api-key: <your-key>' -d '{\"message\":\"Which Chinese model has the most tokens?\"}'",
   },
   {
     method: "GET",
