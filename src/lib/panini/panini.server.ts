@@ -88,7 +88,7 @@ function makeTools(g: KnowledgeGraph) {
 }
 
 export async function runPanini(request: Request, messages: ModelMessage[]) {
-  const apiKey = process.env.LOVABLE_API_KEY;
+  const apiKey = process.env['LOVABLE_API_KEY'];
   if (!apiKey) throw new Error("LOVABLE_API_KEY is not configured");
   const graph = await loadGraph();
   const runIdFetch = createLovableAiGatewayRunIdFetch(getLovableAiGatewayRunId(request));
