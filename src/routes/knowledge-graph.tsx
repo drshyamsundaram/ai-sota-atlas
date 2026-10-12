@@ -345,7 +345,7 @@ function KnowledgeGraphPage() {
       </main>
       <section className="mx-auto max-w-7xl px-6 pb-8">
         <h2 className="mono-label mb-2">Ask Panini — identified nodes are highlighted on the graph above</h2>
-        <PaniniChat compact onIdentify={(id) => { const hit = graph.nodes.find((n) => n.id === id); if (hit) selectSearchResult(hit); }} />
+        <PaniniChat compact onIdentify={(id: string) => { const hit = graph.nodes.find((n) => n.id === id); if (hit) selectSearchResult(hit); }} />
       </section>
       <SourcesPanel
         title="Graph sources"
