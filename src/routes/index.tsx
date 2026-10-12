@@ -80,10 +80,6 @@ const seedDataset = parseDataset(seed);
 const LOWER_IS_BETTER = new Set(["hallucination_rate", "latency", "token_cost", "price"]);
 
 const REFRESH_OPTIONS: { ms: number; label: string }[] = [
-  { ms: 0, label: "off" },
-  { ms: 60_000, label: "1 min" },
-  { ms: 5 * 60_000, label: "5 min" },
-  { ms: 15 * 60_000, label: "15 min" },
   { ms: 60 * 60_000, label: "1 hour" },
   { ms: 6 * 60 * 60_000, label: "6 hours" },
 ];
@@ -113,7 +109,7 @@ function Dashboard() {
   const [region, setRegion] = useState<string>("all");
   const [metric, setMetric] = useState<string>("all");
   const [query, setQuery] = useState("");
-  const [intervalMs, setIntervalMs] = useState<number>(60_000);
+  const [intervalMs, setIntervalMs] = useState<number>(60 * 60_000);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const {
@@ -347,9 +343,7 @@ function Dashboard() {
               onValueChange={(v) => {
                 setIntervalMs(Number(v));
                 toast.info(
-                  Number(v) === 0
-                    ? "Auto-refresh paused"
-                    : `Auto-refresh every ${REFRESH_OPTIONS.find((o) => o.ms === Number(v))?.label}`,
+                  `Auto-refresh every ${REFRESH_OPTIONS.find((o) => o.ms === Number(v))?.label}`,
                 );
               }}
             >
@@ -360,7 +354,7 @@ function Dashboard() {
               <SelectContent>
                 {REFRESH_OPTIONS.map((o) => (
                   <SelectItem key={o.ms} value={String(o.ms)}>
-                    {o.ms === 0 ? "Auto-refresh: off" : `Every ${o.label}`}
+                    Every {o.label}
                   </SelectItem>
                 ))}
               </SelectContent>

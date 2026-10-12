@@ -33,7 +33,7 @@ Sources are defined in `pipeline/config.json`. Pages that draw their tables in t
 ## 2. Using the dashboard
 
 - **Refresh now** runs the server-side collector for every source (leaderboards + token data), stores a new batch and reloads charts, tables and the knowledge graph.
-- **Auto-refresh** re-reads the latest stored batch at 1m / 5m / 15m / 1h / 6h.
+- **Auto-refresh** re-reads the latest stored batch at 1h or 6h.
 - **Leaderboard filters**: category, metric, region, search.
 - **Import JSON** previews a normalized records file client-side.
 - **Token report**: pick a slice (Overall / Programming / Language), a country or developer, drill down, export CSV.

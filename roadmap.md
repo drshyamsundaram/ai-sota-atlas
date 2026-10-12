@@ -8,3 +8,4 @@
 - [x] Hardware documentation, ontology and validation
 - [x] Rename the knowledge graph and verify full-dataset search and node focus.
 - [x] Clinical + Life sciences categories, CyberGym, specialist catalogue (incl. Bodhan AI), KG/ontology/docs
+- [x] Auto-refresh dropdown limited to 1 hour and 6 hours
