@@ -80,10 +80,6 @@ const seedDataset = parseDataset(seed);
 const LOWER_IS_BETTER = new Set(["hallucination_rate", "latency", "token_cost", "price"]);
 
 const REFRESH_OPTIONS: { ms: number; label: string }[] = [
-  { ms: 0, label: "off" },
-  { ms: 60_000, label: "1 min" },
-  { ms: 5 * 60_000, label: "5 min" },
-  { ms: 15 * 60_000, label: "15 min" },
   { ms: 60 * 60_000, label: "1 hour" },
   { ms: 6 * 60 * 60_000, label: "6 hours" },
 ];
