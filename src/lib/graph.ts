@@ -261,7 +261,9 @@ export function toGml(g: KnowledgeGraph): string {
     if (n.tokens != null) lines.push(`    tokens ${n.tokens}`);
     for (const [k, v] of Object.entries(n.meta ?? {})) {
       if (v == null) continue;
-      const key = k.replace(/[^a-zA-Z0-9_]/g, "_");
+      let key = k.replace(/[^a-zA-Z0-9_]/g, "_");
+      if (key === "id" || key === "label" || key === "type" || key === "size" || key === "tokens")
+        key = `meta_${key}`;
       lines.push(
         typeof v === "number" ? `    ${key} ${v}` : `    ${key} "${esc(String(v))}"`,
       );
