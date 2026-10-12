@@ -15,10 +15,12 @@ import { Route as DocsRouteImport } from './routes/docs'
 import { Route as HardwareRouteImport } from './routes/hardware'
 import { Route as KnowledgeGraphRouteImport } from './routes/knowledge-graph'
 import { Route as TokensRouteImport } from './routes/tokens'
+import { Route as ApiPaniniRouteImport } from './routes/api/panini'
 import { Route as ApiPublicDatasetRouteImport } from './routes/api/public/dataset'
 import { Route as ApiPublicDocsRouteImport } from './routes/api/public/docs'
 import { Route as ApiPublicGraphRouteImport } from './routes/api/public/graph'
 import { Route as ApiPublicIngestRouteImport } from './routes/api/public/ingest'
+import { Route as ApiPublicPaniniRouteImport } from './routes/api/public/panini'
 import { Route as ApiPublicScrapeRouteImport } from './routes/api/public/scrape'
 import { Route as ApiPublicTokensRouteImport } from './routes/api/public/tokens'
 import { Route as ApiPublicTokensRefreshRouteImport } from './routes/api/public/tokens.refresh'
@@ -53,6 +55,11 @@ const TokensRoute = TokensRouteImport.update({
   path: '/tokens',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPaniniRoute = ApiPaniniRouteImport.update({
+  id: '/api/panini',
+  path: '/api/panini',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicDatasetRoute = ApiPublicDatasetRouteImport.update({
   id: '/api/public/dataset',
   path: '/api/public/dataset',
@@ -71,6 +78,11 @@ const ApiPublicGraphRoute = ApiPublicGraphRouteImport.update({
 const ApiPublicIngestRoute = ApiPublicIngestRouteImport.update({
   id: '/api/public/ingest',
   path: '/api/public/ingest',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicPaniniRoute = ApiPublicPaniniRouteImport.update({
+  id: '/api/public/panini',
+  path: '/api/public/panini',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicScrapeRoute = ApiPublicScrapeRouteImport.update({
@@ -96,10 +108,12 @@ export interface FileRoutesByFullPath {
   '/hardware': typeof HardwareRoute
   '/knowledge-graph': typeof KnowledgeGraphRoute
   '/tokens': typeof TokensRoute
+  '/api/panini': typeof ApiPaniniRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
   '/api/public/docs': typeof ApiPublicDocsRoute
   '/api/public/graph': typeof ApiPublicGraphRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
+  '/api/public/panini': typeof ApiPublicPaniniRoute
   '/api/public/scrape': typeof ApiPublicScrapeRoute
   '/api/public/tokens': typeof ApiPublicTokensRouteWithChildren
   '/api/public/tokens/refresh': typeof ApiPublicTokensRefreshRoute
@@ -111,10 +125,12 @@ export interface FileRoutesByTo {
   '/hardware': typeof HardwareRoute
   '/knowledge-graph': typeof KnowledgeGraphRoute
   '/tokens': typeof TokensRoute
+  '/api/panini': typeof ApiPaniniRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
   '/api/public/docs': typeof ApiPublicDocsRoute
   '/api/public/graph': typeof ApiPublicGraphRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
+  '/api/public/panini': typeof ApiPublicPaniniRoute
   '/api/public/scrape': typeof ApiPublicScrapeRoute
   '/api/public/tokens': typeof ApiPublicTokensRouteWithChildren
   '/api/public/tokens/refresh': typeof ApiPublicTokensRefreshRoute
@@ -127,10 +143,12 @@ export interface FileRoutesById {
   '/hardware': typeof HardwareRoute
   '/knowledge-graph': typeof KnowledgeGraphRoute
   '/tokens': typeof TokensRoute
+  '/api/panini': typeof ApiPaniniRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
   '/api/public/docs': typeof ApiPublicDocsRoute
   '/api/public/graph': typeof ApiPublicGraphRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
+  '/api/public/panini': typeof ApiPublicPaniniRoute
   '/api/public/scrape': typeof ApiPublicScrapeRoute
   '/api/public/tokens': typeof ApiPublicTokensRouteWithChildren
   '/api/public/tokens/refresh': typeof ApiPublicTokensRefreshRoute
@@ -144,10 +162,12 @@ export interface FileRouteTypes {
     | '/hardware'
     | '/knowledge-graph'
     | '/tokens'
+    | '/api/panini'
     | '/api/public/dataset'
     | '/api/public/docs'
     | '/api/public/graph'
     | '/api/public/ingest'
+    | '/api/public/panini'
     | '/api/public/scrape'
     | '/api/public/tokens'
     | '/api/public/tokens/refresh'
@@ -159,10 +179,12 @@ export interface FileRouteTypes {
     | '/hardware'
     | '/knowledge-graph'
     | '/tokens'
+    | '/api/panini'
     | '/api/public/dataset'
     | '/api/public/docs'
     | '/api/public/graph'
     | '/api/public/ingest'
+    | '/api/public/panini'
     | '/api/public/scrape'
     | '/api/public/tokens'
     | '/api/public/tokens/refresh'
@@ -174,10 +196,12 @@ export interface FileRouteTypes {
     | '/hardware'
     | '/knowledge-graph'
     | '/tokens'
+    | '/api/panini'
     | '/api/public/dataset'
     | '/api/public/docs'
     | '/api/public/graph'
     | '/api/public/ingest'
+    | '/api/public/panini'
     | '/api/public/scrape'
     | '/api/public/tokens'
     | '/api/public/tokens/refresh'
@@ -190,10 +214,12 @@ export interface RootRouteChildren {
   HardwareRoute: typeof HardwareRoute
   KnowledgeGraphRoute: typeof KnowledgeGraphRoute
   TokensRoute: typeof TokensRoute
+  ApiPaniniRoute: typeof ApiPaniniRoute
   ApiPublicDatasetRoute: typeof ApiPublicDatasetRoute
   ApiPublicDocsRoute: typeof ApiPublicDocsRoute
   ApiPublicGraphRoute: typeof ApiPublicGraphRoute
   ApiPublicIngestRoute: typeof ApiPublicIngestRoute
+  ApiPublicPaniniRoute: typeof ApiPublicPaniniRoute
   ApiPublicScrapeRoute: typeof ApiPublicScrapeRoute
   ApiPublicTokensRoute: typeof ApiPublicTokensRouteWithChildren
 }
@@ -242,6 +268,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TokensRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/panini': {
+      id: '/api/panini'
+      path: '/api/panini'
+      fullPath: '/api/panini'
+      preLoaderRoute: typeof ApiPaniniRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/dataset': {
       id: '/api/public/dataset'
       path: '/api/public/dataset'
@@ -268,6 +301,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/ingest'
       fullPath: '/api/public/ingest'
       preLoaderRoute: typeof ApiPublicIngestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/panini': {
+      id: '/api/public/panini'
+      path: '/api/public/panini'
+      fullPath: '/api/public/panini'
+      preLoaderRoute: typeof ApiPublicPaniniRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/scrape': {
@@ -313,10 +353,12 @@ const rootRouteChildren: RootRouteChildren = {
   HardwareRoute: HardwareRoute,
   KnowledgeGraphRoute: KnowledgeGraphRoute,
   TokensRoute: TokensRoute,
+  ApiPaniniRoute: ApiPaniniRoute,
   ApiPublicDatasetRoute: ApiPublicDatasetRoute,
   ApiPublicDocsRoute: ApiPublicDocsRoute,
   ApiPublicGraphRoute: ApiPublicGraphRoute,
   ApiPublicIngestRoute: ApiPublicIngestRoute,
+  ApiPublicPaniniRoute: ApiPublicPaniniRoute,
   ApiPublicScrapeRoute: ApiPublicScrapeRoute,
   ApiPublicTokensRoute: ApiPublicTokensRouteWithChildren,
 }
