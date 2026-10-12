@@ -44,9 +44,15 @@ const spec = {
     },
     "/api/public/panini": {
       post: {
-        summary: "Panini chatbot: identify exact AI-SOTA KG nodes (stateless; send full conversation)",
+        summary: "Panini chatbot: identify exact AI-SOTA KG nodes (stateless; send full conversation). Requires an API key.",
+        parameters: [
+          { name: "x-api-key", in: "header", required: true, schema: { type: "string" }, description: "API key (alternatively: Authorization: Bearer <key>)" },
+        ],
         requestBody: { content: { "application/json": { schema: { type: "object", properties: { message: { type: "string" }, messages: { type: "array", items: { type: "object", properties: { role: { type: "string", enum: ["user", "assistant"] }, content: { type: "string" } } } } } } } } },
-        responses: { "200": { description: "{ model, answer, json: { status, query_summary, matches[{id,label,type,reason}], confidence, follow_up_question } }" } },
+        responses: {
+          "200": { description: "{ model, answer, json: { status, query_summary, matches[{id,label,type,reason}], confidence, follow_up_question } }" },
+          "401": { description: "Missing or invalid API key" },
+        },
       },
     },
     "/api/public/graph": {
