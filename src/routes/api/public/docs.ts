@@ -44,17 +44,23 @@ const spec = {
     },
     "/api/public/graph": {
       get: {
-        summary: "LLM & Tokenomics knowledge graph (nodes + links)",
+        summary: "AI-SOTA KG knowledge graph (nodes + links)",
         parameters: [
           { name: "mini", in: "query", schema: { type: "boolean" }, description: "Return the ~40-node summary graph" },
           {
             name: "types",
             in: "query",
             schema: { type: "string" },
-            description: "Comma list of node types: model,developer,country,benchmark,category,slice",
+            description: "Comma list of node types: model,developer,country,benchmark,category,slice,accelerator,server,hardware_vendor",
+          },
+          {
+            name: "format",
+            in: "query",
+            schema: { type: "string", enum: ["json", "gml"] },
+            description: "json (default) or gml — GML downloads the graph for Gephi/Cytoscape/yEd",
           },
         ],
-        responses: { "200": { description: "Graph with nodes, links and match stats" } },
+        responses: { "200": { description: "Graph with nodes, links and match stats (JSON) or a GML file" } },
       },
     },
     "/api/public/tokens/refresh": {

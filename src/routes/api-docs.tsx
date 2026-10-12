@@ -65,6 +65,17 @@ const ENDPOINTS: Endpoint[] = [
   },
   {
     method: "GET",
+    path: "/api/public/graph",
+    summary: "AI-SOTA KG knowledge graph — models, developers, countries, benchmarks, categories, token slices and hardware.",
+    params: [
+      ["mini", "true returns the ~40-node summary graph"],
+      ["types", "Comma list of node types to keep, e.g. model,developer"],
+      ["format", "json (default) or gml — GML downloads the graph for Gephi, Cytoscape or yEd"],
+    ],
+    example: "/api/public/graph?format=gml",
+  },
+  {
+    method: "GET",
     path: "/api/public/docs",
     summary: "Machine-readable OpenAPI description of this API.",
     example: "/api/public/docs",
