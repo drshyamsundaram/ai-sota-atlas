@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Disclaimer } from "@/components/Disclaimer";
 import { Download, FileJson, Maximize2, Network, Search } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -180,6 +181,7 @@ function KnowledgeGraphPage() {
           </div>
         </div>
       </header>
+      <Disclaimer />
 
       <main className="mx-auto grid max-w-7xl gap-6 px-6 py-6 lg:grid-cols-[240px_1fr_300px]">
         <aside className="space-y-4">

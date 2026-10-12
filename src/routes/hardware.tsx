@@ -14,6 +14,7 @@ import { WORKLOADS, type Accelerator, type HardwareSource } from "@/lib/hardware
 import { hardwareQueryOptions } from "@/lib/hardware.functions";
 import { csvText } from "@/lib/hardware-sizing";
 import { WorkloadSizer } from "@/components/hardware/WorkloadSizer";
+import { Disclaimer } from "@/components/Disclaimer";
 import { HardwareBenchmarks } from "@/components/hardware/HardwareBenchmarks";
 
 export const Route = createFileRoute("/hardware")({
@@ -78,6 +79,7 @@ function HardwarePage() {
         <div className="flex gap-2"><Button variant="outline" size="sm" disabled={refreshing || isFetching} onClick={refresh}><RefreshCw className={`size-4 ${refreshing ? "animate-spin" : ""}`} />{refreshing ? "Collecting…" : "Refresh now"}</Button><Button size="sm" onClick={exportCsv}><Download className="size-4" />CSV</Button></div>
       </div>{refreshStatus && <p role="status" className="mt-3 text-sm text-accent">{refreshStatus}</p>}
     </div></header>
+    <Disclaimer />
     <main className="mx-auto max-w-7xl px-4 sm:px-6">
       <section className="grid grid-cols-2 gap-5 border-b border-border py-6 md:grid-cols-4">
         {[["Accelerators", accelerators.length], ["Server configurations", serverSystems.length], ["Measured inference results", feed.measurements.length], ["Hardware vendors", new Set(accelerators.map((a) => a.vendor)).size]].map(([label, value]) => <div key={label}><p className="mono-label">{label}</p><p className="mt-2 text-3xl font-semibold">{value}</p></div>)}

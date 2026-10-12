@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { SourcesPanel } from "@/components/SourcesPanel";
+import { Disclaimer } from "@/components/Disclaimer";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
@@ -303,6 +304,7 @@ function TokensPage() {
           </div>
         </div>
       </header>
+      <Disclaimer />
 
       <main className="mx-auto max-w-7xl px-6 py-8">
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

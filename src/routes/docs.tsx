@@ -3,6 +3,7 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Download } from "lucide-react";
+import { Disclaimer } from "@/components/Disclaimer";
 import { Button } from "@/components/ui/button";
 import readme from "../../README.md?raw";
 import architecture from "../../docs/ARCHITECTURE.md?raw";
@@ -65,6 +66,7 @@ function DocsPage() {
           ))}
         </div>
       </header>
+      <Disclaimer />
       <article className="docs-md mx-auto max-w-4xl px-6 py-8">
         {tab === "ontology" ? (
           <OntologyTab />
