@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { KgMiniCard } from "@/components/kg/KgMiniCard";
+import { Disclaimer } from "@/components/Disclaimer";
 import { SpecialistCatalogue } from "@/components/SpecialistCatalogue";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
@@ -382,6 +383,7 @@ function Dashboard() {
           </div>
         </div>
       </header>
+      <Disclaimer />
 
       <main className="mx-auto max-w-7xl px-6 py-8">
         <KgMiniCard />

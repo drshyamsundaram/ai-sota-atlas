@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Disclaimer } from "@/components/Disclaimer";
+
 
 export const Route = createFileRoute("/api-docs")({
   head: () => ({
@@ -94,6 +96,7 @@ function ApiDocs() {
         </Link>
         <Link to="/hardware" className="hover:text-primary">Hardware &amp; Chipsets</Link>
       </nav>
+      <Disclaimer inset="max-w-4xl" className="mt-4" />
       <h1 className="text-3xl font-semibold tracking-tight">Public REST API</h1>
       <p className="mt-3 max-w-2xl text-sm text-muted-foreground">
         Every endpoint is open, read-only (except the refresh actions) and returns CORS-enabled
