@@ -2,7 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import type { ModelMessage } from "ai";
 import { errorResponse, PANINI_MODEL, runPanini } from "@/lib/panini/panini.server";
 
-const CORS = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "POST, OPTIONS", "Access-Control-Allow-Headers": "content-type" };
+const CORS = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "POST, OPTIONS", "Access-Control-Allow-Headers": "content-type, x-api-key, authorization" };
+
+/** Constant-time string compare to avoid leaking the key via timing. */
+function keyMatches(provided: string, expected: string): boolean {
+  if (provided.length !== expected.length) return false;
+  let diff = 0;
+  for (let i = 0; i < provided.length; i++) diff |= provided.charCodeAt(i) ^ expected.charCodeAt(i);
+  return diff === 0;
+}
 
 /** Non-streaming Panini endpoint: send the full conversation, get { answer, json }. Stateless. */
 export const Route = createFileRoute("/api/public/panini")({
