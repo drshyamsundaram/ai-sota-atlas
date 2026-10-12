@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { PaniniChat } from "@/components/panini/PaniniChat";
 import { Disclaimer } from "@/components/Disclaimer";
 import { Download, FileJson, Maximize2, Network, Search } from "lucide-react";
 
@@ -158,6 +159,7 @@ function KnowledgeGraphPage() {
               Docs
             </Link>
             <Link to="/hardware" className="hover:text-primary">Hardware &amp; Chipsets</Link>
+            <Link to="/panini" className="hover:text-primary">Panini chat</Link>
             </nav>
             <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
               <Network className="size-6 text-primary" /> AI-SOTA KG
@@ -341,6 +343,10 @@ function KnowledgeGraphPage() {
           )}
         </aside>
       </main>
+      <section className="mx-auto max-w-7xl px-6 pb-8">
+        <h2 className="mono-label mb-2">Ask Panini — identified nodes are highlighted on the graph above</h2>
+        <PaniniChat compact onIdentify={(id: string) => { const hit = graph.nodes.find((n) => n.id === id); if (hit) selectSearchResult(hit); }} />
+      </section>
       <SourcesPanel
         title="Graph sources"
         groups={[

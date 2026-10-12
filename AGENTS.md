@@ -15,3 +15,4 @@
 - MLPerf records retain structured hardware context rather than putting systems in model versions, so graph identity stays model-centric and measured hardware remains inspectable.
 - Hardware memory sizing uses decimal GB, explicit activation budgets and architecture-specific KV inputs; never derive throughput or training duration from theoretical compute.
 - Unranked specialist models/platforms live in src/data/specialist-models.json and are shown as catalogue + KG nodes, never as scored rows — keeps self-reported claims out of rankings.
+- Panini chatbot grounds every answer in buildGraph via server-side tools and records structured results through an `identify` tool, so the chat UI (/api/panini, streamed) and the stateless public JSON endpoint (/api/public/panini) share one JSON contract.
