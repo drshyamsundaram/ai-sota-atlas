@@ -343,9 +343,7 @@ function Dashboard() {
               onValueChange={(v) => {
                 setIntervalMs(Number(v));
                 toast.info(
-                  Number(v) === 0
-                    ? "Auto-refresh paused"
-                    : `Auto-refresh every ${REFRESH_OPTIONS.find((o) => o.ms === Number(v))?.label}`,
+                  `Auto-refresh every ${REFRESH_OPTIONS.find((o) => o.ms === Number(v))?.label}`,
                 );
               }}
             >
@@ -356,7 +354,7 @@ function Dashboard() {
               <SelectContent>
                 {REFRESH_OPTIONS.map((o) => (
                   <SelectItem key={o.ms} value={String(o.ms)}>
-                    {o.ms === 0 ? "Auto-refresh: off" : `Every ${o.label}`}
+                    Every {o.label}
                   </SelectItem>
                 ))}
               </SelectContent>
