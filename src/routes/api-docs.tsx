@@ -66,6 +66,12 @@ const ENDPOINTS: Endpoint[] = [
     example: "curl -X POST /api/public/tokens/refresh",
   },
   {
+    method: "POST",
+    path: "/api/public/panini",
+    summary: "Panini chatbot — identifies exact AI-SOTA KG nodes. Body: { message } or { messages: [{role, content}] } (stateless; send full history). Returns { answer, json }.",
+    example: "curl -X POST /api/public/panini -H 'content-type: application/json' -d '{\"message\":\"Which Chinese model has the most tokens?\"}'",
+  },
+  {
     method: "GET",
     path: "/api/public/graph",
     summary: "AI-SOTA KG knowledge graph — models, developers, countries, benchmarks, categories, token slices and hardware.",

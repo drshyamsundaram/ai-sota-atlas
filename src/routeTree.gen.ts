@@ -14,6 +14,7 @@ import { Route as ApiDocsRouteImport } from './routes/api-docs'
 import { Route as DocsRouteImport } from './routes/docs'
 import { Route as HardwareRouteImport } from './routes/hardware'
 import { Route as KnowledgeGraphRouteImport } from './routes/knowledge-graph'
+import { Route as PaniniRouteImport } from './routes/panini'
 import { Route as TokensRouteImport } from './routes/tokens'
 import { Route as ApiPaniniRouteImport } from './routes/api/panini'
 import { Route as ApiPublicDatasetRouteImport } from './routes/api/public/dataset'
@@ -48,6 +49,11 @@ const HardwareRoute = HardwareRouteImport.update({
 const KnowledgeGraphRoute = KnowledgeGraphRouteImport.update({
   id: '/knowledge-graph',
   path: '/knowledge-graph',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaniniRoute = PaniniRouteImport.update({
+  id: '/panini',
+  path: '/panini',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TokensRoute = TokensRouteImport.update({
@@ -107,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/docs': typeof DocsRoute
   '/hardware': typeof HardwareRoute
   '/knowledge-graph': typeof KnowledgeGraphRoute
+  '/panini': typeof PaniniRoute
   '/tokens': typeof TokensRoute
   '/api/panini': typeof ApiPaniniRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
@@ -124,6 +131,7 @@ export interface FileRoutesByTo {
   '/docs': typeof DocsRoute
   '/hardware': typeof HardwareRoute
   '/knowledge-graph': typeof KnowledgeGraphRoute
+  '/panini': typeof PaniniRoute
   '/tokens': typeof TokensRoute
   '/api/panini': typeof ApiPaniniRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
@@ -142,6 +150,7 @@ export interface FileRoutesById {
   '/docs': typeof DocsRoute
   '/hardware': typeof HardwareRoute
   '/knowledge-graph': typeof KnowledgeGraphRoute
+  '/panini': typeof PaniniRoute
   '/tokens': typeof TokensRoute
   '/api/panini': typeof ApiPaniniRoute
   '/api/public/dataset': typeof ApiPublicDatasetRoute
@@ -161,6 +170,7 @@ export interface FileRouteTypes {
     | '/docs'
     | '/hardware'
     | '/knowledge-graph'
+    | '/panini'
     | '/tokens'
     | '/api/panini'
     | '/api/public/dataset'
@@ -178,6 +188,7 @@ export interface FileRouteTypes {
     | '/docs'
     | '/hardware'
     | '/knowledge-graph'
+    | '/panini'
     | '/tokens'
     | '/api/panini'
     | '/api/public/dataset'
@@ -195,6 +206,7 @@ export interface FileRouteTypes {
     | '/docs'
     | '/hardware'
     | '/knowledge-graph'
+    | '/panini'
     | '/tokens'
     | '/api/panini'
     | '/api/public/dataset'
@@ -213,6 +225,7 @@ export interface RootRouteChildren {
   DocsRoute: typeof DocsRoute
   HardwareRoute: typeof HardwareRoute
   KnowledgeGraphRoute: typeof KnowledgeGraphRoute
+  PaniniRoute: typeof PaniniRoute
   TokensRoute: typeof TokensRoute
   ApiPaniniRoute: typeof ApiPaniniRoute
   ApiPublicDatasetRoute: typeof ApiPublicDatasetRoute
@@ -259,6 +272,13 @@ declare module '@tanstack/react-router' {
       path: '/knowledge-graph'
       fullPath: '/knowledge-graph'
       preLoaderRoute: typeof KnowledgeGraphRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/panini': {
+      id: '/panini'
+      path: '/panini'
+      fullPath: '/panini'
+      preLoaderRoute: typeof PaniniRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tokens': {
@@ -352,6 +372,7 @@ const rootRouteChildren: RootRouteChildren = {
   DocsRoute: DocsRoute,
   HardwareRoute: HardwareRoute,
   KnowledgeGraphRoute: KnowledgeGraphRoute,
+  PaniniRoute: PaniniRoute,
   TokensRoute: TokensRoute,
   ApiPaniniRoute: ApiPaniniRoute,
   ApiPublicDatasetRoute: ApiPublicDatasetRoute,
