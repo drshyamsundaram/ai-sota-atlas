@@ -59,3 +59,6 @@
 - **Life sciences** ranks models on LABBench2 (via BenchLM).
 - **Cybersecurity** adds CyberGym (via BenchLM) next to Nilgiri.
 - Each of these categories, plus India, shows a **Specialist models & platforms** panel: an unranked catalogue (EvidenceMD, Med-Gemini, AlphaFold 3, ESM3, BiomedCLIP, H-Optimus-0, MDASH, Security Copilot, CrowdStrike, SentinelOne, Cortex XSIAM, Bodhan AI and more). Badges show the evidence level: *Self-reported*, *Reference only*, *Platform / product* or *Ranked in leaderboards*. These entries also appear in the AI-SOTA KG linked to their category, developer and country.
+
+## Panini chatbot
+Open **Panini chat** (or the panel under the AI-SOTA KG). Describe what you are looking for; Panini asks follow-up questions until it identifies the exact node and shows a JSON result. On the KG page the identified node is highlighted. API: `POST /api/public/panini` with `{ "message": "..." }` or the full `messages` history; returns `{ answer, json }`.
