@@ -317,6 +317,7 @@ function Dashboard() {
               Docs
             </Link>
             <Link to="/hardware" className="hover:text-primary">Hardware &amp; Chipsets</Link>
+            <Link to="/compare" className="hover:text-primary">Compare</Link>
             <Link to="/panini" className="hover:text-primary">Panini chat</Link>
             <a
               href="https://www.linkedin.com/in/bioenable/"
@@ -756,6 +757,7 @@ python pipeline/process.py --in pipeline/out/raw.json \\
               Docs
             </Link>
             <Link to="/hardware" className="hover:text-primary">Hardware &amp; Chipsets</Link>
+            <Link to="/compare" className="hover:text-primary">Compare</Link>
             <Link to="/panini" className="hover:text-primary">Panini chat</Link>
             <a
               href="https://www.linkedin.com/in/bioenable/"

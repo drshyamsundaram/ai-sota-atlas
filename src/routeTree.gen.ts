@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiDocsRouteImport } from './routes/api-docs'
+import { Route as CompareRouteImport } from './routes/compare'
 import { Route as DocsRouteImport } from './routes/docs'
 import { Route as HardwareRouteImport } from './routes/hardware'
 import { Route as KnowledgeGraphRouteImport } from './routes/knowledge-graph'
@@ -34,6 +35,11 @@ const IndexRoute = IndexRouteImport.update({
 const ApiDocsRoute = ApiDocsRouteImport.update({
   id: '/api-docs',
   path: '/api-docs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DocsRoute = DocsRouteImport.update({
@@ -110,6 +116,7 @@ const ApiPublicTokensRefreshRoute = ApiPublicTokensRefreshRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api-docs': typeof ApiDocsRoute
+  '/compare': typeof CompareRoute
   '/docs': typeof DocsRoute
   '/hardware': typeof HardwareRoute
   '/knowledge-graph': typeof KnowledgeGraphRoute
@@ -128,6 +135,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api-docs': typeof ApiDocsRoute
+  '/compare': typeof CompareRoute
   '/docs': typeof DocsRoute
   '/hardware': typeof HardwareRoute
   '/knowledge-graph': typeof KnowledgeGraphRoute
@@ -147,6 +155,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api-docs': typeof ApiDocsRoute
+  '/compare': typeof CompareRoute
   '/docs': typeof DocsRoute
   '/hardware': typeof HardwareRoute
   '/knowledge-graph': typeof KnowledgeGraphRoute
@@ -167,6 +176,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/api-docs'
+    | '/compare'
     | '/docs'
     | '/hardware'
     | '/knowledge-graph'
@@ -185,6 +195,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/api-docs'
+    | '/compare'
     | '/docs'
     | '/hardware'
     | '/knowledge-graph'
@@ -203,6 +214,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/api-docs'
+    | '/compare'
     | '/docs'
     | '/hardware'
     | '/knowledge-graph'
@@ -222,6 +234,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiDocsRoute: typeof ApiDocsRoute
+  CompareRoute: typeof CompareRoute
   DocsRoute: typeof DocsRoute
   HardwareRoute: typeof HardwareRoute
   KnowledgeGraphRoute: typeof KnowledgeGraphRoute
@@ -251,6 +264,13 @@ declare module '@tanstack/react-router' {
       path: '/api-docs'
       fullPath: '/api-docs'
       preLoaderRoute: typeof ApiDocsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/docs': {
@@ -369,6 +389,7 @@ const ApiPublicTokensRouteWithChildren = ApiPublicTokensRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiDocsRoute: ApiDocsRoute,
+  CompareRoute: CompareRoute,
   DocsRoute: DocsRoute,
   HardwareRoute: HardwareRoute,
   KnowledgeGraphRoute: KnowledgeGraphRoute,

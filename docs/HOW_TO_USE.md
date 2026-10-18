@@ -63,3 +63,6 @@
 
 ## Panini chatbot
 Open **Panini chat** (or the panel under the AI-SOTA KG). Describe what you are looking for; Panini asks follow-up questions until it identifies the exact node and shows a JSON result. On the KG page the identified node is highlighted. API: `POST /api/public/panini` with an `x-api-key` header (or `Authorization: Bearer <key>`) and `{ "message": "..." }` or the full `messages` history; returns `{ answer, json }`. Requests without a valid key get `401`.
+
+## Compare models
+Open **Compare** (`/compare`). Filter by category or search, then pick up to four models. The table lines up developer, country, categories, parameter counts (from the specialist catalogue where published), weekly token usage, share and growth (OpenRouter overall slice), evidence labels, and every benchmark score available for the chosen models. A Panini Q&A panel below the table answers follow-up questions grounded in the AI-SOTA KG.
