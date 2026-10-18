@@ -3,6 +3,7 @@ import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { KgMiniCard } from "@/components/kg/KgMiniCard";
 import { Disclaimer } from "@/components/Disclaimer";
 import { SpecialistCatalogue } from "@/components/SpecialistCatalogue";
+import { specialistModels } from "@/data/specialist-models";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowUpRight,
