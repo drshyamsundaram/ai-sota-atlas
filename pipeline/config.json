@@ -1,224 +1,282 @@
 {
-  "llm_status_spec": {
-    "priority": [
-      "Official benchmark or leaderboard page",
-      "Regional or domain-specific benchmark",
-      "Secondary summary only if needed"
-    ],
-    "report_fields": [
-      "model_name",
-      "model_version",
-      "benchmark_name",
-      "score_or_rank",
-      "date",
-      "scope_or_region"
-    ],
-    "max_items_per_category": 5,
-    "categories": [
-      {
-        "id": "global_frontier",
-        "title": "Global frontier",
-        "sources": [
-          "https://lmarena.ai/leaderboard",
-          "https://crfm.stanford.edu/helm/capabilities/latest/",
-          "https://artificialanalysis.ai/leaderboards/models",
-          "https://gorilla.cs.berkeley.edu/leaderboard.html",
-          "https://aider.chat/docs/leaderboards/",
-          "https://lastexam.ai/",
-          "https://www.swebench.com/",
-          "https://modelgrep.com/",
-          "https://arcprize.org/leaderboard",
-          "https://www.vellum.ai/llm-leaderboard",
-          "https://openrouter.ai/rankings",
-          "https://paperswithcode.com/",
-          "https://epoch.ai/benchmarks",
-          "https://livebench.ai/",
-          "https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard",
-          "https://huggingface.co/models",
-          "https://benchlm.ai/",
-          "https://livecodebench.github.io/leaderboard.html"
-        ]
-      },
-      {
-        "id": "hallucination_safety",
-        "title": "Hallucination and safety",
-        "metrics": [
-          "hallucination_rate",
-          "factual_consistency",
-          "faithfulness",
-          "groundedness",
-          "citation_accuracy"
-        ],
-        "sources": [
-          "https://huggingface.co/spaces/vectara/leaderboard",
-          "https://suprmind.ai/hub/ai-hallucination-rates-and-benchmarks/",
-          "https://hai.stanford.edu/ai-index/2026-ai-index-report",
-          "https://www.artificialanalysis.ai/blog/ai-hallucination-rates-statistics-benchmarks-2026",
-          "https://arxiv.org/abs/2501.05441",
-          "https://arxiv.org/abs/2509.14437",
-          "https://arxiv.org/abs/2505.03102",
-          "https://arxiv.org/abs/2409.12700",
-          "https://genai.owasp.org/llm-top-10/",
-          "https://labs.scale.com/leaderboard"
-        ]
-      },
-      {
-        "id": "cybersecurity",
-        "title": "Cybersecurity",
-        "metrics": [
-          "attack_chain_milestones",
-          "ctf_solve_rate",
-          "exploit_success_rate",
-          "vulnerability_detection",
-          "harmful_request_refusal"
-        ],
-        "sources": [
-          "https://sparclabs.github.io/nilgiri/leaderboard/",
-          "https://benchlm.ai/benchmarks/cybergym",
-          "https://www.benchlm.ai/cybersecurity",
-          "https://cybench.github.io/"
-        ],
-        "reference_sources": [
-          {
-            "name": "AgentCyberRange (Fudan)",
-            "url": "https://arxiv.org/abs/2606.14295",
-            "note": "Paper; reference only."
-          },
-          {
-            "name": "CyberSecEval (Meta PurpleLlama)",
-            "url": "https://github.com/meta-llama/PurpleLlama",
-            "note": "Reference only."
-          },
-          {
-            "name": "OWASP LLM Top 10",
-            "url": "https://genai.owasp.org/llm-top-10/",
-            "note": "Risk taxonomy; reference only."
-          }
-        ]
-      },
-      {
-        "id": "clinical",
-        "title": "Clinical",
-        "metrics": ["mean_win_rate", "healthbench_score", "healthbench_hard_score"],
-        "sources": [
-          "https://medhelm.org/",
-          "https://benchlm.ai/benchmarks/healthbench",
-          "https://benchlm.ai/benchmarks/healthbench-hard"
-        ],
-        "reference_sources": [
-          { "name": "EvidenceMD", "url": "https://evidencemd.ai/blogs/evidencemd-benchmarks", "note": "Self-reported HealthBench claims." },
-          { "name": "John Snow Labs Medical LLMs", "url": "https://www.johnsnowlabs.com/healthcare-llm/", "note": "Self-reported." }
-        ]
-      },
-      {
-        "id": "life_sciences",
-        "title": "Life sciences",
-        "metrics": ["labbench2_score"],
-        "sources": [
-          "https://benchlm.ai/benchmarks/labbench2"
-        ],
-        "note": "Biology foundation models (AlphaFold, ESM, imaging models) are catalogued, not ranked: they use domain-specific benchmarks."
-      },
-      {
-        "id": "multimodal",
-        "title": "Multimodal",
-        "metrics": [
-          "mmmu_pro_overall",
-          "mmmu_val_overall",
-          "mathvision_all",
-          "videomme_overall",
-          "charxiv_rq_overall",
-          "charxiv_dq_overall"
-        ],
-        "sources": [
-          "https://mmmu-benchmark.github.io/",
-          "https://mathllm.github.io/mathvision/",
-          "https://video-mme.github.io/home_page.html",
-          "https://charxiv.github.io/"
-        ],
-        "reference_sources": [
-          { "name": "MathVerse", "url": "https://mathverse-cuhk.github.io/", "note": "Leaderboard data files currently unavailable." },
-          { "name": "OSWorld", "url": "https://os-world.github.io/", "note": "Publishes a self-reported results spreadsheet; not collected as verified scores." },
-          { "name": "ScreenSpot / GUI grounding", "url": "https://gui-agent.github.io/grounding-leaderboard/", "note": "Browser-rendered leaderboard." },
-          { "name": "MMLU-Pro", "url": "https://huggingface.co/datasets/TIGER-Lab/MMLU-Pro", "note": "Leaderboard is a browser-rendered space; dataset link only." },
-          { "name": "OlympiadBench", "url": "https://github.com/OpenBMB/OlympiadBench", "note": "No machine-readable score table." },
-          { "name": "PixmoCount", "url": "https://pixmo-count.github.io/", "note": "Dataset only." },
-          { "name": "InfoVQA", "url": "https://infovqa.github.io/", "note": "Dataset only." }
-        ]
-      },
-      {
-        "id": "ai_infrastructure",
-        "title": "AI infrastructure",
-        "metrics": [
-          "throughput_tokens_per_s"
-        ],
-        "sources": [
-          "https://github.com/mlcommons/inference_results_v6.0"
-        ],
-        "note": "MLPerf Inference measures system throughput for a workload model, not model quality."
-      },
-      {
-        "id": "india",
-        "title": "India",
-        "sources": [
-          "https://arena.ai4bharat.org/",
-          "https://ai4bharat.iitm.ac.in/",
-          "https://huggingface.co/ai4bharat",
-          "https://arxiv.org/abs/2501.13829",
-          "https://www.benchlm.com/blog/best-indian-llm-2026",
-          "https://www.aimultiple.com/open-source-vs-commercial-llms/",
-          "https://www.business-friendly-llm.org/"
-        ],
-        "model_families": [
-          "https://sarvam.ai/",
-          "https://bharatgen.in/",
-          "https://krutrim.com/",
-          "https://gnani.ai/",
-          "https://ai4bharat.iitm.ac.in/"
-        ]
-      },
-      {
-        "id": "china",
-        "title": "China",
-        "sources": [
-          "https://www.benchlm.com/blog/why-chinese-llm-rankings-disagree",
-          "https://github.com/open-cn-llm/llm-leaderboard",
-          "https://openrouter.ai/rankings"
-        ]
-      },
-      {
-        "id": "europe",
-        "title": "Europe",
-        "sources": [
-          "https://www.benchlm.com/best/european-models",
-          "https://mistral.ai/",
-          "https://www.aleph-alpha.com/",
-          "https://lighton.ai/",
-          "https://hcompany.ai/",
-          "https://arxiv.org/abs/2509.12345"
-        ]
-      },
-      {
-        "id": "mea",
-        "title": "Middle East & Africa",
-        "sources": [
-          "https://www.tii.ae/falcon",
-          "https://falconllm.tii.ae/",
-          "https://mbzuai.ac.ae/news/mbzuai-launches-k2-think/",
-          "https://www.inceptionai.ai/jais",
-          "https://sdaia.gov.sa/en/SDAIA/about/Pages/AboutALLaM.aspx",
-          "https://www.qcri.org/fanar/"
-        ]
-      }
+ "llm_status_spec": {
+  "priority": [
+   "Official benchmark or leaderboard page",
+   "Regional or domain-specific benchmark",
+   "Secondary summary only if needed"
+  ],
+  "report_fields": [
+   "model_name",
+   "model_version",
+   "benchmark_name",
+   "score_or_rank",
+   "date",
+   "scope_or_region"
+  ],
+  "max_items_per_category": 5,
+  "categories": [
+   {
+    "id": "global_frontier",
+    "title": "Global frontier",
+    "sources": [
+     "https://lmarena.ai/leaderboard",
+     "https://crfm.stanford.edu/helm/capabilities/latest/",
+     "https://artificialanalysis.ai/leaderboards/models",
+     "https://gorilla.cs.berkeley.edu/leaderboard.html",
+     "https://aider.chat/docs/leaderboards/",
+     "https://lastexam.ai/",
+     "https://www.swebench.com/",
+     "https://modelgrep.com/",
+     "https://arcprize.org/leaderboard",
+     "https://www.vellum.ai/llm-leaderboard",
+     "https://openrouter.ai/rankings",
+     "https://paperswithcode.com/",
+     "https://epoch.ai/benchmarks",
+     "https://livebench.ai/",
+     "https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard",
+     "https://huggingface.co/models",
+     "https://benchlm.ai/",
+     "https://livecodebench.github.io/leaderboard.html"
     ]
-  },
-  "rules": [
-    "Prefer direct benchmark pages over summaries.",
-    "Separate global, regional, commercial, hallucination, and safety signals.",
-    "For SLMs, emphasize latency, cost, footprint, and deployment constraints alongside accuracy.",
-    "For hallucination, include hallucination_rate, factual_consistency, faithfulness, groundedness, and citation_accuracy when available.",
-    "State benchmark contract differences (task type, domain, metric) when relevant.",
-    "Keep outputs concise, current, and source-backed.",
-    "Cybersecurity: prefer long-horizon agentic cyber-range results (e.g. Nilgiri) over single-task CTF scores; never invent scores for reference-only sources."
+   },
+   {
+    "id": "hallucination_safety",
+    "title": "Hallucination and safety",
+    "metrics": [
+     "hallucination_rate",
+     "factual_consistency",
+     "faithfulness",
+     "groundedness",
+     "citation_accuracy"
+    ],
+    "sources": [
+     "https://huggingface.co/spaces/vectara/leaderboard",
+     "https://suprmind.ai/hub/ai-hallucination-rates-and-benchmarks/",
+     "https://hai.stanford.edu/ai-index/2026-ai-index-report",
+     "https://www.artificialanalysis.ai/blog/ai-hallucination-rates-statistics-benchmarks-2026",
+     "https://arxiv.org/abs/2501.05441",
+     "https://arxiv.org/abs/2509.14437",
+     "https://arxiv.org/abs/2505.03102",
+     "https://arxiv.org/abs/2409.12700",
+     "https://genai.owasp.org/llm-top-10/",
+     "https://labs.scale.com/leaderboard"
+    ]
+   },
+   {
+    "id": "cybersecurity",
+    "title": "Cybersecurity",
+    "metrics": [
+     "attack_chain_milestones",
+     "ctf_solve_rate",
+     "exploit_success_rate",
+     "vulnerability_detection",
+     "harmful_request_refusal"
+    ],
+    "sources": [
+     "https://sparclabs.github.io/nilgiri/leaderboard/",
+     "https://benchlm.ai/benchmarks/cybergym",
+     "https://www.benchlm.ai/cybersecurity",
+     "https://cybench.github.io/"
+    ],
+    "reference_sources": [
+     {
+      "name": "AgentCyberRange (Fudan)",
+      "url": "https://arxiv.org/abs/2606.14295",
+      "note": "Paper; reference only."
+     },
+     {
+      "name": "CyberSecEval (Meta PurpleLlama)",
+      "url": "https://github.com/meta-llama/PurpleLlama",
+      "note": "Reference only."
+     },
+     {
+      "name": "OWASP LLM Top 10",
+      "url": "https://genai.owasp.org/llm-top-10/",
+      "note": "Risk taxonomy; reference only."
+     }
+    ]
+   },
+   {
+    "id": "clinical",
+    "title": "Clinical",
+    "metrics": [
+     "mean_win_rate",
+     "healthbench_score",
+     "healthbench_hard_score"
+    ],
+    "sources": [
+     "https://medhelm.org/",
+     "https://benchlm.ai/benchmarks/healthbench",
+     "https://benchlm.ai/benchmarks/healthbench-hard"
+    ],
+    "reference_sources": [
+     {
+      "name": "EvidenceMD",
+      "url": "https://evidencemd.ai/blogs/evidencemd-benchmarks",
+      "note": "Self-reported HealthBench claims."
+     },
+     {
+      "name": "John Snow Labs Medical LLMs",
+      "url": "https://www.johnsnowlabs.com/healthcare-llm/",
+      "note": "Self-reported."
+     }
+    ]
+   },
+   {
+    "id": "life_sciences",
+    "title": "Life sciences",
+    "metrics": [
+     "labbench2_score"
+    ],
+    "sources": [
+     "https://benchlm.ai/benchmarks/labbench2"
+    ],
+    "note": "Biology foundation models (AlphaFold, ESM, imaging models) are catalogued, not ranked: they use domain-specific benchmarks."
+   },
+   {
+    "id": "multimodal",
+    "title": "Multimodal",
+    "metrics": [
+     "mmmu_pro_overall",
+     "mmmu_val_overall",
+     "mathvision_all",
+     "videomme_overall",
+     "charxiv_rq_overall",
+     "charxiv_dq_overall"
+    ],
+    "sources": [
+     "https://mmmu-benchmark.github.io/",
+     "https://mathllm.github.io/mathvision/",
+     "https://video-mme.github.io/home_page.html",
+     "https://charxiv.github.io/"
+    ],
+    "reference_sources": [
+     {
+      "name": "MathVerse",
+      "url": "https://mathverse-cuhk.github.io/",
+      "note": "Leaderboard data files currently unavailable."
+     },
+     {
+      "name": "OSWorld",
+      "url": "https://os-world.github.io/",
+      "note": "Publishes a self-reported results spreadsheet; not collected as verified scores."
+     },
+     {
+      "name": "ScreenSpot / GUI grounding",
+      "url": "https://gui-agent.github.io/grounding-leaderboard/",
+      "note": "Browser-rendered leaderboard."
+     },
+     {
+      "name": "MMLU-Pro",
+      "url": "https://huggingface.co/datasets/TIGER-Lab/MMLU-Pro",
+      "note": "Leaderboard is a browser-rendered space; dataset link only."
+     },
+     {
+      "name": "OlympiadBench",
+      "url": "https://github.com/OpenBMB/OlympiadBench",
+      "note": "No machine-readable score table."
+     },
+     {
+      "name": "PixmoCount",
+      "url": "https://pixmo-count.github.io/",
+      "note": "Dataset only."
+     },
+     {
+      "name": "InfoVQA",
+      "url": "https://infovqa.github.io/",
+      "note": "Dataset only."
+     }
+    ]
+   },
+   {
+    "id": "ai_infrastructure",
+    "title": "AI infrastructure",
+    "metrics": [
+     "throughput_tokens_per_s"
+    ],
+    "sources": [
+     "https://github.com/mlcommons/inference_results_v6.0"
+    ],
+    "note": "MLPerf Inference measures system throughput for a workload model, not model quality."
+   },
+   {
+    "id": "india",
+    "title": "India",
+    "sources": [
+     "https://arena.ai4bharat.org/",
+     "https://ai4bharat.iitm.ac.in/",
+     "https://huggingface.co/ai4bharat",
+     "https://arxiv.org/abs/2501.13829",
+     "https://www.benchlm.com/blog/best-indian-llm-2026",
+     "https://www.aimultiple.com/open-source-vs-commercial-llms/",
+     "https://www.business-friendly-llm.org/",
+     "https://www.sarvam.ai/blogs/sarvam-30b-105b",
+     "https://bharatgen.com/text-models/",
+     "https://www.techmahindra.com/insights/news/techm-teams-nvidia-launch-cutting-edge-education-llm-under-project-indus/"
+    ],
+    "model_families": [
+     "https://sarvam.ai/",
+     "https://bharatgen.in/",
+     "https://krutrim.com/",
+     "https://gnani.ai/",
+     "https://ai4bharat.iitm.ac.in/"
+    ]
+   },
+   {
+    "id": "china",
+    "title": "China",
+    "sources": [
+     "https://www.benchlm.com/blog/why-chinese-llm-rankings-disagree",
+     "https://github.com/open-cn-llm/llm-leaderboard",
+     "https://openrouter.ai/rankings",
+     "https://qwen.ai/blog?id=qwen3.8",
+     "https://huggingface.co/moonshotai/Kimi-K3",
+     "https://z.ai/blog/glm-5.3",
+     "https://www.minimax.io/blog/minimax-m3",
+     "https://www.stepfun.com/news/step-5-preview",
+     "https://mimo.mi.com/docs/en-US/updates/model"
+    ]
+   },
+   {
+    "id": "europe",
+    "title": "Europe",
+    "sources": [
+     "https://www.benchlm.com/best/european-models",
+     "https://mistral.ai/",
+     "https://www.aleph-alpha.com/",
+     "https://lighton.ai/",
+     "https://hcompany.ai/",
+     "https://arxiv.org/abs/2509.12345",
+     "https://mistral.ai/news/mistral-large-4/",
+     "https://aleph-alpha.com/en/blog/kolibri-has-landed-a-sovereign-open-weight-model/",
+     "https://poolside.ai/blog/introducing-laguna-s-2-1",
+     "https://huggingface.co/blog/swiss-ai/apertus-v15-release-notes"
+    ]
+   },
+   {
+    "id": "mea",
+    "title": "Middle East & Africa",
+    "sources": [
+     "https://www.tii.ae/falcon",
+     "https://falconllm.tii.ae/",
+     "https://mbzuai.ac.ae/news/mbzuai-launches-k2-think/",
+     "https://www.inceptionai.ai/jais",
+     "https://sdaia.gov.sa/en/SDAIA/about/Pages/AboutALLaM.aspx",
+     "https://www.qcri.org/fanar/",
+     "https://ifm.ai/jais3/press-release/",
+     "https://falconllm.tii.ae/tii-launches-falcon-emirati-alongside-new-arabic-ai-models-for-speech-and-visual-text-understanding.html",
+     "https://falconllm.tii.ae/abu-dhabi-tii-launches-falcon-h1-arabic-establishing-the-worlds-leading-arabic-ai-model.html"
+    ]
+   }
   ]
+ },
+ "rules": [
+  "Prefer direct benchmark pages over summaries.",
+  "Separate global, regional, commercial, hallucination, and safety signals.",
+  "For SLMs, emphasize latency, cost, footprint, and deployment constraints alongside accuracy.",
+  "For hallucination, include hallucination_rate, factual_consistency, faithfulness, groundedness, and citation_accuracy when available.",
+  "State benchmark contract differences (task type, domain, metric) when relevant.",
+  "Keep outputs concise, current, and source-backed.",
+  "Cybersecurity: prefer long-horizon agentic cyber-range results (e.g. Nilgiri) over single-task CTF scores; never invent scores for reference-only sources."
+ ]
 }

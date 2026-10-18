@@ -1,29 +1,603 @@
 {
-  "note": "Reference catalogue. Entries are not ranked and no scores are invented; 'claim' fields quote the developer's own published figures and are labelled self-reported.",
-  "entries": [
-    { "name": "EvidenceMD", "developer": "EvidenceMD", "country": "United States", "category": "clinical", "kind": "Clinical reasoning LLM", "benchmarks": ["HealthBench", "HealthBench Hard"], "evidence": "self_reported", "claim": "HealthBench Hard 54.6%, HealthBench 66.6% (developer blog, Mar 2026)", "url": "https://evidencemd.ai/blogs/evidencemd-benchmarks" },
-    { "name": "Claude for Life Sciences (Claude Opus)", "developer": "Anthropic", "country": "United States", "category": "clinical", "kind": "Frontier LLM with life-science connectors", "benchmarks": ["HealthBench", "MedHELM", "LABBench2"], "evidence": "ranked_elsewhere", "url": "https://www.anthropic.com/news/claude-for-life-sciences" },
-    { "name": "Med-Gemini", "developer": "Google", "country": "United States", "category": "clinical", "kind": "Medical multimodal LLM (research)", "benchmarks": ["MedQA", "MedHELM (Gemini 3.x)"], "evidence": "reference", "url": "https://research.google/blog/advancing-medical-ai-with-med-gemini/" },
-    { "name": "John Snow Labs Medical LLMs", "developer": "John Snow Labs", "country": "United States", "category": "clinical", "kind": "Medical LLMs for clinical NLP", "benchmarks": ["Vendor evaluations"], "evidence": "self_reported", "url": "https://www.johnsnowlabs.com/healthcare-llm/" },
-    { "name": "BioGPT", "developer": "Microsoft", "country": "United States", "category": "clinical", "kind": "Biomedical generative LM (legacy)", "benchmarks": ["PubMedQA", "BC5CDR"], "evidence": "reference", "url": "https://github.com/microsoft/BioGPT" },
-    { "name": "AlphaFold 3", "developer": "Google DeepMind", "country": "United Kingdom", "category": "life_sciences", "kind": "Biomolecular structure prediction", "benchmarks": ["CASP", "PoseBusters"], "evidence": "reference", "url": "https://deepmind.google/science/alphafold/" },
-    { "name": "AlphaProteo", "developer": "Google DeepMind", "country": "United Kingdom", "category": "life_sciences", "kind": "Protein binder design", "benchmarks": ["Wet-lab binding rates"], "evidence": "reference", "url": "https://deepmind.google/discover/blog/alphaproteo-generates-novel-proteins-for-biology-and-health-research/" },
-    { "name": "AlphaGenome", "developer": "Google DeepMind", "country": "United Kingdom", "category": "life_sciences", "kind": "Genome regulatory variant model", "benchmarks": ["Variant-effect benchmarks"], "evidence": "reference", "url": "https://deepmind.google/discover/blog/alphagenome-ai-for-better-understanding-the-genome/" },
-    { "name": "ESM2 / ESM3 / ESMFold", "developer": "EvolutionaryScale / Meta", "country": "United States", "category": "life_sciences", "kind": "Protein language models", "benchmarks": ["ProteinGym", "CASP"], "evidence": "reference", "url": "https://github.com/evolutionaryscale/esm" },
-    { "name": "NVIDIA BioNeMo", "developer": "NVIDIA", "country": "United States", "category": "life_sciences", "kind": "Platform / framework (not a model)", "benchmarks": ["Hosts other models"], "evidence": "platform", "url": "https://www.nvidia.com/en-us/clara/bionemo/" },
-    { "name": "MONAI", "developer": "NVIDIA / Project MONAI", "country": "United States", "category": "life_sciences", "kind": "Medical imaging framework (not a model)", "benchmarks": ["Medical Segmentation Decathlon"], "evidence": "platform", "url": "https://monai.io/" },
-    { "name": "Parabricks", "developer": "NVIDIA", "country": "United States", "category": "life_sciences", "kind": "GPU genomics pipeline (not a model)", "benchmarks": ["Runtime per genome"], "evidence": "platform", "url": "https://www.nvidia.com/en-us/clara/parabricks/" },
-    { "name": "BiomedCLIP", "developer": "Microsoft", "country": "United States", "category": "life_sciences", "kind": "Biomedical vision-language model", "benchmarks": ["PCam", "LC25000"], "evidence": "reference", "url": "https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224" },
-    { "name": "MedImageInsight", "developer": "Microsoft", "country": "United States", "category": "life_sciences", "kind": "Medical image embedding model", "benchmarks": ["Imaging classification"], "evidence": "reference", "url": "https://aka.ms/mi2modelcard" },
-    { "name": "MedImageParse", "developer": "Microsoft", "country": "United States", "category": "life_sciences", "kind": "Medical image segmentation", "benchmarks": ["Segmentation (Dice)"], "evidence": "reference", "url": "https://microsoft.github.io/BiomedParse/" },
-    { "name": "CXRReportGen", "developer": "Microsoft", "country": "United States", "category": "life_sciences", "kind": "Chest X-ray report generation", "benchmarks": ["MIMIC-CXR", "RadFact"], "evidence": "reference", "url": "https://aka.ms/CXRReportGenModelCard" },
-    { "name": "TamGen", "developer": "Microsoft", "country": "United States", "category": "life_sciences", "kind": "Target-aware molecule generation", "benchmarks": ["CrossDocked"], "evidence": "reference", "url": "https://github.com/SigmaGenX/TamGen" },
-    { "name": "H-Optimus-0", "developer": "Bioptimus", "country": "France", "category": "life_sciences", "kind": "Pathology foundation model", "benchmarks": ["HEST", "Pathology tile benchmarks"], "evidence": "reference", "url": "https://huggingface.co/bioptimus/H-optimus-0" },
-    { "name": "MAI-Cyber-1-Flash + GPT-5.4 (MDASH)", "developer": "Microsoft", "country": "United States", "category": "cybersecurity", "kind": "Multi-model system result", "benchmarks": ["CyberGym"], "evidence": "self_reported", "claim": "MDASH system reports 96% on CyberGym (Microsoft, Aug 2026)", "url": "https://microsoft.ai/news/introducing-mai-cyber-1-flash-inside-mdash/" },
-    { "name": "Microsoft Security Copilot", "developer": "Microsoft", "country": "United States", "category": "cybersecurity", "kind": "Security AI platform", "benchmarks": ["MITRE ATT&CK Evaluations (product)"], "evidence": "platform", "url": "https://www.microsoft.com/en-us/security/business/ai-machine-learning/microsoft-security-copilot" },
-    { "name": "CrowdStrike Charlotte AI", "developer": "CrowdStrike", "country": "United States", "category": "cybersecurity", "kind": "Security AI platform", "benchmarks": ["MITRE ATT&CK Evaluations (product)"], "evidence": "platform", "url": "https://www.crowdstrike.com/platform/charlotte-ai/" },
-    { "name": "SentinelOne Purple AI", "developer": "SentinelOne", "country": "United States", "category": "cybersecurity", "kind": "Security AI platform", "benchmarks": ["MITRE ATT&CK Evaluations (product)"], "evidence": "platform", "url": "https://www.sentinelone.com/platform/purple/" },
-    { "name": "Cortex XSIAM", "developer": "Palo Alto Networks", "country": "United States", "category": "cybersecurity", "kind": "Security AI platform", "benchmarks": ["MITRE ATT&CK Evaluations (product)"], "evidence": "platform", "url": "https://www.paloaltonetworks.com/cortex/cortex-xsiam" },
-    { "name": "Bodhan AI (Bharat EduAI Stack)", "developer": "Bodhan AI (IIT Madras)", "country": "India", "category": "india", "kind": "Education AI: speech, translation, Edu LLMs", "benchmarks": ["No public LLM scores yet"], "evidence": "reference", "url": "https://bodhan.ai/" }
-  ]
+ "note": "Reference catalogue. Entries are not ranked and no scores are invented; 'claim' fields quote the developer's own published figures and are labelled self-reported.",
+ "entries": [
+  {
+   "name": "EvidenceMD",
+   "developer": "EvidenceMD",
+   "country": "United States",
+   "category": "clinical",
+   "kind": "Clinical reasoning LLM",
+   "benchmarks": [
+    "HealthBench",
+    "HealthBench Hard"
+   ],
+   "evidence": "self_reported",
+   "claim": "HealthBench Hard 54.6%, HealthBench 66.6% (developer blog, Mar 2026)",
+   "url": "https://evidencemd.ai/blogs/evidencemd-benchmarks"
+  },
+  {
+   "name": "Claude for Life Sciences (Claude Opus)",
+   "developer": "Anthropic",
+   "country": "United States",
+   "category": "clinical",
+   "kind": "Frontier LLM with life-science connectors",
+   "benchmarks": [
+    "HealthBench",
+    "MedHELM",
+    "LABBench2"
+   ],
+   "evidence": "ranked_elsewhere",
+   "url": "https://www.anthropic.com/news/claude-for-life-sciences"
+  },
+  {
+   "name": "Med-Gemini",
+   "developer": "Google",
+   "country": "United States",
+   "category": "clinical",
+   "kind": "Medical multimodal LLM (research)",
+   "benchmarks": [
+    "MedQA",
+    "MedHELM (Gemini 3.x)"
+   ],
+   "evidence": "reference",
+   "url": "https://research.google/blog/advancing-medical-ai-with-med-gemini/"
+  },
+  {
+   "name": "John Snow Labs Medical LLMs",
+   "developer": "John Snow Labs",
+   "country": "United States",
+   "category": "clinical",
+   "kind": "Medical LLMs for clinical NLP",
+   "benchmarks": [
+    "Vendor evaluations"
+   ],
+   "evidence": "self_reported",
+   "url": "https://www.johnsnowlabs.com/healthcare-llm/"
+  },
+  {
+   "name": "BioGPT",
+   "developer": "Microsoft",
+   "country": "United States",
+   "category": "clinical",
+   "kind": "Biomedical generative LM (legacy)",
+   "benchmarks": [
+    "PubMedQA",
+    "BC5CDR"
+   ],
+   "evidence": "reference",
+   "url": "https://github.com/microsoft/BioGPT"
+  },
+  {
+   "name": "AlphaFold 3",
+   "developer": "Google DeepMind",
+   "country": "United Kingdom",
+   "category": "life_sciences",
+   "kind": "Biomolecular structure prediction",
+   "benchmarks": [
+    "CASP",
+    "PoseBusters"
+   ],
+   "evidence": "reference",
+   "url": "https://deepmind.google/science/alphafold/"
+  },
+  {
+   "name": "AlphaProteo",
+   "developer": "Google DeepMind",
+   "country": "United Kingdom",
+   "category": "life_sciences",
+   "kind": "Protein binder design",
+   "benchmarks": [
+    "Wet-lab binding rates"
+   ],
+   "evidence": "reference",
+   "url": "https://deepmind.google/discover/blog/alphaproteo-generates-novel-proteins-for-biology-and-health-research/"
+  },
+  {
+   "name": "AlphaGenome",
+   "developer": "Google DeepMind",
+   "country": "United Kingdom",
+   "category": "life_sciences",
+   "kind": "Genome regulatory variant model",
+   "benchmarks": [
+    "Variant-effect benchmarks"
+   ],
+   "evidence": "reference",
+   "url": "https://deepmind.google/discover/blog/alphagenome-ai-for-better-understanding-the-genome/"
+  },
+  {
+   "name": "ESM2 / ESM3 / ESMFold",
+   "developer": "EvolutionaryScale / Meta",
+   "country": "United States",
+   "category": "life_sciences",
+   "kind": "Protein language models",
+   "benchmarks": [
+    "ProteinGym",
+    "CASP"
+   ],
+   "evidence": "reference",
+   "url": "https://github.com/evolutionaryscale/esm"
+  },
+  {
+   "name": "NVIDIA BioNeMo",
+   "developer": "NVIDIA",
+   "country": "United States",
+   "category": "life_sciences",
+   "kind": "Platform / framework (not a model)",
+   "benchmarks": [
+    "Hosts other models"
+   ],
+   "evidence": "platform",
+   "url": "https://www.nvidia.com/en-us/clara/bionemo/"
+  },
+  {
+   "name": "MONAI",
+   "developer": "NVIDIA / Project MONAI",
+   "country": "United States",
+   "category": "life_sciences",
+   "kind": "Medical imaging framework (not a model)",
+   "benchmarks": [
+    "Medical Segmentation Decathlon"
+   ],
+   "evidence": "platform",
+   "url": "https://monai.io/"
+  },
+  {
+   "name": "Parabricks",
+   "developer": "NVIDIA",
+   "country": "United States",
+   "category": "life_sciences",
+   "kind": "GPU genomics pipeline (not a model)",
+   "benchmarks": [
+    "Runtime per genome"
+   ],
+   "evidence": "platform",
+   "url": "https://www.nvidia.com/en-us/clara/parabricks/"
+  },
+  {
+   "name": "BiomedCLIP",
+   "developer": "Microsoft",
+   "country": "United States",
+   "category": "life_sciences",
+   "kind": "Biomedical vision-language model",
+   "benchmarks": [
+    "PCam",
+    "LC25000"
+   ],
+   "evidence": "reference",
+   "url": "https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224"
+  },
+  {
+   "name": "MedImageInsight",
+   "developer": "Microsoft",
+   "country": "United States",
+   "category": "life_sciences",
+   "kind": "Medical image embedding model",
+   "benchmarks": [
+    "Imaging classification"
+   ],
+   "evidence": "reference",
+   "url": "https://aka.ms/mi2modelcard"
+  },
+  {
+   "name": "MedImageParse",
+   "developer": "Microsoft",
+   "country": "United States",
+   "category": "life_sciences",
+   "kind": "Medical image segmentation",
+   "benchmarks": [
+    "Segmentation (Dice)"
+   ],
+   "evidence": "reference",
+   "url": "https://microsoft.github.io/BiomedParse/"
+  },
+  {
+   "name": "CXRReportGen",
+   "developer": "Microsoft",
+   "country": "United States",
+   "category": "life_sciences",
+   "kind": "Chest X-ray report generation",
+   "benchmarks": [
+    "MIMIC-CXR",
+    "RadFact"
+   ],
+   "evidence": "reference",
+   "url": "https://aka.ms/CXRReportGenModelCard"
+  },
+  {
+   "name": "TamGen",
+   "developer": "Microsoft",
+   "country": "United States",
+   "category": "life_sciences",
+   "kind": "Target-aware molecule generation",
+   "benchmarks": [
+    "CrossDocked"
+   ],
+   "evidence": "reference",
+   "url": "https://github.com/SigmaGenX/TamGen"
+  },
+  {
+   "name": "H-Optimus-0",
+   "developer": "Bioptimus",
+   "country": "France",
+   "category": "life_sciences",
+   "kind": "Pathology foundation model",
+   "benchmarks": [
+    "HEST",
+    "Pathology tile benchmarks"
+   ],
+   "evidence": "reference",
+   "url": "https://huggingface.co/bioptimus/H-optimus-0"
+  },
+  {
+   "name": "MAI-Cyber-1-Flash + GPT-5.4 (MDASH)",
+   "developer": "Microsoft",
+   "country": "United States",
+   "category": "cybersecurity",
+   "kind": "Multi-model system result",
+   "benchmarks": [
+    "CyberGym"
+   ],
+   "evidence": "self_reported",
+   "claim": "MDASH system reports 96% on CyberGym (Microsoft, Aug 2026)",
+   "url": "https://microsoft.ai/news/introducing-mai-cyber-1-flash-inside-mdash/"
+  },
+  {
+   "name": "Microsoft Security Copilot",
+   "developer": "Microsoft",
+   "country": "United States",
+   "category": "cybersecurity",
+   "kind": "Security AI platform",
+   "benchmarks": [
+    "MITRE ATT&CK Evaluations (product)"
+   ],
+   "evidence": "platform",
+   "url": "https://www.microsoft.com/en-us/security/business/ai-machine-learning/microsoft-security-copilot"
+  },
+  {
+   "name": "CrowdStrike Charlotte AI",
+   "developer": "CrowdStrike",
+   "country": "United States",
+   "category": "cybersecurity",
+   "kind": "Security AI platform",
+   "benchmarks": [
+    "MITRE ATT&CK Evaluations (product)"
+   ],
+   "evidence": "platform",
+   "url": "https://www.crowdstrike.com/platform/charlotte-ai/"
+  },
+  {
+   "name": "SentinelOne Purple AI",
+   "developer": "SentinelOne",
+   "country": "United States",
+   "category": "cybersecurity",
+   "kind": "Security AI platform",
+   "benchmarks": [
+    "MITRE ATT&CK Evaluations (product)"
+   ],
+   "evidence": "platform",
+   "url": "https://www.sentinelone.com/platform/purple/"
+  },
+  {
+   "name": "Cortex XSIAM",
+   "developer": "Palo Alto Networks",
+   "country": "United States",
+   "category": "cybersecurity",
+   "kind": "Security AI platform",
+   "benchmarks": [
+    "MITRE ATT&CK Evaluations (product)"
+   ],
+   "evidence": "platform",
+   "url": "https://www.paloaltonetworks.com/cortex/cortex-xsiam"
+  },
+  {
+   "name": "Bodhan AI (Bharat EduAI Stack)",
+   "developer": "Bodhan AI (IIT Madras)",
+   "country": "India",
+   "category": "india",
+   "kind": "Education AI: speech, translation, Edu LLMs",
+   "benchmarks": [
+    "No public LLM scores yet"
+   ],
+   "evidence": "reference",
+   "url": "https://bodhan.ai/"
+  },
+  {
+   "name": "Jais 3",
+   "developer": "IFM (MBZUAI) + Inception42",
+   "country": "United Arab Emirates",
+   "category": "mea",
+   "kind": "Arabic-native open LLM family (0.9B–375B) + Jais Speech",
+   "benchmarks": [],
+   "evidence": "self_reported",
+   "claim": "Six open models up to 375B params; agentic tool-calling, 512K context; 375B claimed to rival frontier closed models (press release, Oct 2026)",
+   "url": "https://ifm.ai/jais3/press-release/"
+  },
+  {
+   "name": "K2 Think V2",
+   "developer": "MBZUAI / G42 / Cerebras",
+   "country": "United Arab Emirates",
+   "category": "mea",
+   "kind": "Sovereign open reasoning system (70B)",
+   "benchmarks": [],
+   "evidence": "self_reported",
+   "claim": "Fully sovereign end-to-end open reasoning system built on the K2-V2 base model (launch announcement, Jan 2026)",
+   "url": "https://www.prnewswire.com/news-releases/mbzuai-launches-k2-think-v2-uaes-fully-sovereign-next-generation-reasoning-system-302671460.html"
+  },
+  {
+   "name": "Falcon-Emirati",
+   "developer": "Technology Innovation Institute (TII)",
+   "country": "United Arab Emirates",
+   "category": "mea",
+   "kind": "Emirati dialect & culture LLM (7B)",
+   "benchmarks": [],
+   "evidence": "self_reported",
+   "claim": "84.83% on a native Emirati benchmark (TII launch, Oct 2026); released alongside Falcon-ASR (1.6B speech) and Falcon-OCR-Arabic",
+   "url": "https://falconllm.tii.ae/tii-launches-falcon-emirati-alongside-new-arabic-ai-models-for-speech-and-visual-text-understanding.html"
+  },
+  {
+   "name": "Falcon-H1 Arabic",
+   "developer": "Technology Innovation Institute (TII)",
+   "country": "United Arab Emirates",
+   "category": "mea",
+   "kind": "Arabic hybrid Mamba-Transformer LLM (3B/7B/34B)",
+   "benchmarks": [
+    "Open Arabic LLM Leaderboard"
+   ],
+   "evidence": "self_reported",
+   "claim": "Tops the Open Arabic LLM Leaderboard (TII, Jan 2026)",
+   "url": "https://falconllm.tii.ae/abu-dhabi-tii-launches-falcon-h1-arabic-establishing-the-worlds-leading-arabic-ai-model.html"
+  },
+  {
+   "name": "Falcon-H1R 7B",
+   "developer": "Technology Innovation Institute (TII)",
+   "country": "United Arab Emirates",
+   "category": "mea",
+   "kind": "Compact reasoning LLM (7B)",
+   "benchmarks": [],
+   "evidence": "self_reported",
+   "claim": "Claimed to match models 2–7x larger on reasoning (TII, Jan 2026)",
+   "url": "https://www.tii.ae/insights/big-leap-uaes-homegrown-ai-tii-releases-new-falcon-language-models"
+  },
+  {
+   "name": "Falcon Perception",
+   "developer": "Technology Innovation Institute (TII)",
+   "country": "United Arab Emirates",
+   "category": "mea",
+   "kind": "Multimodal vision-language model",
+   "benchmarks": [],
+   "evidence": "self_reported",
+   "claim": "TII multimodal vision-language model (product page, 2026); no public scores",
+   "url": "https://falconllm.tii.ae/"
+  },
+  {
+   "name": "Mistral Large 4 Preview",
+   "developer": "Mistral AI",
+   "country": "France",
+   "category": "europe",
+   "kind": "Frontier multimodal LLM (1T total / 52B active, API preview)",
+   "benchmarks": [
+    "Artificial Analysis Intelligence Index"
+   ],
+   "evidence": "ranked_elsewhere",
+   "claim": "AA Intelligence Index 38 (Artificial Analysis, Oct 2026); developer claims strongest Mistral model, weights due end of Oct 2026",
+   "url": "https://mistral.ai/news/mistral-large-4/"
+  },
+  {
+   "name": "Mistral Medium 3.5",
+   "developer": "Mistral AI",
+   "country": "France",
+   "category": "europe",
+   "kind": "128B dense reasoning/coding LLM, open weights (modified MIT)",
+   "benchmarks": [],
+   "evidence": "self_reported",
+   "claim": "Long-horizon coding and productivity focus; self-hostable on four GPUs (Mistral, May 2026)",
+   "url": "https://mistral.ai/news/vibe-remote-agents-mistral-medium-3-5/"
+  },
+  {
+   "name": "Mistral Small 4",
+   "developer": "Mistral AI",
+   "country": "France",
+   "category": "europe",
+   "kind": "119B Apache-2.0 multimodal LLM, 256K context",
+   "benchmarks": [
+    "Artificial Analysis Intelligence Index"
+   ],
+   "evidence": "ranked_elsewhere",
+   "claim": "AA Intelligence Index 27 reported in AA's Sarvam analysis (2026); reasoning + agentic coding unified (Mistral, Mar 2026)",
+   "url": "https://mistral.ai/news/mistral-small-4/"
+  },
+  {
+   "name": "Kolibri",
+   "developer": "Aleph Alpha",
+   "country": "Germany",
+   "category": "europe",
+   "kind": "Sovereign German/English MoE LLM (78B total / 3B active, 1M context, Apache 2.0)",
+   "benchmarks": [],
+   "evidence": "self_reported",
+   "claim": "Specialized for regulated, mission-critical work; weights released Oct 3 2026 (Aleph Alpha)",
+   "url": "https://aleph-alpha.com/en/blog/kolibri-has-landed-a-sovereign-open-weight-model/"
+  },
+  {
+   "name": "Laguna S 2.1",
+   "developer": "Poolside",
+   "country": "France",
+   "category": "europe",
+   "kind": "Long-horizon coding MoE (118B total / 8B active, 1M context)",
+   "benchmarks": [],
+   "evidence": "self_reported",
+   "claim": "Franco-American developer; full evaluation trajectories published; OpenMDW-1.1 license (Poolside, Jul 2026)",
+   "url": "https://poolside.ai/blog/introducing-laguna-s-2-1"
+  },
+  {
+   "name": "Apertus 1.5",
+   "developer": "Swiss AI initiative",
+   "country": "Switzerland",
+   "category": "europe",
+   "kind": "Open multilingual LLM (8B & 70B), image/audio understanding, 262K context",
+   "benchmarks": [],
+   "evidence": "self_reported",
+   "claim": "Continued-pretraining upgrade with optional thinking and improved tool use; Apache 2.0 (Swiss AI, Jul 2026)",
+   "url": "https://huggingface.co/blog/swiss-ai/apertus-v15-release-notes"
+  },
+  {
+   "name": "Qwen3.8-Max",
+   "developer": "Alibaba / Qwen",
+   "country": "China",
+   "category": "china",
+   "kind": "Frontier MoE LLM (2.4T total / 95B active)",
+   "benchmarks": [
+    "Artificial Analysis Intelligence Index"
+   ],
+   "evidence": "ranked_elsewhere",
+   "claim": "AA Index 45 reported by secondary coverage (2026); first Max-class Qwen with announced open weights (Qwen, Aug 2026)",
+   "url": "https://qwen.ai/blog?id=qwen3.8"
+  },
+  {
+   "name": "Kimi K3",
+   "developer": "Moonshot AI",
+   "country": "China",
+   "category": "china",
+   "kind": "Frontier multimodal MoE (2.8T total / 104B active, 1M context)",
+   "benchmarks": [
+    "Artificial Analysis Intelligence Index",
+    "Humanity's Last Exam"
+   ],
+   "evidence": "ranked_elsewhere",
+   "claim": "AA Max Index 44, HLE 46.9%, AA-LCR 88.7% (Artificial Analysis, 2026); Kimi Delta Attention (model card, Jul 2026)",
+   "url": "https://huggingface.co/moonshotai/Kimi-K3"
+  },
+  {
+   "name": "GLM-5.3",
+   "developer": "Z.ai / Zhipu AI",
+   "country": "China",
+   "category": "china",
+   "kind": "Frontier LLM, post-training gains over GLM-5.2 base",
+   "benchmarks": [
+    "Artificial Analysis Intelligence Index",
+    "Terminal-Bench"
+   ],
+   "evidence": "ranked_elsewhere",
+   "claim": "AA Max Index 45, Terminal-Bench 4.0 41.9%, HLE 42.3% (Artificial Analysis, 2026); 50% in-house Code Bench gain is developer-reported",
+   "url": "https://z.ai/blog/glm-5.3"
+  },
+  {
+   "name": "MiniMax M3",
+   "developer": "MiniMax",
+   "country": "China",
+   "category": "china",
+   "kind": "Frontier agentic LLM, 1M context, native image/video input",
+   "benchmarks": [
+    "Artificial Analysis Intelligence Index"
+   ],
+   "evidence": "ranked_elsewhere",
+   "claim": "AA Index 29 (Artificial Analysis, 2026); MiniMax Sparse Attention (MiniMax, Jun 2026)",
+   "url": "https://www.minimax.io/blog/minimax-m3"
+  },
+  {
+   "name": "Seed2.1 Pro / Turbo",
+   "developer": "ByteDance Seed",
+   "country": "China",
+   "category": "china",
+   "kind": "General-agent LLM family with visual/video understanding",
+   "benchmarks": [],
+   "evidence": "self_reported",
+   "claim": "Stronger general agents and end-to-end coding (ByteDance Seed, Jun 2026); no independent leaderboard entry verified",
+   "url": "https://seed.bytedance.com/en/blog/seed2-1-officially-released-advancing-ai-productivity"
+  },
+  {
+   "name": "ERNIE 5.1",
+   "developer": "Baidu",
+   "country": "China",
+   "category": "china",
+   "kind": "Efficient frontier LLM (~1/3 params of ERNIE 5.0)",
+   "benchmarks": [],
+   "evidence": "self_reported",
+   "claim": "Developer claims Arena Search score 1,223, 4th globally (Baidu, May 2026) — not independently verified",
+   "url": "https://ernie.baidu.com/blog/posts/ernie-5.1-0508-release/"
+  },
+  {
+   "name": "Step 5 Preview",
+   "developer": "StepFun",
+   "country": "China",
+   "category": "china",
+   "kind": "Frontier MoE (600B total / 27B active, 1M context, vision input)",
+   "benchmarks": [
+    "Artificial Analysis Intelligence Index"
+   ],
+   "evidence": "ranked_elsewhere",
+   "claim": "AA Index 44 (Artificial Analysis, 2026); weights promised Oct 15 2026 (StepFun, Sep 2026)",
+   "url": "https://www.stepfun.com/news/step-5-preview"
+  },
+  {
+   "name": "MiMo-V2.6 Pro",
+   "developer": "Xiaomi",
+   "country": "China",
+   "category": "china",
+   "kind": "Omni-modal reasoning LLM family (Pro / Flash / Pro-UltraSpeed)",
+   "benchmarks": [
+    "Artificial Analysis Intelligence Index",
+    "Humanity's Last Exam"
+   ],
+   "evidence": "ranked_elsewhere",
+   "claim": "AA Index 46, HLE 49% for Pro (Artificial Analysis, 2026); UltraSpeed 20x-faster claim is developer-reported",
+   "url": "https://mimo.mi.com/docs/en-US/updates/model"
+  },
+  {
+   "name": "Sarvam 30B / Sarvam 105B",
+   "developer": "Sarvam AI",
+   "country": "India",
+   "category": "india",
+   "kind": "Open-weight reasoning LLMs trained from scratch in India",
+   "benchmarks": [
+    "Artificial Analysis Intelligence Index"
+   ],
+   "evidence": "ranked_elsewhere",
+   "claim": "AA Intelligence Index 12 (30B) and 18 (105B), agentic index 25 for 105B (Artificial Analysis, Apr 2026); open weights released Mar 6 2026",
+   "url": "https://www.sarvam.ai/blogs/sarvam-30b-105b"
+  },
+  {
+   "name": "Param2 17B MoE",
+   "developer": "BharatGen (IIT-led consortium)",
+   "country": "India",
+   "category": "india",
+   "kind": "Sovereign multilingual MoE (17B total / 2.4B active, 22 Indian languages + English)",
+   "benchmarks": [],
+   "evidence": "self_reported",
+   "claim": "~22T training tokens; reasoning, tools, math and code; Thinking variant listed (BharatGen, Feb 2026)",
+   "url": "https://bharatgen.com/text-models/"
+  },
+  {
+   "name": "Project Indus education LLM",
+   "developer": "Tech Mahindra with NVIDIA",
+   "country": "India",
+   "category": "india",
+   "kind": "Hindi-first education/agentic LLM (~8B, NeMo/NIM)",
+   "benchmarks": [],
+   "evidence": "self_reported",
+   "claim": "Trained on ~500M synthetic tokens; public availability unclear (Tech Mahindra, Feb 2026)",
+   "url": "https://www.techmahindra.com/insights/news/techm-teams-nvidia-launch-cutting-edge-education-llm-under-project-indus/"
+  },
+  {
+   "name": "Indic suite (Transcribe / Speak / Translate / OCR)",
+   "developer": "Bodhan AI + AI4Bharat (IIT Madras)",
+   "country": "India",
+   "category": "india",
+   "kind": "Open-weight speech, translation and OCR models for 26+ Indian languages",
+   "benchmarks": [],
+   "evidence": "self_reported",
+   "claim": "Indic-Transcribe 1.2B trained on 1.3M hours; open weights + hosted APIs (Bodhan AI / AI4Bharat, Sep 2026)",
+   "url": "https://www.thehindubusinessline.com/info-tech/bodhan-ai-launches-open-weight-foundational-ai-models-for-indic-languages/article71457810.ece"
+  },
+  {
+   "name": "BharatGPT DeskAI",
+   "developer": "CoRover",
+   "country": "India",
+   "category": "india",
+   "kind": "Sovereign multilingual platform + offline desktop appliance (NVIDIA-powered)",
+   "benchmarks": [],
+   "evidence": "platform",
+   "claim": "Platform enhancement and appliance launch, not a new foundation-model generation (CoRover, Feb 2026)",
+   "url": "https://corover.ai/blogs/corover-ai-announces-large-scale-deployment-of-multilingual-ai-platform-launches-bharatgpt-deskai-appliance-powered-by-nvidia"
+  }
+ ]
 }
