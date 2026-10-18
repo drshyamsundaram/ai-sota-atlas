@@ -833,6 +833,93 @@ export async function extractMlperf(pageUrl: string, category: string): Promise<
 }
 
 
+/** MathVision (mathllm.github.io/mathvision): first HTML table, ranked by the ALL column. */
+export async function extractMathvision(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
+  const html = await fetchWithBackoff(pageUrl);
+  const table = html.match(/<table[\s\S]*?<\/table>/i)?.[0];
+  if (!table) throw new Error("mathvision: no table");
+  const rows = table.match(/<tr[\s\S]*?<\/tr>/gi) ?? [];
+  const ctx = { pageUrl, category, retrievedAt: new Date().toISOString() };
+  const out: LeaderboardRecord[] = [];
+  const seen = new Set<string>();
+  for (const row of rows.slice(1)) {
+    const cells = (row.match(/<t[hd][^>]*>[\s\S]*?<\/t[hd]>/gi) ?? []).map(stripTags);
+    if (cells.length < 5) continue;
+    const model = (cells[1] ?? "").replace(/[🥇🥈🥉]/g, "").replace(/\s+/g, " ").trim();
+    if (!model || /^human$/i.test(model) || seen.has(model.toLowerCase())) continue;
+    const value = Number.parseFloat(cells[4] ?? "");
+    if (!Number.isFinite(value)) continue;
+    seen.add(model.toLowerCase());
+    emit(out, ctx, {
+      source: "MathVision", model, bench: "MathVision (testmini)", metric: "mathvision_all",
+      value, unit: "percent", rank: seen.size, date: cells[3] || null, task: "multimodal",
+      key: `mathvision:${model}`,
+    });
+    if (out.length >= 10) break;
+  }
+  if (!out.length) throw new Error("mathvision: no rows");
+  return out;
+}
+
+/** Video-MME home page: single leaderboard table, ranked by Overall (%) without subtitles. */
+export async function extractVideoMme(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
+  const html = await fetchWithBackoff(pageUrl);
+  const table = html.match(/<table[\s\S]*?<\/table>/i)?.[0];
+  if (!table) throw new Error("video-mme: no table");
+  const rows = table.match(/<tr[\s\S]*?<\/tr>/gi) ?? [];
+  const ctx = { pageUrl, category, retrievedAt: new Date().toISOString() };
+  const out: LeaderboardRecord[] = [];
+  const seen = new Set<string>();
+  for (const row of rows.slice(2)) {
+    const cells = (row.match(/<t[hd][^>]*>[\s\S]*?<\/t[hd]>/gi) ?? []).map(stripTags);
+    if (cells.length < 6) continue;
+    const model = (cells[1] ?? "").replace(/\s+/g, " ").trim();
+    if (!model || seen.has(model.toLowerCase())) continue;
+    const value = Number.parseFloat(cells[5] ?? "");
+    if (!Number.isFinite(value)) continue;
+    seen.add(model.toLowerCase());
+    emit(out, ctx, {
+      source: "Video-MME", model, bench: "Video-MME (w/o subtitles)", metric: "videomme_overall",
+      value, unit: "percent", rank: seen.size, date: cells[4] || null, task: "multimodal",
+      key: `videomme:${model}`,
+    });
+    if (out.length >= 10) break;
+  }
+  if (!out.length) throw new Error("video-mme: no rows");
+  return out;
+}
+
+/** CharXiv: published val_result.csv; reasoning (RQ) and descriptive (DQ) overall columns. */
+export async function extractCharxiv(pageUrl: string, category: string): Promise<LeaderboardRecord[]> {
+  const csvUrl = new URL("data/val_result.csv", pageUrl.endsWith("/") ? pageUrl : `${pageUrl}/`).toString();
+  const csv = await fetchWithBackoff(csvUrl);
+  const lines = csv.split(/\r?\n/).filter((l) => l.trim());
+  const ctx = { pageUrl, category, retrievedAt: new Date().toISOString() };
+  const out: LeaderboardRecord[] = [];
+  const boards = [
+    { col: 3, bench: "CharXiv Reasoning (val)", metric: "charxiv_rq_overall" },
+    { col: 8, bench: "CharXiv Descriptive (val)", metric: "charxiv_dq_overall" },
+  ];
+  for (const b of boards) {
+    lines
+      .slice(1)
+      .map((l) => l.split(","))
+      .map((cells) => ({ model: (cells[0] ?? "").trim(), v: Number.parseFloat(cells[b.col] ?? "") }))
+      .filter((r) => r.model && !/^(human|random)/i.test(r.model) && Number.isFinite(r.v))
+      .sort((a, b2) => b2.v - a.v)
+      .slice(0, 10)
+      .forEach((r, i) =>
+        emit(out, ctx, {
+          source: "CharXiv", model: r.model, bench: b.bench, metric: b.metric,
+          value: r.v, unit: "percent", rank: i + 1, date: null, task: "multimodal",
+          key: `charxiv:${b.metric}:${r.model}`,
+        }),
+      );
+  }
+  if (!out.length) throw new Error("charxiv: no rows");
+  return out;
+}
+
 /* ------------------------------ the run --------------------------------- */
 
 export async function runCollection(options?: {
@@ -897,8 +984,14 @@ export async function runCollection(options?: {
                     ? await extractLmArena(url, cat.id)
                     : /crfm\.stanford\.edu\/helm/.test(url)
                       ? await extractHelm(url, cat.id)
-                      : /mmmu-benchmark\.github\.io/.test(url)
+                       : /mmmu-benchmark\.github\.io/.test(url)
                         ? await extractMmmu(url, cat.id)
+                        : /mathllm\.github\.io\/mathvision/.test(url)
+                          ? await extractMathvision(url, cat.id)
+                          : /video-mme\.github\.io/.test(url)
+                            ? await extractVideoMme(url, cat.id)
+                            : /charxiv\.github\.io/.test(url)
+                              ? await extractCharxiv(url, cat.id)
                         : /mlcommons|inference_results/.test(url)
                           ? await extractMlperf(url, cat.id)
                   : extractFromHtml(await fetchWithBackoff(url), url, cat.id, perSourceLimit);

@@ -63,3 +63,7 @@ sota:src_aider a sota:Source ; rdfs:label "Aider" ; sota:sourceUrl "https://aide
 sota:src_hle a sota:Source ; rdfs:label "Humanity's Last Exam" ; sota:sourceUrl "https://lastexam.ai/"^^xsd:anyURI .
 sota:src_vectara a sota:Source ; rdfs:label "Vectara" ; sota:sourceUrl "https://huggingface.co/spaces/vectara/leaderboard"^^xsd:anyURI .
 sota:src_suprmind a sota:Source ; rdfs:label "Suprmind" ; sota:sourceUrl "https://suprmind.ai/hub/ai-hallucination-rates-and-benchmarks/"^^xsd:anyURI .
+sota:src_mmmu a sota:Source ; rdfs:label "MMMU / MMMU-Pro" ; sota:sourceUrl "https://mmmu-benchmark.github.io/"^^xsd:anyURI .
+sota:src_mathvision a sota:Source ; rdfs:label "MathVision" ; sota:sourceUrl "https://mathllm.github.io/mathvision/"^^xsd:anyURI .
+sota:src_videomme a sota:Source ; rdfs:label "Video-MME" ; sota:sourceUrl "https://video-mme.github.io/home_page.html"^^xsd:anyURI .
+sota:src_charxiv a sota:Source ; rdfs:label "CharXiv" ; sota:sourceUrl "https://charxiv.github.io/"^^xsd:anyURI .

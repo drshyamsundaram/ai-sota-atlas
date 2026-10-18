@@ -124,10 +124,26 @@
         "title": "Multimodal",
         "metrics": [
           "mmmu_pro_overall",
-          "mmmu_val_overall"
+          "mmmu_val_overall",
+          "mathvision_all",
+          "videomme_overall",
+          "charxiv_rq_overall",
+          "charxiv_dq_overall"
         ],
         "sources": [
-          "https://mmmu-benchmark.github.io/"
+          "https://mmmu-benchmark.github.io/",
+          "https://mathllm.github.io/mathvision/",
+          "https://video-mme.github.io/home_page.html",
+          "https://charxiv.github.io/"
+        ],
+        "reference_sources": [
+          { "name": "MathVerse", "url": "https://mathverse-cuhk.github.io/", "note": "Leaderboard data files currently unavailable." },
+          { "name": "OSWorld", "url": "https://os-world.github.io/", "note": "Publishes a self-reported results spreadsheet; not collected as verified scores." },
+          { "name": "ScreenSpot / GUI grounding", "url": "https://gui-agent.github.io/grounding-leaderboard/", "note": "Browser-rendered leaderboard." },
+          { "name": "MMLU-Pro", "url": "https://huggingface.co/datasets/TIGER-Lab/MMLU-Pro", "note": "Leaderboard is a browser-rendered space; dataset link only." },
+          { "name": "OlympiadBench", "url": "https://github.com/OpenBMB/OlympiadBench", "note": "No machine-readable score table." },
+          { "name": "PixmoCount", "url": "https://pixmo-count.github.io/", "note": "Dataset only." },
+          { "name": "InfoVQA", "url": "https://infovqa.github.io/", "note": "Dataset only." }
         ]
       },
       {
