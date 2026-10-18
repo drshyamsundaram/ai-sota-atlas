@@ -415,7 +415,9 @@ function Dashboard() {
 
         <nav className="mt-6 flex flex-wrap gap-2">
           {categories.map((c) => {
-            const count = records.filter((r) => r.category === c.id).length;
+            const count =
+              records.filter((r) => r.category === c.id).length +
+              specialistModels.filter((m) => m.category === c.id).length;
             const active = c.id === category;
             return (
               <button
