@@ -9,3 +9,4 @@
 - [x] Rename the knowledge graph and verify full-dataset search and node focus.
 - [x] Clinical + Life sciences categories, CyberGym, specialist catalogue (incl. Bodhan AI), KG/ontology/docs
 - [x] Auto-refresh dropdown limited to 1 hour and 6 hours
+- [x] Multimodal benchmark expansion (2026-10-18): MathVision, Video-MME, CharXiv RQ/DQ collected live (60 multimodal records in stored batch); MathVerse/OSWorld/ScreenSpot/MMLU-Pro/OlympiadBench reference-only; ontology + docs updated.
