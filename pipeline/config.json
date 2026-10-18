@@ -209,7 +209,10 @@
      "https://arxiv.org/abs/2501.13829",
      "https://www.benchlm.com/blog/best-indian-llm-2026",
      "https://www.aimultiple.com/open-source-vs-commercial-llms/",
-     "https://www.business-friendly-llm.org/"
+     "https://www.business-friendly-llm.org/",
+     "https://www.sarvam.ai/blogs/sarvam-30b-105b",
+     "https://bharatgen.com/text-models/",
+     "https://www.techmahindra.com/insights/news/techm-teams-nvidia-launch-cutting-edge-education-llm-under-project-indus/"
     ],
     "model_families": [
      "https://sarvam.ai/",
@@ -225,7 +228,13 @@
     "sources": [
      "https://www.benchlm.com/blog/why-chinese-llm-rankings-disagree",
      "https://github.com/open-cn-llm/llm-leaderboard",
-     "https://openrouter.ai/rankings"
+     "https://openrouter.ai/rankings",
+     "https://qwen.ai/blog?id=qwen3.8",
+     "https://huggingface.co/moonshotai/Kimi-K3",
+     "https://z.ai/blog/glm-5.3",
+     "https://www.minimax.io/blog/minimax-m3",
+     "https://www.stepfun.com/news/step-5-preview",
+     "https://mimo.mi.com/docs/en-US/updates/model"
     ]
    },
    {
@@ -237,7 +246,11 @@
      "https://www.aleph-alpha.com/",
      "https://lighton.ai/",
      "https://hcompany.ai/",
-     "https://arxiv.org/abs/2509.12345"
+     "https://arxiv.org/abs/2509.12345",
+     "https://mistral.ai/news/mistral-large-4/",
+     "https://aleph-alpha.com/en/blog/kolibri-has-landed-a-sovereign-open-weight-model/",
+     "https://poolside.ai/blog/introducing-laguna-s-2-1",
+     "https://huggingface.co/blog/swiss-ai/apertus-v15-release-notes"
     ]
    },
    {
