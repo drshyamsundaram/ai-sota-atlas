@@ -12,3 +12,4 @@
 - [x] Multimodal benchmark expansion (2026-10-18): MathVision, Video-MME, CharXiv RQ/DQ collected live (60 multimodal records in stored batch); MathVerse/OSWorld/ScreenSpot/MMLU-Pro/OlympiadBench reference-only; ontology + docs updated.
 - [x] MEA catalogue: added Jais 3, K2 Think V2, Falcon-Emirati, Falcon-H1 Arabic, Falcon-H1R 7B, Falcon Perception (self-reported, labelled) + new sources (2026-10-18)
 - [ ] New EU/China/India models: research running (sub_v807kbyh); add findings to regional catalogues/boards with evidence labels
+- [x] Regional catalogue expansion (2026-10-18): +6 EU (Mistral Large 4 Preview, Medium 3.5, Small 4, Kolibri, Laguna S 2.1, Apertus 1.5), +8 China (Qwen3.8-Max, Kimi K3, GLM-5.3, MiniMax M3, Seed2.1, ERNIE 5.1, Step 5 Preview, MiMo-V2.6), +5 India (Sarvam 30B/105B, Param2, Project Indus, Indic suite, BharatGPT DeskAI); evidence-labelled, sources updated
