@@ -159,6 +159,7 @@ function KnowledgeGraphPage() {
               Docs
             </Link>
             <Link to="/hardware" className="hover:text-primary">Hardware &amp; Chipsets</Link>
+            <Link to="/compare" className="hover:text-primary">Compare</Link>
             <Link to="/panini" className="hover:text-primary">Panini chat</Link>
             </nav>
             <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
