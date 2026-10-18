@@ -132,7 +132,12 @@ function ComparePage() {
 
     for (const t of (tokenQuery.data ?? []) as TokenRecord[]) {
       if (t.slice_id !== "overall") continue;
-      const m = get(t.model_name);
+      // Token feed names are prefixed with the developer ("DeepSeek: DeepSeek V4.1 Flash");
+      // strip it so tokens merge with leaderboard records for the same model.
+      const bare = t.model_name.includes(":")
+        ? t.model_name.split(":").slice(1).join(":").trim()
+        : t.model_name;
+      const m = get(bare);
       m.developer = m.developer ?? t.developer;
       m.country = m.country ?? t.country;
       m.tokens += t.tokens_processed;
