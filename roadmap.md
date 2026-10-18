@@ -10,3 +10,5 @@
 - [x] Clinical + Life sciences categories, CyberGym, specialist catalogue (incl. Bodhan AI), KG/ontology/docs
 - [x] Auto-refresh dropdown limited to 1 hour and 6 hours
 - [x] Multimodal benchmark expansion (2026-10-18): MathVision, Video-MME, CharXiv RQ/DQ collected live (60 multimodal records in stored batch); MathVerse/OSWorld/ScreenSpot/MMLU-Pro/OlympiadBench reference-only; ontology + docs updated.
+- [x] MEA catalogue: added Jais 3, K2 Think V2, Falcon-Emirati, Falcon-H1 Arabic, Falcon-H1R 7B, Falcon Perception (self-reported, labelled) + new sources (2026-10-18)
+- [ ] New EU/China/India models: research running (sub_v807kbyh); add findings to regional catalogues/boards with evidence labels
