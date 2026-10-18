@@ -38,6 +38,7 @@
 ## Classic and new benchmarks
 - **LMArena** ratings are human-preference Elo-style scores (unit `elo`); compare ranks, not absolute gaps.
 - **MMMU** rows exclude the Human Expert reference rows.
+- **MathVision** rows are the testmini *ALL* accuracy; **Video-MME** rows are overall accuracy without subtitles; **CharXiv** reports reasoning (RQ) and descriptive (DQ) overall accuracy separately. Human and random-baseline rows are excluded.
 - **MLPerf Inference** rows name the workload model (e.g. llama2-70b) and the submitting system in *Version*; read them as hardware throughput.
 - New MLPerf batches retain the submitting system and weight precision as separate hardware details; older stored batches may still use the Version column until the next successful refresh.
 - ImageNet, COCO, GLUE/SuperGLUE, SQuAD and WMT are not tracked: they are saturated or rarely used for current LLMs.
