@@ -50,6 +50,8 @@ type CompareModel = {
   categories: Set<string>;
   parameters: string | null;
   evidence: string | null;
+  claim: string | null;
+  published: string[];
   url: string | null;
   tokens: number;
   tokenShare: number | null;
@@ -57,7 +59,7 @@ type CompareModel = {
   scores: Map<string, { value: number | null; unit: string; rank: number | null }>;
 };
 
-const PARAM_RE = /(\d+(?:\.\d+)?\s*[BTM](?:\s*total)?(?:\s*\/\s*\d+(?:\.\d+)?\s*[BTM]\s*active)?)/i;
+const PARAM_RE = /(\d+(?:\.\d+)?\s*[BTM](?![a-z])(?!\s*(?:context|tokens?\b))(?:\s*total)?(?:\s*\/\s*\d+(?:\.\d+)?\s*[BTM]\s*active)?)/i;
 
 function extractParams(text: string | undefined): string | null {
   if (!text) return null;
@@ -94,7 +96,9 @@ function ComparePage() {
 
   const models = useMemo(() => {
     const map = new Map<string, CompareModel>();
-    const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+    // Effort-level suffixes ("Gemini 4 Neon (High)") name the same model as catalogue entries.
+    const norm = (s: string) =>
+      s.toLowerCase().replace(/\s*\((?:x?high|low|medium|max|min|thinking|reasoning|non-reasoning)\)\s*$/, "").replace(/[^a-z0-9]+/g, " ").trim();
     const get = (name: string): CompareModel => {
       const key = norm(name);
       const cur = map.get(key);
@@ -107,6 +111,8 @@ function ComparePage() {
         categories: new Set(),
         parameters: null,
         evidence: null,
+        claim: null,
+        published: [],
         url: null,
         tokens: 0,
         tokenShare: null,
@@ -153,6 +159,8 @@ function ComparePage() {
       m.parameters = m.parameters ?? extractParams(s.kind) ?? extractParams(s.claim);
       m.evidence = EVIDENCE_LABEL[s.evidence];
       m.url = s.url;
+      m.claim = s.claim ?? m.claim;
+      m.published = [...new Set([...m.published, ...s.benchmarks])];
     }
 
     return [...map.values()].sort((a, b) => b.tokens - a.tokens);
@@ -319,7 +327,7 @@ function ComparePage() {
                 <td className="py-2 pr-4 text-muted-foreground">Evidence</td>
                 {chosen.map((m) => (
                   <td key={m.key} className="py-2 pr-4 text-xs">
-                    {m.evidence ?? (m.scores.size ? "Collected scores" : "—")}
+                    {[m.scores.size ? "Collected scores" : null, m.evidence].filter(Boolean).join(" + ") || "—"}
                     {m.url && (
                       <>
                         {" · "}
@@ -330,6 +338,14 @@ function ComparePage() {
                     )}
                   </td>
                 ))}
+              </tr>
+              <tr className="border-b border-border/60">
+                <td className="py-2 pr-4 text-muted-foreground">Published benchmarks</td>
+                {chosen.map((m) => <td key={m.key} className="py-2 pr-4 text-xs">{m.published.length ? m.published.join(", ") : "—"}</td>)}
+              </tr>
+              <tr className="border-b border-border/60">
+                <td className="py-2 pr-4 text-muted-foreground">Developer claim</td>
+                {chosen.map((m) => <td key={m.key} className="py-2 pr-4 text-xs">{m.claim ?? "—"}</td>)}
               </tr>
               {benchmarkColumns.map((b) => (
                 <tr key={b} className="border-b border-border/60">

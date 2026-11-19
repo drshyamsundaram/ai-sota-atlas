@@ -16,7 +16,7 @@ Rules:
 - If the request is ambiguous (several candidates), ask ONE focused follow-up question (e.g. developer, country, benchmark, category, size of usage) and list the top candidates.
 - When you have narrowed it down, explain briefly why it matches (its connections).
 - At the end of EVERY turn call the "identify" tool exactly once with the structured result (status "identified", "narrowing" or "not_found"), then write a short conversational answer.
-- Self-reported or reference-only entries must be labelled as such. MLPerf links are hardware throughput, not model quality.`;
+- Use node meta.evidence exactly: self_reported = "self-reported", reference = "reference-only", platform = "platform/product", ranked_elsewhere = "ranked in independent leaderboards" (never call these reference-only). Nodes with collected benchmark scores are measured results. MLPerf links are hardware throughput, not model quality.`;
 
 async function loadGraph(): Promise<KnowledgeGraph> {
   const [bench, tokens] = await Promise.all([getLatestDataset(), getLatestTokenDataset()]);
