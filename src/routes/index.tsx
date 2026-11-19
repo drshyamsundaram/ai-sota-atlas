@@ -522,8 +522,8 @@ function Dashboard() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filtered.map((r) => (
-                      <TableRow key={r.raw_hash || `${r.source_url}-${r.model_name}-${r.metric_name}`}>
+                    {filtered.map((r, i) => (
+                      <TableRow key={`${r.category}-${r.raw_hash || `${r.source_url}-${r.model_name}-${r.metric_name}`}-${i}`}>
                         <TableCell className="font-mono text-xs text-muted-foreground">
                           {r.rank ?? "—"}
                         </TableCell>
