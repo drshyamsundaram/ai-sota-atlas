@@ -36,7 +36,10 @@
      "https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard",
      "https://huggingface.co/models",
      "https://benchlm.ai/",
-     "https://livecodebench.github.io/leaderboard.html"
+     "https://livecodebench.github.io/leaderboard.html",
+     "https://openai.com/index/introducing-gpt-6-2-astra-sol/",
+     "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/",
+     "https://www.benchleader.com/state"
     ]
    },
    {
@@ -134,6 +137,19 @@
     "note": "Biology foundation models (AlphaFold, ESM, imaging models) are catalogued, not ranked: they use domain-specific benchmarks."
    },
    {
+    "id": "decision_models",
+    "title": "Decision models",
+    "sources": [
+     "https://nandhakishorm.github.io/laya/benchmarks/",
+     "https://huggingface.co/convaiinnovations/laya-typed-decisions",
+     "https://arxiv.org/html/2610.02267",
+     "https://arxiv.org/abs/2609.33843",
+     "https://zylver.com/blog/laya-vs-jev-typed-decision-model-benchmark/",
+     "https://www.sarvam.ai/blogs/sarvam-prism"
+    ],
+    "note": "System-1 / typed decision models return calibrated choices in one forward pass. Scores are developer-reported or single-study results, so they are catalogued, not ranked."
+   },
+   {
     "id": "multimodal",
     "title": "Multimodal",
     "metrics": [
@@ -212,7 +228,10 @@
      "https://www.business-friendly-llm.org/",
      "https://www.sarvam.ai/blogs/sarvam-30b-105b",
      "https://bharatgen.com/text-models/",
-     "https://www.techmahindra.com/insights/news/techm-teams-nvidia-launch-cutting-edge-education-llm-under-project-indus/"
+     "https://www.techmahindra.com/insights/news/techm-teams-nvidia-launch-cutting-edge-education-llm-under-project-indus/",
+     "https://www.drishtiias.com/daily-updates/daily-news-analysis/indigenous-ai-foundation-models",
+     "https://huggingface.co/sarvamai/sarvam-105b-1711",
+     "https://ai-labs.olakrutrim.com/models/Krutrim-LLM-2"
     ],
     "model_families": [
      "https://sarvam.ai/",
@@ -234,7 +253,8 @@
      "https://z.ai/blog/glm-5.3",
      "https://www.minimax.io/blog/minimax-m3",
      "https://www.stepfun.com/news/step-5-preview",
-     "https://mimo.mi.com/docs/en-US/updates/model"
+     "https://mimo.mi.com/docs/en-US/updates/model",
+     "https://www.alibabagroup.com/en-US/document-2060139246777270272"
     ]
    },
    {

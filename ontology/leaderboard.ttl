@@ -40,6 +40,7 @@ sota:hallucination_safety a sota:Category ; rdfs:label "Hallucination and safety
 sota:cybersecurity a sota:Category ; rdfs:label "Cybersecurity" .
 sota:clinical a sota:Category ; rdfs:label "Clinical" .
 sota:life_sciences a sota:Category ; rdfs:label "Life sciences" .
+sota:decision_models a sota:Category ; rdfs:label "Decision models" .
 sota:SpecialistModel a owl:Class ; rdfs:subClassOf sota:Model ; rdfs:label "Unranked specialist model or platform" .
 sota:evidenceLevel a owl:DatatypeProperty ; rdfs:domain sota:SpecialistModel ; rdfs:range xsd:string ; rdfs:comment "self_reported, reference, platform or ranked_elsewhere." .
 sota:src_medhelm a sota:Source ; rdfs:label "MedHELM (Stanford)" ; sota:sourceUrl "https://medhelm.org/"^^xsd:anyURI .

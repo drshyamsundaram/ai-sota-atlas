@@ -88,6 +88,7 @@ const CATEGORY_TITLES: Record<string, string> = {
   europe: "Europe",
   clinical: "Clinical",
   life_sciences: "Life sciences",
+  decision_models: "Decision models",
   mea: "Middle East & Africa",
 };
 

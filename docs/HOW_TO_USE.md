@@ -58,6 +58,7 @@
 ## Clinical, Life sciences and specialist catalogue
 - **Clinical** ranks models on MedHELM (mean win rate) and HealthBench / HealthBench Hard (via BenchLM).
 - **Life sciences** ranks models on LABBench2 (via BenchLM).
+- **Decision models** catalogues System-1 / typed decision models (Laya, Laya Typed-Decisions, TypeSafe Jev, Sarvam Prism) with their Typed Decisions results, labelled self-reported or single-study — not ranked.
 - **Cybersecurity** adds CyberGym (via BenchLM) next to Nilgiri.
 - Each of these categories, plus India, shows a **Specialist models & platforms** panel: an unranked catalogue (EvidenceMD, Med-Gemini, AlphaFold 3, ESM3, BiomedCLIP, H-Optimus-0, MDASH, Security Copilot, CrowdStrike, SentinelOne, Cortex XSIAM, Bodhan AI and more). Badges show the evidence level: *Self-reported*, *Reference only*, *Platform / product* or *Ranked in leaderboards*. These entries also appear in the AI-SOTA KG linked to their category, developer and country.
 

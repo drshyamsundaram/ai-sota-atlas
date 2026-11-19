@@ -598,6 +598,171 @@
    "evidence": "platform",
    "claim": "Platform enhancement and appliance launch, not a new foundation-model generation (CoRover, Feb 2026)",
    "url": "https://corover.ai/blogs/corover-ai-announces-large-scale-deployment-of-multilingual-ai-platform-launches-bharatgpt-deskai-appliance-powered-by-nvidia"
+  },
+  {
+   "name": "Laya",
+   "developer": "Convai Innovations",
+   "country": "India",
+   "category": "decision_models",
+   "kind": "Open typed decision model (System-1, Apache 2.0)",
+   "benchmarks": [
+    "Typed Decisions",
+    "MASSIVE",
+    "XNLI",
+    "AG News",
+    "Banking77"
+   ],
+   "evidence": "self_reported",
+   "claim": "AG News 0.950, Banking77 0.425, spam 0.993; 32.8 ms/question on T4 (developer-measured)",
+   "url": "https://nandhakishorm.github.io/laya/benchmarks/"
+  },
+  {
+   "name": "Laya Typed-Decisions",
+   "developer": "Convai Innovations",
+   "country": "India",
+   "category": "decision_models",
+   "kind": "421M ModernBERT-large decision checkpoint",
+   "benchmarks": [
+    "Typed Decisions"
+   ],
+   "evidence": "self_reported",
+   "claim": "Typed Decisions accuracy 0.766, Brier 0.066 (fine-tuned on its training split; independently reproduced at 0.767)",
+   "url": "https://huggingface.co/convaiinnovations/laya-typed-decisions"
+  },
+  {
+   "name": "TypeSafe Jev",
+   "developer": "TypeSafe AI",
+   "country": "United States",
+   "category": "decision_models",
+   "kind": "Hosted System One decision model (API)",
+   "benchmarks": [
+    "Typed Decisions",
+    "11 agent decision points"
+   ],
+   "evidence": "reference",
+   "claim": "Typed Decisions 0.727 (per Laya's card); more accurate than Laya on 9 of 11 agent decision points in an independent paired study",
+   "url": "https://arxiv.org/html/2610.02267"
+  },
+  {
+   "name": "Sarvam Prism",
+   "developer": "Sarvam AI",
+   "country": "India",
+   "category": "decision_models",
+   "kind": "Open-weight decision model on Sarvam 105B MoE",
+   "benchmarks": [
+    "Sarvam decision indices (25 models)"
+   ],
+   "evidence": "self_reported",
+   "claim": "Average 71.8 across three indices at 44 ms on B200 (developer-run, Nov 2026)",
+   "url": "https://www.sarvam.ai/blogs/sarvam-prism"
+  },
+  {
+   "name": "Sarvam-105B-1711",
+   "developer": "Sarvam AI",
+   "country": "India",
+   "category": "india",
+   "kind": "105B MoE (10.3B active), agentic post-train",
+   "benchmarks": [
+    "IFEval",
+    "IFBench",
+    "τ²-Bench",
+    "Indic Suite",
+    "GPQA Diamond"
+   ],
+   "evidence": "self_reported",
+   "claim": "IFBench 82.5, τ²-Bench 85.5, Indic Suite 79.1, GPQA Diamond 80.4 (model card)",
+   "url": "https://huggingface.co/sarvamai/sarvam-105b-1711"
+  },
+  {
+   "name": "EKA-1",
+   "developer": "Soket AI Labs",
+   "country": "India",
+   "category": "india",
+   "kind": "26.3B sparse hybrid, 22 Indian languages (IndiaAI Mission)",
+   "benchmarks": [],
+   "evidence": "reference",
+   "claim": "Launched Nov 2026; no published benchmark scores yet",
+   "url": "https://www.drishtiias.com/daily-updates/daily-news-analysis/indigenous-ai-foundation-models"
+  },
+  {
+   "name": "Dhir 2B / Dhir 5B",
+   "developer": "ZenteiQ AiTech",
+   "country": "India",
+   "category": "india",
+   "kind": "On-device small language models, 10 Indian languages",
+   "benchmarks": [],
+   "evidence": "reference",
+   "claim": "Launched Nov 2026; no published benchmark scores yet",
+   "url": "https://www.drishtiias.com/daily-updates/daily-news-analysis/indigenous-ai-foundation-models"
+  },
+  {
+   "name": "Krutrim-2",
+   "developer": "Ola Krutrim",
+   "country": "India",
+   "category": "india",
+   "kind": "12B Indic LLM (Mistral-NeMo base), 22 languages",
+   "benchmarks": [
+    "Indic benchmarks"
+   ],
+   "evidence": "self_reported",
+   "url": "https://ai-labs.olakrutrim.com/models/Krutrim-LLM-2"
+  },
+  {
+   "name": "GPT-6.2 Astra",
+   "developer": "OpenAI",
+   "country": "United States",
+   "category": "global_frontier",
+   "kind": "Frontier LLM (Nov 17, 2026)",
+   "benchmarks": [
+    "AA Intelligence Index",
+    "Agents' Last Exam",
+    "Terminal-Bench-Science"
+   ],
+   "evidence": "ranked_elsewhere",
+   "claim": "#2 on Artificial Analysis Intelligence Index; BenchLeader Index 68.5",
+   "url": "https://artificialanalysis.ai/articles/openai-has-the-2-model-in-the-intelligence-index-with-the-release-of-gpt-6-2-astra-and-gpt-6-2-sol"
+  },
+  {
+   "name": "GPT-6.2 Sol",
+   "developer": "OpenAI",
+   "country": "United States",
+   "category": "global_frontier",
+   "kind": "Efficient frontier LLM",
+   "benchmarks": [
+    "AA Intelligence Index"
+   ],
+   "evidence": "ranked_elsewhere",
+   "claim": "AA Intelligence Index 57",
+   "url": "https://openai.com/index/introducing-gpt-6-2-astra-sol/"
+  },
+  {
+   "name": "Gemini 4 Neon",
+   "developer": "Google",
+   "country": "United States",
+   "category": "global_frontier",
+   "kind": "Fast frontier LLM, 1M context (Nov 18, 2026)",
+   "benchmarks": [
+    "AA Intelligence Index",
+    "Vals Index"
+   ],
+   "evidence": "ranked_elsewhere",
+   "claim": "AA Intelligence Index 61; Vals Index 70.9% (#2); BenchLeader 67.3",
+   "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/"
+  },
+  {
+   "name": "Qwen4-Max",
+   "developer": "Alibaba",
+   "country": "China",
+   "category": "china",
+   "kind": "2.4T MoE (71B active), native vision",
+   "benchmarks": [
+    "Code Arena",
+    "Vals Index",
+    "Agents' Last Exam"
+   ],
+   "evidence": "self_reported",
+   "claim": "#6 on Code Arena; not yet enough independent results for an index (BenchLeader)",
+   "url": "https://www.alibabagroup.com/en-US/document-2060139246777270272"
   }
  ]
 }
